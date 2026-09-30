@@ -1,0 +1,27 @@
+# SimFoundry 运行时（从源码 import 还原，版本取自 env_isaaclab）
+# Python 3.12
+#
+# Isaac 采集 / 仿真不能只靠这份 pip 文件。官方入口：
+#   conda activate env_isaaclab
+# Isaac Sim 6.0.1 + Isaac Lab 16.2.3 走 IsaacLab/isaaclab.sh。
+# 不要用 nvidia/SimFoundry/requirements.txt（那是 Hunyuan / TRELLIS 那套）。
+
+# --- 不依赖 Isaac 的检查 / 导出（tests、export_scene_usd、npz 转视频等）---
+numpy==2.3.1
+opencv-python-headless==4.13.0.90
+pandas==3.0.5
+Pillow==12.2.0
+
+# --- Isaac 仿真（须装在 Isaac Lab 环境里，不要单独 pip 一套）---
+# isaaclab==16.2.3
+# isaaclab-newton==5.2.0
+# isaaclab-tasks==16.5.0
+# isaaclab-physx==5.0.1
+# isaaclab-assets==0.6.4
+# isaaclab-ov==2.0.4
+# gymnasium==1.3.0
+# torch==2.11.0+cu128
+# pxr 由 Isaac Sim / Omniverse 提供
+
+# --- PI0.5 策略服务（scripts/pi05_policy_server.py）---
+# lerobot 本机是工作区路径 /home/user/Documents/zoo/sim/lerobot（未 pip 安装）

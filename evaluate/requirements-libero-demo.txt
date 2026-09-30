@@ -1,0 +1,16 @@
+# Minimal deps to run the official-scene eval demo (not the full lifelong-training stack).
+numpy>=1.23,<2
+opencv-python>=4.8,<5
+imageio
+imageio-ffmpeg
+pyyaml
+termcolor
+gym==0.25.2
+bddl==1.0.1
+robosuite==1.4.0
+mujoco>=2.3.0,<3
+future
+easydict
+nltk
+matplotlib
+# torch is optional: official .pruned_init files were converted to .npy for this demo

@@ -1,0 +1,391 @@
+{
+  "embodiment_id": "g1_edu_23_bimanual",
+  "requires_ee_default": "stump",
+  "language": "zh-CN",
+  "notes": "One connected indoor world with seven zones. Atomic skills can reset into a single zone; long-horizon tasks load the full twin. A-period skips needs_locomotion=true.",
+  "world": {
+    "scene_id": "indoor_lab_g1_23",
+    "name_zh": "室内实验间（G1 23 连通世界）",
+    "topology": "open_floor+hri -- corridor -- swing_door -- {wall_button, kitchen_counter_stump, lab_low_bench}",
+    "legacy_slice": "kitchen_counter_placeholder"
+  },
+  "zones": [
+    {
+      "zone_id": "open_floor",
+      "name_zh": "室内空地",
+      "tabletop": false
+    },
+    {
+      "zone_id": "corridor",
+      "name_zh": "走廊",
+      "tabletop": false
+    },
+    {
+      "zone_id": "lab_low_bench",
+      "name_zh": "实验矮桌",
+      "tabletop": true
+    },
+    {
+      "zone_id": "kitchen_counter_stump",
+      "name_zh": "厨房操作台（stump）",
+      "alias_scene_ids": ["kitchen_counter_placeholder"],
+      "tabletop": true
+    },
+    {
+      "zone_id": "wall_button",
+      "name_zh": "墙面按钮",
+      "tabletop": false
+    },
+    {
+      "zone_id": "swing_door",
+      "name_zh": "轻门",
+      "tabletop": false
+    },
+    {
+      "zone_id": "hri_open_space",
+      "name_zh": "对人示意",
+      "tabletop": false
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "approach_counter",
+      "instruction": "走到操作台前站定。",
+      "instruction_variants": ["走到台边停下。", "去操作台前面站好。"],
+      "predicates": [{"type": "Near", "a": "pelvis", "b": "counter", "threshold": 0.55}],
+      "requires_ee": "stump",
+      "arms": "bimanual",
+      "needs_locomotion": true,
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "phase": "L"
+    },
+    {
+      "task_id": "walk_to_marker",
+      "instruction": "走到地上的标记处停下。",
+      "instruction_variants": ["走到地标前面站定。"],
+      "predicates": [{"type": "Near", "a": "pelvis", "b": "marker", "threshold": 0.45}],
+      "requires_ee": "stump",
+      "arms": "bimanual",
+      "needs_locomotion": true,
+      "zone_ids": ["open_floor"],
+      "phase": "L"
+    },
+    {
+      "task_id": "walk_down_corridor",
+      "instruction": "沿走廊走到尽头停下。",
+      "instruction_variants": ["顺着走廊走到前面的门口。"],
+      "predicates": [{"type": "Near", "a": "pelvis", "b": "goal", "threshold": 0.50}],
+      "requires_ee": "stump",
+      "arms": "bimanual",
+      "needs_locomotion": true,
+      "zone_ids": ["corridor"],
+      "phase": "L"
+    },
+    {
+      "task_id": "turn_to_face_door",
+      "instruction": "转到面向门口。",
+      "instruction_variants": ["转身正对那扇门。"],
+      "predicates": [{"type": "Facing", "a": "pelvis", "b": "door", "threshold": 0.25}],
+      "requires_ee": "stump",
+      "arms": "bimanual",
+      "needs_locomotion": false,
+      "zone_ids": ["corridor", "swing_door"],
+      "phase": "H"
+    },
+    {
+      "task_id": "stand_still",
+      "instruction": "站在原地不要动。",
+      "instruction_variants": ["保持站立，不要迈步。"],
+      "predicates": [{"type": "Still", "a": "pelvis", "b": "world", "threshold": 0.02}],
+      "requires_ee": "stump",
+      "arms": "bimanual",
+      "needs_locomotion": false,
+      "zone_ids": ["open_floor", "kitchen_counter_stump", "lab_low_bench"],
+      "phase": "H"
+    },
+    {
+      "task_id": "reach_cup",
+      "instruction": "把右臂伸向杯子。",
+      "instruction_variants": ["右手够到杯子旁边。", "伸手靠近桌上的杯子。"],
+      "predicates": [{"type": "Near", "a": "right_ee", "b": "cup", "threshold": 0.12}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "reach_bottle",
+      "instruction": "把右臂伸向瓶子。",
+      "instruction_variants": ["右手够到瓶子。"],
+      "predicates": [{"type": "Near", "a": "right_ee", "b": "bottle", "threshold": 0.12}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "reach_bowl",
+      "instruction": "把左臂伸向碗。",
+      "instruction_variants": ["左手靠近碗。"],
+      "predicates": [{"type": "Near", "a": "left_ee", "b": "bowl", "threshold": 0.12}],
+      "requires_ee": "stump",
+      "arms": "left",
+      "needs_locomotion": false,
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "reach_button",
+      "instruction": "把手伸向墙上的按钮。",
+      "instruction_variants": ["举起手臂对准按钮。"],
+      "predicates": [{"type": "Near", "a": "right_ee", "b": "button", "threshold": 0.10}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["wall_button"],
+      "phase": "A"
+    },
+    {
+      "task_id": "both_arms_forward",
+      "instruction": "双臂向前平伸。",
+      "instruction_variants": ["两只手一起往前伸。"],
+      "predicates": [{"type": "Forward", "a": "both_ee", "b": "torso", "threshold": 0.20}],
+      "requires_ee": "stump",
+      "arms": "bimanual",
+      "needs_locomotion": false,
+      "zone_ids": ["open_floor", "lab_low_bench"],
+      "phase": "H"
+    },
+    {
+      "task_id": "push_cup_to_bowl",
+      "instruction": "把杯子推向碗。",
+      "instruction_variants": ["把杯子拨到碗旁边。", "把桌上的杯子推近碗。"],
+      "predicates": [{"type": "Near", "a": "cup", "b": "bowl", "threshold": 0.12}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["kitchen_counter_stump"],
+      "phase": "A"
+    },
+    {
+      "task_id": "push_cup_forward",
+      "instruction": "把杯子沿桌面往前推。",
+      "instruction_variants": ["把杯子往桌内推一点。"],
+      "predicates": [{"type": "Displaced", "a": "cup", "b": "cup_start", "threshold": 0.08}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "nudge_bottle_left",
+      "instruction": "把瓶子向左拨开。",
+      "instruction_variants": ["把瓶子拨到左边。"],
+      "predicates": [{"type": "Displaced", "a": "bottle", "b": "bottle_start", "threshold": 0.08}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "sweep_bottle_aside",
+      "instruction": "把瓶子扫到桌子一侧。",
+      "instruction_variants": ["把瓶子拨到桌边清出走道。"],
+      "predicates": [{"type": "In", "a": "bottle", "b": "side_zone"}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "clear_front_zone",
+      "instruction": "把身前桌面上的瓶子拨走。",
+      "instruction_variants": ["把挡在前面的瓶子推开。"],
+      "predicates": [{"type": "Clear", "a": "front_zone", "b": "bottle"}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "push_box_along_table",
+      "instruction": "把小盒子沿桌子推到另一头。",
+      "instruction_variants": ["把盒子从左侧推到右侧。"],
+      "predicates": [{"type": "Near", "a": "box", "b": "table_end", "threshold": 0.15}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "press_wall_button",
+      "instruction": "按下墙上的按钮。",
+      "instruction_variants": ["用手按一下那个按钮。"],
+      "predicates": [{"type": "Pressed", "a": "button", "b": "wall", "threshold": 0.01}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["wall_button"],
+      "phase": "A"
+    },
+    {
+      "task_id": "press_table_switch",
+      "instruction": "按下桌上的开关。",
+      "instruction_variants": ["按一下台面上的开关。"],
+      "predicates": [{"type": "Pressed", "a": "switch", "b": "table", "threshold": 0.008}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "approach_and_push_door",
+      "instruction": "走到门前，把门推开。",
+      "instruction_variants": ["去门口把门推开。"],
+      "predicates": [
+        {"type": "Near", "a": "pelvis", "b": "door", "threshold": 0.60},
+        {"type": "Open", "a": "door", "b": "frame", "threshold": 0.40}
+      ],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": true,
+      "zone_ids": ["swing_door"],
+      "phase": "L"
+    },
+    {
+      "task_id": "push_door_open",
+      "instruction": "把门推开。",
+      "instruction_variants": ["用力把门推开。"],
+      "predicates": [{"type": "Open", "a": "door", "b": "frame", "threshold": 0.40}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["swing_door"],
+      "phase": "A"
+    },
+    {
+      "task_id": "wave_hello",
+      "instruction": "对着前面挥手。",
+      "instruction_variants": ["举起右手挥一挥。"],
+      "predicates": [{"type": "Waving", "a": "right_ee", "b": "torso"}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["open_floor", "hri_open_space"],
+      "phase": "H"
+    },
+    {
+      "task_id": "point_at_person",
+      "instruction": "用右臂指向前面的人。",
+      "instruction_variants": ["伸手指向那个人。"],
+      "predicates": [{"type": "Pointing", "a": "right_ee", "b": "person", "threshold": 0.35}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["hri_open_space"],
+      "phase": "H"
+    },
+    {
+      "task_id": "point_at_cup",
+      "instruction": "用右臂指向杯子。",
+      "instruction_variants": ["伸手指向桌上的杯子。"],
+      "predicates": [{"type": "Pointing", "a": "right_ee", "b": "cup", "threshold": 0.35}],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": false,
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "phase": "A"
+    },
+    {
+      "task_id": "turn_and_wave",
+      "instruction": "转到面向人，然后挥手。",
+      "instruction_variants": ["转身对着人挥手。"],
+      "predicates": [
+        {"type": "Facing", "a": "pelvis", "b": "person", "threshold": 0.25},
+        {"type": "Waving", "a": "right_ee", "b": "torso"}
+      ],
+      "requires_ee": "stump",
+      "arms": "right",
+      "needs_locomotion": true,
+      "zone_ids": ["hri_open_space"],
+      "phase": "L"
+    }
+  ],
+  "long_horizon_tasks": [
+    {
+      "task_id": "enter_and_push_cup",
+      "instruction": "走到门前把门推开，再走到操作台前，把杯子推向碗。",
+      "instruction_variants": ["去把门推开，到台子那儿把杯子推到碗边。"],
+      "steps": ["approach_and_push_door", "approach_counter", "push_cup_to_bowl"],
+      "zone_ids": ["open_floor", "corridor", "swing_door", "kitchen_counter_stump"],
+      "requires_ee": "stump",
+      "needs_locomotion": true,
+      "horizon": "long",
+      "phase": "L"
+    },
+    {
+      "task_id": "press_then_enter",
+      "instruction": "按下门旁的按钮，然后推开门走到台前。",
+      "instruction_variants": ["先按按钮，再推开门走到操作台前。"],
+      "steps": ["press_wall_button", "push_door_open", "approach_counter"],
+      "zone_ids": ["wall_button", "swing_door", "kitchen_counter_stump"],
+      "requires_ee": "stump",
+      "needs_locomotion": true,
+      "horizon": "long",
+      "phase": "L"
+    },
+    {
+      "task_id": "enter_and_wave",
+      "instruction": "推开门，走到人前面挥手。",
+      "instruction_variants": ["把门推开，走到那个人跟前挥手。"],
+      "steps": ["push_door_open", "turn_and_wave"],
+      "zone_ids": ["swing_door", "hri_open_space"],
+      "requires_ee": "stump",
+      "needs_locomotion": true,
+      "horizon": "long",
+      "phase": "L"
+    },
+    {
+      "task_id": "kitchen_then_lab",
+      "instruction": "把杯子推向碗，再走到实验桌前把瓶子拨开。",
+      "instruction_variants": ["先把杯子推近碗，再去实验桌把瓶子拨到一边。"],
+      "steps": ["push_cup_to_bowl", "nudge_bottle_left"],
+      "zone_ids": ["kitchen_counter_stump", "lab_low_bench"],
+      "requires_ee": "stump",
+      "needs_locomotion": true,
+      "horizon": "long",
+      "phase": "L"
+    },
+    {
+      "task_id": "greet_then_work",
+      "instruction": "对着人挥手，然后走到操作台前把右臂伸向杯子。",
+      "instruction_variants": ["先挥手打招呼，再去台前伸手够杯子。"],
+      "steps": ["wave_hello", "approach_counter", "reach_cup"],
+      "zone_ids": ["hri_open_space", "corridor", "kitchen_counter_stump"],
+      "requires_ee": "stump",
+      "needs_locomotion": true,
+      "horizon": "long",
+      "phase": "L"
+    }
+  ],
+  "excluded_for_g1_23": [
+    {
+      "task_id": "pick_cup",
+      "reason": "grasp requires wrist pitch/yaw and a hand",
+      "requires_ee": "dexhand"
+    },
+    {
+      "task_id": "place_cup_in_bowl",
+      "reason": "pick-and-place",
+      "requires_ee": "dexhand"
+    }
+  ]
+}

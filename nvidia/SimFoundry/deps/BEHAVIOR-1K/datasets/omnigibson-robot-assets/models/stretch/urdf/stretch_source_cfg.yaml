@@ -1,0 +1,74 @@
+# Absolute path to URDF
+urdf_path: /home/jdw/projects/repo/OmniGibson/omnigibson/data/assets/source/stretch/stretch_source.urdf                      # (str) Absolute path to robot URDF to import
+name: stretch                           # (str) Name to assign to robot
+headless: false                          # (bool) if set, run without GUI
+overwrite: true                         # (bool) if set, overwrite any existing files
+merge_fixed_joints: true
+base_motion:
+  wheel_links:                      # (list of str): links corresponding to wheels
+    - link_left_wheel
+    - link_right_wheel
+  wheel_joints:                     # (list of str): joints corresponding to wheel motion
+    - joint_left_wheel
+    - joint_right_wheel
+  use_sphere_wheels: false          # (bool) whether to use sphere approximation for wheels (better stability)
+  use_holonomic_joints: false       # (bool) whether to use joints to approximate a holonomic base. In this case, all
+                                    #       wheel-related joints will be made into fixed joints, and 6 additional
+                                    #       "virtual" joints will be added to the robot's base capturing 6DOF movement,
+                                    #       with the (x,y,rz) joints being controllable by motors
+collision:
+  decompose_method: convex                  # (str) [coacd, convex, or null] collision decomposition method
+  hull_count: 8                     # (int) per-mesh max hull count to use during decomposition, only relevant for coacd
+  coacd_links:                    # (list of str): links that should use CoACD to decompose collision meshes
+    - link_lift
+    - link_arm_l0
+    - link_gripper_s3_body
+    - link_gripper_fingertip_left
+    - link_gripper_fingertip_right
+  convex_links:                     # (list of str): links that should use convex hull of visual meshes to decompose collision meshes
+
+  no_decompose_links:               # (list of str): links that should not have any post-processing done to them
+    - caster_link
+    - link_left_wheel
+    - link_right_wheel
+  no_collision_links:               # (list of str) links that will have any associated collision meshes removed
+    - link_aruco_left_base
+    - link_aruco_right_base
+    - base_imu
+    - camera_link
+    - link_aruco_inner_wrist
+    - link_aruco_top_wrist
+    - link_wrist_yaw
+    - link_aruco_fingertip_left
+    - link_aruco_fingertip_right
+    - gripper_camera_link
+    - link_aruco_d405
+    - link_aruco_shoulder
+    - respeaker_base
+eef_vis_links:                      # (list of dict) information for adding cameras to robot
+  - link: eef_link                  # same format as @camera_links
+    parent_link: link_wrist_roll
+    offset:
+      position: [0, 0, 0.23818]
+      orientation: [0, 0, -0.70710678, 0.70710678]
+camera_links:                       # (list of dict) information for adding cameras to robot
+  - link: eyes                      # (str) link name to add camera. Must exist if @parent_link is null, else will be
+                                    #       added as a child of the parent
+    parent_link: link_head_tilt               # (str) optional parent link to use if adding new link
+    offset:                         # (dict) local pos,ori offset values. if @parent_link is specified, defines offset
+                                    #       between @parent_link and @link specified in @parent_link's frame.
+                                    #       Otherwise, specifies offset of generated prim relative to @link's frame
+      position: [0.0506, 0.0053, 0.0307]           # (3-tuple) (x,y,z) offset -- this is done BEFORE the rotation
+      orientation: [0, -0.70711, 0, 0.70711]   # (4-tuple) (x,y,z,w) offset
+  - link: eef_link
+    parent_link: null
+    offset:
+      position: [0.06117, 0, -0.15292]           # (3-tuple) (x,y,z) offset -- this is done BEFORE the rotation
+      orientation: [0.70442, 0.70442, 0.06163, 0.06163]   # (4-tuple) (x,y,z,w) offset
+lidar_links:                        # (list of dict) information for adding cameras to robot
+  - link: laser_link                # same format as @camera_links
+    parent_link: base_link
+    offset:
+      position: [0.004, 0, 0.1664]
+      orientation: [0, 0, 1.0, 0]
+curobo: null

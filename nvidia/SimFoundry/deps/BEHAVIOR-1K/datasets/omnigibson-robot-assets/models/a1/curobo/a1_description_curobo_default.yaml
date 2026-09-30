@@ -1,0 +1,279 @@
+robot_cfg:
+  kinematics:
+    base_link: base_link
+    collision_link_names:
+    - base_link
+    - arm_seg1
+    - arm_seg2
+    - arm_seg3
+    - arm_seg4
+    - arm_seg5
+    - arm_seg6
+    - gripper1
+    - gripper2
+    - attached_object_eef_link
+    collision_sphere_buffer: 0.002
+    collision_spheres:
+      arm_seg1:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.06
+        radius: 0.056
+      arm_seg2:
+      - center:
+        - 0.05
+        - 0.013
+        - 0
+        radius: 0.05
+      - center:
+        - 0.11
+        - 0.019
+        - 0
+        radius: 0.044
+      - center:
+        - 0.17
+        - 0.019
+        - 0
+        radius: 0.044
+      - center:
+        - 0.23
+        - 0.02
+        - 0
+        radius: 0.044
+      - center:
+        - 0.29
+        - 0.02
+        - 0
+        radius: 0.044
+      - center:
+        - 0.35
+        - 0.023
+        - 0
+        radius: 0.046
+      arm_seg3:
+      - center:
+        - 0.058
+        - 0.037
+        - 0
+        radius: 0.048
+      - center:
+        - 0.08
+        - 0.095
+        - 0
+        radius: 0.03
+      - center:
+        - 0.08
+        - 0.135
+        - 0
+        radius: 0.03
+      - center:
+        - 0.08
+        - 0.176
+        - 0
+        radius: 0.03
+      - center:
+        - 0.077
+        - 0.22
+        - 0
+        radius: 0.03
+      arm_seg4:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.272
+        radius: 0.04
+      arm_seg5:
+      - center:
+        - 0.001
+        - -0.059
+        - 0.0
+        radius: 0.035
+      arm_seg6:
+      - center:
+        - 0.0
+        - 0.0
+        - -0.025
+        radius: 0.032
+      - center:
+        - 0.0
+        - 0.0
+        - -0.055
+        radius: 0.032
+      base_link:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.055
+        radius: 0.05
+      gripper1:
+      - center:
+        - 0.008
+        - -0.022
+        - 0.0195
+        radius: 0.0075
+      - center:
+        - 0.008
+        - -0.006
+        - 0.0195
+        radius: 0.0075
+      - center:
+        - 0.024
+        - -0.022
+        - 0.0195
+        radius: 0.0075
+      - center:
+        - 0.024
+        - -0.006
+        - 0.0195
+        radius: 0.0075
+      - center:
+        - 0.042
+        - -0.014
+        - 0.0175
+        radius: 0.0055
+      - center:
+        - 0.057
+        - -0.014
+        - 0.0152
+        radius: 0.0035
+      - center:
+        - 0.069
+        - -0.014
+        - 0.0135
+        radius: 0.002
+      gripper2:
+      - center:
+        - 0.008
+        - -0.022
+        - 0.0195
+        radius: 0.0075
+      - center:
+        - 0.008
+        - -0.006
+        - 0.0195
+        radius: 0.0075
+      - center:
+        - 0.024
+        - -0.022
+        - 0.0195
+        radius: 0.0075
+      - center:
+        - 0.024
+        - -0.006
+        - 0.0195
+        radius: 0.0075
+      - center:
+        - 0.042
+        - -0.014
+        - 0.0175
+        radius: 0.0055
+      - center:
+        - 0.057
+        - -0.014
+        - 0.0152
+        radius: 0.0035
+      - center:
+        - 0.069
+        - -0.014
+        - 0.0135
+        radius: 0.002
+    cspace:
+      cspace_distance_weight:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      joint_names:
+      - arm_joint1
+      - arm_joint2
+      - arm_joint3
+      - arm_joint4
+      - arm_joint5
+      - arm_joint6
+      - gripper_joint1
+      - gripper_joint2
+      max_acceleration: 15.0
+      max_jerk: 500.0
+      null_space_weight:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      retract_config: null
+    ee_link: eef_link
+    external_asset_path: null
+    extra_collision_spheres:
+      attached_object_eef_link: 32
+    extra_links:
+      attached_object_eef_link:
+        fixed_transform:
+        - 0
+        - 0
+        - 0
+        - 1
+        - 0
+        - 0
+        - 0
+        joint_name: attached_object_eef_link_joint
+        joint_type: FIXED
+        link_name: attached_object_eef_link
+        parent_link_name: eef_link
+    link_names: []
+    lock_joints:
+      gripper_joint1: null
+      gripper_joint2: null
+    mesh_link_names:
+    - base_link
+    - arm_seg1
+    - arm_seg2
+    - arm_seg3
+    - arm_seg4
+    - arm_seg5
+    - arm_seg6
+    - gripper1
+    - gripper2
+    - attached_object_eef_link
+    self_collision_buffer:
+      base_link: 0.02
+    self_collision_ignore:
+      arm_seg1:
+      - arm_seg2
+      arm_seg2:
+      - arm_seg3
+      arm_seg3:
+      - arm_seg4
+      arm_seg4:
+      - arm_seg5
+      arm_seg5:
+      - arm_seg6
+      arm_seg6:
+      - gripper1
+      - gripper2
+      base_link:
+      - arm_seg1
+      gripper1:
+      - gripper2
+      - attached_object_eef_link
+      gripper2:
+      - attached_object_eef_link
+    usd_flip_joint_limits: []
+    usd_flip_joints:
+      arm_joint1: Z
+      arm_joint2: Z
+      arm_joint3: Z
+      arm_joint4: Z
+      arm_joint5: Z
+      arm_joint6: Z
+      gripper_joint1: Z
+      gripper_joint2: Z
+    usd_robot_root: /a1
+    use_global_cumul: true

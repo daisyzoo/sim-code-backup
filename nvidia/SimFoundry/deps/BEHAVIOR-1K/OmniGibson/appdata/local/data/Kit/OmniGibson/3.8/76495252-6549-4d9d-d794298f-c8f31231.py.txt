@@ -1,0 +1,16 @@
+Process 272747: python scripts/pipeline/A_reconstruction/stages/14_create_og_scene.py root_dir=/home/user/Documents/zoo/sim/nvidia/SimFoundry/Data scene_name=pick_demo s14_og.interactive=true s14_og.fast_process_exit=false
+Python v3.11.16 (/home/user/miniconda3/envs/simfoundry/bin/python3.11)
+
+Thread 272747 (idle): "MainThread"
+Thread 272909 (idle): "Thread-1 (_read_thread)"
+    _recv_msg (/home/user/miniconda3/envs/simfoundry/lib/python3.11/site-packages/torch/_inductor/compile_worker/subproc_pool.py:55)
+    _read_thread (/home/user/miniconda3/envs/simfoundry/lib/python3.11/site-packages/torch/_inductor/compile_worker/subproc_pool.py:191)
+    run (/home/user/miniconda3/envs/simfoundry/lib/python3.11/threading.py:982)
+    _bootstrap_inner (/home/user/miniconda3/envs/simfoundry/lib/python3.11/threading.py:1045)
+    _bootstrap (/home/user/miniconda3/envs/simfoundry/lib/python3.11/threading.py:1002)
+Thread 273386 (idle): "tqdm_monitor"
+    wait (/home/user/miniconda3/envs/simfoundry/lib/python3.11/threading.py:331)
+    wait (/home/user/miniconda3/envs/simfoundry/lib/python3.11/threading.py:629)
+    run (/home/user/miniconda3/envs/simfoundry/lib/python3.11/site-packages/tqdm/_monitor.py:69)
+    _bootstrap_inner (/home/user/miniconda3/envs/simfoundry/lib/python3.11/threading.py:1045)
+    _bootstrap (/home/user/miniconda3/envs/simfoundry/lib/python3.11/threading.py:1002)

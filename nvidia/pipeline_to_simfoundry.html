@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Real2Sim 场景重建与分拣资产接入</title>
+<style>
+  :root {
+    --ink: #1c2430;
+    --muted: #5c6776;
+    --line: #e3e7ee;
+    --green: #4f7c0f;
+    --green-bg: #eef6dc;
+    --amber: #8a5a0b;
+    --amber-bg: #fbf3e2;
+    --page: #fff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden; background: #fff;
+    font-family: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink);
+  }
+  .stage { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .slide {
+    width: 1920px; height: 1080px; background: var(--page);
+    transform-origin: center center;
+    display: flex; flex-direction: column;
+    padding: 22px 28px 16px; gap: 12px;
+  }
+  header {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 20px;
+    padding-bottom: 10px; border-bottom: 2px solid #1c2430;
+  }
+  .kicker { font-size: 12px; letter-spacing: 0.14em; color: var(--green); font-weight: 700; margin-bottom: 4px; }
+  h1 { font-size: 32px; line-height: 1.15; font-weight: 750; letter-spacing: -0.01em; }
+  .sub { margin-top: 4px; font-size: 15px; color: var(--muted); }
+  .flow { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; }
+  .flow span { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; white-space: nowrap; }
+  .flow span.on { background: #1c2430; color: #fff; border-color: #1c2430; }
+  .flow i { color: #98a2b0; font-style: normal; }
+  main {
+    flex: 1; min-height: 0;
+    display: grid; grid-template-columns: 390px minmax(0, 1fr) 400px; gap: 12px;
+  }
+  section {
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px 14px 12px; min-height: 0; overflow: hidden;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  h2 { font-size: 17px; font-weight: 750; }
+  .hint { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  ol.stages { list-style: none; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+  ol.stages li {
+    flex: 1; display: grid; grid-template-columns: 46px 1fr auto; align-items: center; gap: 6px;
+    background: #f6f8fb; border-radius: 8px; padding: 0 8px;
+  }
+  ol.stages li.skip { background: #f4f1ea; }
+  ol.stages .id { font-weight: 750; color: var(--green); font-size: 13px; }
+  ol.stages li.skip .id { color: var(--amber); }
+  ol.stages .name { font-size: 13.5px; font-weight: 650; }
+  ol.stages .model {
+    font-size: 11.5px; color: #3d4a5c; background: #fff; border: 1px solid var(--line);
+    border-radius: 999px; padding: 2px 7px; white-space: nowrap;
+  }
+  .shots { display: grid; grid-template-columns: 1.45fr 1fr 1.25fr; gap: 8px; flex: 1.25; min-height: 0; }
+  .row2 { display: grid; grid-template-columns: 1fr 1.35fr 1fr; gap: 8px; flex: 0.72; min-height: 0; }
+  table { flex-shrink: 0; }
+  figure { margin: 0; min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 3px; }
+  figure .pic { flex: 1; min-height: 0; border-radius: 8px; overflow: hidden; background: #eceff3; border: 1px solid var(--line); }
+  figure img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  figure figcaption { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; font-size: 11.5px; color: var(--muted); font-weight: 650; padding: 0 6px 4px; }
+  td { padding: 6px; border-top: 1px solid var(--line); vertical-align: middle; line-height: 1.35; }
+  td.what { font-weight: 700; white-space: nowrap; width: 108px; }
+  .tag { display: inline-block; border-radius: 999px; padding: 2px 8px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+  .tag.live { background: var(--green-bg); color: var(--green); }
+  .tag.wait { background: var(--amber-bg); color: var(--amber); }
+  .tag.skip { background: #eef1f4; color: #5c6776; }
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .steps li {
+    flex: 1; display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: center;
+    background: #f6f8fb; border-radius: 8px; padding: 6px 8px;
+  }
+  .num {
+    width: 26px; height: 26px; border-radius: 50%; background: #1c2430; color: #fff;
+    font-size: 12px; font-weight: 750; display: flex; align-items: center; justify-content: center;
+  }
+  .steps strong { display: block; font-size: 13.5px; margin-bottom: 1px; }
+  .steps p { font-size: 12px; color: #3e4a5a; line-height: 1.35; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .box { border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.4; }
+  .box b { display: block; font-size: 12.5px; margin-bottom: 2px; }
+  .box.a { background: #e8f2fb; }
+  .box.b { background: #f7f1e6; }
+  footer { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); }
+  footer b { color: var(--ink); }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <article class="slide">
+      <header>
+        <div>
+          <div class="kicker">REAL2SIM · PIPELINE BRIEFING</div>
+          <h1>Real2Sim场景重建与分拣仿真资产接入</h1>
+          <p class="sub">SimFoundry 完成场景重建；本地 Isaac Lab 承接 Unitree G1 的采集、评测与策略训练</p>
+        </div>
+        <div class="flow">
+          <span>输入视频</span><i>→</i>
+          <span class="on">场景重建</span><i>→</i>
+          <span>资产库</span><i>→</i>
+          <span class="on">Isaac 分拣台</span><i>→</i>
+          <span>LeRobot / Pi0.5</span>
+        </div>
+      </header>
+      <main>
+        <section>
+          <h2>重建模型配置</h2>
+          <p class="hint">流水线 A。视觉语言模型由 Gemini 替换为通义千问；网格生成保持 Hunyuan3D。</p>
+          <ol class="stages">
+            <li><span class="id">1b</span><span class="name">视频标准化与抽帧</span><span class="model">FFmpeg</span></li>
+            <li><span class="id">2</span><span class="name">深度与点云</span><span class="model">Depth Anything 3</span></li>
+            <li><span class="id">3–4</span><span class="name">关键帧、支撑面、世界坐标</span><span class="model">Qwen3-VL</span></li>
+            <li><span class="id">5</span><span class="name">物体检测与分割</span><span class="model">Qwen3-VL + SAM</span></li>
+            <li><span class="id">6</span><span class="name">单物体清理与上采样</span><span class="model">Qwen-Image-Edit</span></li>
+            <li><span class="id">7</span><span class="name">图像到三维网格</span><span class="model">Hunyuan3D-2.1</span></li>
+            <li><span class="id">8</span><span class="name">六维位姿估计</span><span class="model">FoundationPose</span></li>
+            <li class="skip"><span class="id">9</span><span class="name">关节物体分解</span><span class="model">未执行</span></li>
+            <li><span class="id">10–14</span><span class="name">编译、碰撞、USD、静物预览</span><span class="model">OmniGibson</span></li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>重建资产</h2>
+          <p class="hint">外观与碰撞分离。包裹弃用 Hunyuan 网格，改为实测尺寸几何加视频投影贴图。</p>
+          <div class="shots">
+            <figure>
+              <div class="pic"><img src="SimFoundry/Data/pick_demo/s1_video/frames_subsampled_15/frame_0075.png" alt="输入视频帧" /></div>
+              <figcaption>输入视频帧 · 纸箱与快递袋</figcaption>
+            </figure>
+            <figure>
+              <div class="pic"><img src="SimFoundry/Data/pick_demo/photo_textured_preview/iter_0_top.png" alt="纸箱资产" style="object-fit:contain;background:#fff" /></div>
+              <figcaption>纸箱资产 · 13×8×2.5 cm</figcaption>
+            </figure>
+            <figure>
+              <div class="pic"><img src="../SimFoundry/demo/preview_sorting_station/kit_frame.jpg" alt="Isaac 分拣台" /></div>
+              <figcaption>接入结果 · G1 分拣台</figcaption>
+            </figure>
+          </div>
+          <div class="row2">
+            <figure>
+              <div class="pic"><img src="SimFoundry/Data/pick_demo/photo_textured_preview/iter_1_top.png" alt="快递袋资产" style="object-fit:contain;background:#fff" /></div>
+              <figcaption>快递袋 · 投影贴图</figcaption>
+            </figure>
+            <figure>
+              <div class="pic"><img src="SimFoundry/Data/pick_demo_5/s14_og/reconstructed_scene.png" alt="安全帽与水瓶" style="object-fit:cover;object-position:18% center" /></div>
+              <figcaption>安全帽、水瓶 · OmniGibson 预览</figcaption>
+            </figure>
+            <figure>
+              <div class="pic"><img src="SimFoundry/Data/pick_demo/library/towel_blue_folded/photo_flatbox_top.png" alt="折叠毛巾" style="object-fit:contain" /></div>
+              <figcaption>毛巾 · 扁盒加实拍顶面</figcaption>
+            </figure>
+          </div>
+          <table>
+            <thead>
+              <tr><th>资产</th><th>几何与外观</th><th>状态</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="what">9 件包裹</td>
+                <td>4 箱、5 袋。碰撞为锁定尺寸长方体，外观为机位投影贴图，面单包含在贴图中。</td>
+                <td><span class="tag live">已接入分拣台</span></td>
+              </tr>
+              <tr>
+                <td class="what">安全帽 / 水瓶</td>
+                <td>剪除 Hunyuan 粘连桌面后锁定尺寸（28×22×16 cm，Ø6.5×22 cm），碰撞为凸包。</td>
+                <td><span class="tag live">已接入分拣台</span></td>
+              </tr>
+              <tr>
+                <td class="what">三块毛巾</td>
+                <td>保持拍摄时的折叠形态，扁盒碰撞，顶面使用分割抠图。不作为布料仿真。</td>
+                <td><span class="tag live">已接入分拣台</span></td>
+              </tr>
+              <tr>
+                <td class="what">周转箱 KLT</td>
+                <td>使用现成模型，外框按实测 30×20×15 cm，不从视频重建。</td>
+                <td><span class="tag skip">未重建</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>接入 Isaac 分拣仿真</h2>
+          <p class="hint">场景与机器人解耦。替换桌面资产不改动本体、相机与数据集格式。</p>
+          <ol class="steps">
+            <li>
+              <div class="num">1</div>
+              <div><strong>重建侧只产出资产</strong><p>网格、贴图、尺寸与碰撞位于 nvidia/SimFoundry/Data。OmniGibson 仅用于静物预览。</p></div>
+            </li>
+            <li>
+              <div class="num">2</div>
+              <div><strong>贴图进入分拣场景</strong><p>import_pick_demo_parcels.py 裁取 atlas 顶面，输出 PNG 反照率至本地 parcels 目录。</p></div>
+            </li>
+            <li>
+              <div class="num">3</div>
+              <div><strong>复位时采样外观</strong><p>4 张箱图与 5 张袋图各取 1 张。实体名固定为 parcel_box、mailer。</p></div>
+            </li>
+            <li>
+              <div class="num">4</div>
+              <div><strong>同一场景供采集与训练</strong><p>G1 23 自由度、U1 橡胶手、D435i。轨迹导出 LeRobot v2.1 后训练 Pi0.5。</p></div>
+            </li>
+          </ol>
+          <div class="split">
+            <div class="box a"><b>SimFoundry</b>官方重建与 OmniGibson。环境为 simfoundry / hunyuan / da3，与 Isaac 隔离。</div>
+            <div class="box b"><b>isaac_g1</b>Isaac Lab 分拣台。采集、闭环评测与真机对齐均在此完成。</div>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <div>RTX PRO 5000 48GB，重建与 Isaac 分时运行 · 桌面 1.50×0.60 m · 台面顶面高度 <b>0.75 m</b></div>
+      </footer>
+    </article>
+  </div>
+  <script>
+    function fit() {
+      const slide = document.querySelector(".slide");
+      const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      slide.style.transform = "scale(" + k + ")";
+    }
+    addEventListener("resize", fit);
+    fit();
+  </script>
+</body>
+</html>

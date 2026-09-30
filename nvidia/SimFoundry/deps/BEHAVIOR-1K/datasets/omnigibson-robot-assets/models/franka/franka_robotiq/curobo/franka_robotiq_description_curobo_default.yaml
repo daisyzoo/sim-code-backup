@@ -1,0 +1,503 @@
+robot_cfg:
+  kinematics:
+    base_link: panda_link0
+    collision_link_names:
+    - panda_link0
+    - panda_link1
+    - panda_link2
+    - panda_link3
+    - panda_link4
+    - panda_link5
+    - panda_link6
+    - panda_link7
+    - camera_link
+    - base_gripper
+    - left_outer_knuckle
+    - right_outer_knuckle
+    - left_outer_finger
+    - right_outer_finger
+    - left_inner_knuckle
+    - right_inner_knuckle
+    - left_inner_finger
+    - right_inner_finger
+    - attached_object_eef_link
+    collision_sphere_buffer: 0.002
+    collision_spheres:
+      base_gripper:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.017
+        radius: 0.04
+      - center:
+        - 0.0
+        - 0.019
+        - 0.062
+        radius: 0.02
+      - center:
+        - 0.0
+        - -0.019
+        - 0.062
+        radius: 0.02
+      - center:
+        - 0.0
+        - 0.0
+        - 0.075
+        radius: 0.02
+      camera_link:
+      - center:
+        - 0.025
+        - 0.045
+        - 0.005
+        radius: 0.023
+      - center:
+        - 0.025
+        - -0.045
+        - 0.005
+        radius: 0.023
+      - center:
+        - 0.025
+        - 0.0
+        - 0.005
+        radius: 0.023
+      left_inner_finger:
+      - center:
+        - -0.003
+        - 0.005
+        - 0.0
+        radius: 0.014
+      - center:
+        - 0.0038
+        - 0.03
+        - -0.006
+        radius: 0.0045
+      - center:
+        - 0.0038
+        - 0.03
+        - 0.006
+        radius: 0.0045
+      - center:
+        - 0.0038
+        - 0.04
+        - -0.006
+        radius: 0.0045
+      - center:
+        - 0.0038
+        - 0.04
+        - 0.006
+        radius: 0.0045
+      left_inner_knuckle:
+      - center:
+        - -0.025
+        - -0.025
+        - 0.0
+        radius: 0.014
+      left_outer_finger:
+      - center:
+        - 0.001
+        - -0.015
+        - 0.0
+        radius: 0.012
+      - center:
+        - 0.004
+        - -0.035
+        - 0.0
+        radius: 0.012
+      left_outer_knuckle:
+      - center:
+        - 0.02
+        - 0.0
+        - 0.0
+        radius: 0.014
+      panda_link0:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.085
+        radius: 0.03
+      - center:
+        - -0.1
+        - -0.0
+        - 0.085
+        radius: 0.03
+      panda_link1:
+      - center:
+        - 0.0
+        - -0.08
+        - 0.0
+        radius: 0.055
+      - center:
+        - 0.0
+        - -0.03
+        - 0.0
+        radius: 0.06
+      - center:
+        - 0.0
+        - 0.0
+        - -0.12
+        radius: 0.06
+      - center:
+        - 0.0
+        - 0.0
+        - -0.17
+        radius: 0.06
+      panda_link2:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.03
+        radius: 0.055
+      - center:
+        - 0.0
+        - 0.0
+        - 0.08
+        radius: 0.055
+      - center:
+        - 0.0
+        - -0.12
+        - 0.0
+        radius: 0.055
+      - center:
+        - 0.0
+        - -0.17
+        - 0.0
+        radius: 0.055
+      panda_link3:
+      - center:
+        - 0.0
+        - 0.0
+        - -0.06
+        radius: 0.05
+      - center:
+        - 0.0
+        - 0.0
+        - -0.1
+        radius: 0.06
+      - center:
+        - 0.08
+        - 0.06
+        - 0.0
+        radius: 0.052
+      - center:
+        - 0.08
+        - 0.02
+        - 0.0
+        radius: 0.052
+      panda_link4:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.02
+        radius: 0.052
+      - center:
+        - 0.0
+        - 0.0
+        - 0.06
+        radius: 0.052
+      - center:
+        - -0.08
+        - 0.095
+        - 0.0
+        radius: 0.055
+      - center:
+        - -0.08
+        - 0.06
+        - 0.0
+        radius: 0.052
+      panda_link5:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.0
+        radius: 0.06
+      - center:
+        - 0.0
+        - 0.075
+        - 0.0
+        radius: 0.06
+      - center:
+        - 0.0
+        - 0.06
+        - -0.1
+        radius: 0.06
+      - center:
+        - 0.0
+        - 0.05
+        - -0.17
+        radius: 0.05
+      - center:
+        - 0.0
+        - 0.005
+        - -0.22
+        radius: 0.06
+      panda_link6:
+      - center:
+        - 0.085
+        - 0.035
+        - 0.0
+        radius: 0.045
+      - center:
+        - 0.085
+        - 0.0
+        - 0.0
+        radius: 0.045
+      - center:
+        - 0.085
+        - -0.015
+        - 0.0
+        radius: 0.045
+      panda_link7:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.07
+        radius: 0.045
+      - center:
+        - 0.02
+        - 0.04
+        - 0.08
+        radius: 0.024
+      - center:
+        - 0.04
+        - 0.02
+        - 0.08
+        radius: 0.024
+      - center:
+        - 0.04
+        - 0.06
+        - 0.085
+        radius: 0.02
+      - center:
+        - 0.06
+        - 0.04
+        - 0.085
+        radius: 0.02
+      right_inner_finger:
+      - center:
+        - -0.003
+        - 0.005
+        - 0.0
+        radius: 0.014
+      - center:
+        - 0.0038
+        - 0.03
+        - -0.006
+        radius: 0.0045
+      - center:
+        - 0.0038
+        - 0.03
+        - 0.006
+        radius: 0.0045
+      - center:
+        - 0.0038
+        - 0.04
+        - -0.006
+        radius: 0.0045
+      - center:
+        - 0.0038
+        - 0.04
+        - 0.006
+        radius: 0.0045
+      right_inner_knuckle:
+      - center:
+        - 0.025
+        - -0.025
+        - 0.0
+        radius: 0.014
+      right_outer_finger:
+      - center:
+        - 0.001
+        - -0.015
+        - 0.0
+        radius: 0.012
+      - center:
+        - 0.004
+        - -0.035
+        - 0.0
+        radius: 0.012
+      right_outer_knuckle:
+      - center:
+        - -0.02
+        - 0.0
+        - 0.0
+        radius: 0.014
+    cspace:
+      cspace_distance_weight:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      joint_names:
+      - panda_joint1
+      - panda_joint2
+      - panda_joint3
+      - panda_joint4
+      - panda_joint5
+      - panda_joint6
+      - panda_joint7
+      - left_inner_knuckle_joint
+      - left_outer_knuckle_joint
+      - right_inner_knuckle_joint
+      - right_outer_knuckle_joint
+      - left_inner_finger_joint
+      - left_outer_finger_joint
+      - right_inner_finger_joint
+      - right_outer_finger_joint
+      max_acceleration: 15.0
+      max_jerk: 500.0
+      null_space_weight:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      retract_config: null
+    ee_link: eef_link
+    external_asset_path: null
+    extra_collision_spheres:
+      attached_object_eef_link: 32
+    extra_links:
+      attached_object_eef_link:
+        fixed_transform:
+        - 0
+        - 0
+        - 0
+        - 1
+        - 0
+        - 0
+        - 0
+        joint_name: attached_object_eef_link_joint
+        joint_type: FIXED
+        link_name: attached_object_eef_link
+        parent_link_name: eef_link
+    link_names: []
+    lock_joints:
+      left_inner_finger_joint: null
+      left_inner_knuckle_joint: null
+      left_outer_finger_joint: null
+      left_outer_knuckle_joint: null
+      right_inner_finger_joint: null
+      right_inner_knuckle_joint: null
+      right_outer_finger_joint: null
+      right_outer_knuckle_joint: null
+    mesh_link_names:
+    - panda_link0
+    - panda_link1
+    - panda_link2
+    - panda_link3
+    - panda_link4
+    - panda_link5
+    - panda_link6
+    - panda_link7
+    - camera_link
+    - base_gripper
+    - left_outer_knuckle
+    - right_outer_knuckle
+    - left_outer_finger
+    - right_outer_finger
+    - left_inner_knuckle
+    - right_inner_knuckle
+    - left_inner_finger
+    - right_inner_finger
+    - attached_object_eef_link
+    self_collision_buffer:
+      panda_link_0: 0.02
+    self_collision_ignore:
+      base_gripper:
+      - left_inner_knuckle
+      - right_inner_knuckle
+      - left_outer_knuckle
+      - right_outer_knuckle
+      - left_inner_finger
+      - right_inner_finger
+      - left_outer_finger
+      - right_outer_finger
+      left_inner_finger:
+      - right_inner_finger
+      - attached_object_eef_link
+      left_inner_knuckle:
+      - left_inner_finger
+      - right_inner_knuckle
+      left_outer_finger:
+      - left_inner_knuckle
+      - left_inner_finger
+      left_outer_knuckle:
+      - left_inner_finger
+      - left_inner_knuckle
+      - left_outer_finger
+      panda_link0:
+      - panda_link1
+      - panda_link2
+      panda_link1:
+      - panda_link2
+      - panda_link3
+      - panda_link4
+      panda_link2:
+      - panda_link3
+      - panda_link4
+      panda_link3:
+      - panda_link4
+      - panda_link6
+      panda_link4:
+      - panda_link5
+      - panda_link6
+      - panda_link7
+      panda_link5:
+      - panda_link6
+      - panda_link7
+      panda_link6:
+      - panda_link7
+      panda_link7:
+      - base_gripper
+      right_inner_finger:
+      - attached_object_eef_link
+      right_inner_knuckle:
+      - right_inner_finger
+      - right_spring_link
+      right_outer_finger:
+      - right_inner_knuckle
+      - right_inner_finger
+      right_outer_knuckle:
+      - right_inner_finger
+      - right_inner_knuckle
+      - right_outer_finger
+    usd_flip_joint_limits: []
+    usd_flip_joints:
+      left_inner_finger_joint: Z
+      left_inner_knuckle_joint: Z
+      left_outer_finger_joint: Z
+      left_outer_knuckle_joint: Z
+      panda_joint1: Z
+      panda_joint2: Z
+      panda_joint3: Z
+      panda_joint4: Z
+      panda_joint5: Z
+      panda_joint6: Z
+      panda_joint7: Z
+      right_inner_finger_joint: Z
+      right_inner_knuckle_joint: Z
+      right_outer_finger_joint: Z
+      right_outer_knuckle_joint: Z
+    usd_robot_root: /franka_robotiq
+    use_global_cumul: true

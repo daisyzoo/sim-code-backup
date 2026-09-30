@@ -1,0 +1,98 @@
+[
+  {
+    "path": "IsaacLab",
+    "origin": "https://github.com/isaac-sim/IsaacLab.git",
+    "commit": "a384e2f55c5847ca9c0eeeef0c91d0e258bc864e",
+    "branch": "develop"
+  },
+  {
+    "path": "evaluate/LIBERO",
+    "origin": "https://github.com/Lifelong-Robot-Learning/LIBERO.git",
+    "commit": "8f1084e3132a39270c3a13ebe37270a43ece2a01",
+    "branch": "master"
+  },
+  {
+    "path": "picktask-sim",
+    "origin": "https://github.com/daisyzoo/picktask-sim.git",
+    "commit": "c93bad65eed36afed4a6f5b53202c750000fbdc7",
+    "branch": "main"
+  },
+  {
+    "path": "SimFoundry/third_party/unitree_ros",
+    "origin": "https://github.com/unitreerobotics/unitree_ros.git",
+    "commit": "daadf41ee9afce8f90fdc09a98506012691fa122",
+    "branch": "master"
+  },
+  {
+    "path": "nvidia/SimFoundry",
+    "origin": "https://github.com/NVlabs/SimFoundry.git",
+    "commit": "9e34ebefcd020583fbb755a8b57268dce78eca26",
+    "branch": "main"
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/BEHAVIOR-1K",
+    "origin": "https://github.com/StanfordVL/BEHAVIOR-1K.git",
+    "commit": "d89aae4e0e9a1de3cf8285cb9669c11d8c8bb864",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/Depth-Anything-3",
+    "origin": "https://github.com/ByteDance-Seed/Depth-Anything-3.git",
+    "commit": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/dinov2",
+    "origin": "https://github.com/facebookresearch/dinov2.git",
+    "commit": "7764ea0f912e53c92e82eb78a2a1631e92725fc8",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/ml-depth-pro",
+    "origin": "https://github.com/apple/ml-depth-pro.git",
+    "commit": "9efe5c1def37a26c5367a71df664b18e1306c708",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/FoundationStereo",
+    "origin": "https://github.com/NVlabs/FoundationStereo.git",
+    "commit": "6e8806816b533e4d13ddbb95ffa907b797060a62",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/FoundationPose",
+    "origin": "https://github.com/NVlabs/FoundationPose.git",
+    "commit": "e3d597b8c6b851d053094ebd6fa240191c5238f8",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/FoundationPose/extensions/nvdiffrast",
+    "origin": "https://github.com/NVlabs/nvdiffrast.git",
+    "commit": "253ac4fcea7de5f396371124af597e6cc957bfae",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/Any6D",
+    "origin": "https://github.com/taeyeopl/Any6D.git",
+    "commit": "80eb4866a1c96ecb18be18836aba4f4bd6e80e9e",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/sam3",
+    "origin": "https://github.com/facebookresearch/sam3.git",
+    "commit": "46957e47805eaa273f4aa7bbbd25a88bca9108ce",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/Prior-Depth-Anything",
+    "origin": "https://github.com/SpatialVision/Prior-Depth-Anything.git",
+    "commit": "8c029cbca669443fe0bbf8dcefb5f91ad531084d",
+    "branch": ""
+  },
+  {
+    "path": "nvidia/SimFoundry/deps/Hunyuan3D-2.1",
+    "origin": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1.git",
+    "commit": "82920d643c0dc2f7bfd7255f45f62d386edfe60c",
+    "branch": ""
+  }
+]

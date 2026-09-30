@@ -1,0 +1,40 @@
+# Absolute path to URDF
+urdf_path: locobot_source.urdf                      # (str) Absolute path to robot URDF to import
+name: locobot                           # (str) Name to assign to robot
+headless: false                          # (bool) if set, run without GUI
+overwrite: true                         # (bool) if set, overwrite any existing files
+merge_fixed_joints: true
+base_motion:
+  wheel_links:                      # (list of str): links corresponding to wheels
+    - wheel_left_link
+    - wheel_right_link
+  wheel_joints:                     # (list of str): joints corresponding to wheel motion
+    - wheel_left_joint
+    - wheel_right_joint
+  use_sphere_wheels: false           # (bool) whether to use sphere approximation for wheels (better stability)
+  use_holonomic_joints: false       # (bool) whether to use joints to approximate a holonomic base. In this case, all
+                                    #       wheel-related joints will be made into fixed joints, and 6 additional
+                                    #       "virtual" joints will be added to the robot's base capturing 6DOF movement,
+                                    #       with the (x,y,rz) joints being controllable by motors
+collision:
+  decompose_method: convex                  # (str) [coacd, convex, or null] collision decomposition method
+  hull_count: 8                     # (int) per-mesh max hull count to use during decomposition, only relevant for coacd
+  coacd_links: []                   # (list of str): links that should use CoACD to decompose collision meshes
+  convex_links: []
+  no_decompose_links:               # (list of str): links that should not have any post-processing done to them
+    - wheel_left_link
+    - wheel_right_link
+  no_collision_links:               # (list of str) links that will have any associated collision meshes removed
+
+eef_vis_links: []
+camera_links:                       # (list of dict) information for adding cameras to robot
+  - link: eyes                      # (str) link name to add camera. Must exist if @parent_link is null, else will be
+                                    #       added as a child of the parent
+    parent_link: base_footprint               # (str) optional parent link to use if adding new link
+    offset:                         # (dict) local pos,ori offset values. if @parent_link is specified, defines offset
+                                    #       between @parent_link and @link specified in @parent_link's frame.
+                                    #       Otherwise, specifies offset of generated prim relative to @link's frame
+      position: [0.05088, 0, 0.85481]           # (3-tuple) (x,y,z) offset -- this is done BEFORE the rotation
+      orientation: [0.40558, -0.40558, -0.57923, 0.57923]   # (4-tuple) (x,y,z,w) offset
+lidar_links:
+curobo: null

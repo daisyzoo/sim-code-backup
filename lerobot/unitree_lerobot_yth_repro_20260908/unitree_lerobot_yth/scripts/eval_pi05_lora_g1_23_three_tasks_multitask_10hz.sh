@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+REPO_ROOT="/home/igs/Desktop/project/vla/unitree_lerobot"
+CONDA_SH="/home/igs/miniconda3/etc/profile.d/conda.sh"
+CONDA_ENV_NAME="${CONDA_ENV_NAME:-vla_eval}"
+
+POLICY_PATH_DEFAULT="/media/igs/EAGET/syh/vla/outputs/pi05_lora_g1_23_three_tasks_multitask_10hz_20260610_181253/checkpoints/007000"
+POLICY_PATH_INPUT="${POLICY_PATH:-${POLICY_PATH_DEFAULT}}"
+if [[ -d "${POLICY_PATH_INPUT}/pretrained_model" ]]; then
+  POLICY_PATH="${POLICY_PATH_INPUT}/pretrained_model"
+else
+  POLICY_PATH="${POLICY_PATH_INPUT}"
+fi
+
+DATASET_REPO_ID="${DATASET_REPO_ID:-local/g1_23_three_tasks_multitask_11d_10hz}"
+DATASET_ROOT="${DATASET_ROOT:-/media/igs/EAGET/syh/vla/data/local/g1_23_three_tasks_multitask_11d_10hz}"
+
+IMAGE_HOST="${IMAGE_HOST:-192.168.123.164}"
+NETWORK_INTERFACE="${NETWORK_INTERFACE:-eno1}"
+EPISODE_INDEX="${EPISODE_INDEX:-0}"
+FREQUENCY="${FREQUENCY:-10}"
+NUM_INFERENCE_STEPS="${PI05_NUM_INFERENCE_STEPS:-1}"
+VISUALIZATION="${VISUALIZATION:-false}"
+TASK_OVERRIDE="${TASK_OVERRIDE:-}"
+EPISODE_DURATION_S="${EPISODE_DURATION_S:-6}"
+RETURN_TO_ZERO_DURATION_S="${RETURN_TO_ZERO_DURATION_S:-2}"
+HANDOVER_WAIT_SECONDS="${HANDOVER_WAIT_SECONDS:-0.8}"
+PRE_HANDOVER_WAIT_SECONDS="${PRE_HANDOVER_WAIT_SECONDS:-0.8}"
+MOTION="${MOTION:-true}"
+ARM_TAU_MODE="${ARM_TAU_MODE:-gravity}"
+CONSTANT_TARGET_DURATION_S="${CONSTANT_TARGET_DURATION_S:-0}"
+SEND_REAL_ROBOT="${SEND_REAL_ROBOT:-false}"
+
+source "${CONDA_SH}"
+conda activate "${CONDA_ENV_NAME}"
+
+unset CYCLONEDDS_URI
+unset RMW_IMPLEMENTATION
+unset ROS_DOMAIN_ID
+
+export PYTHONPATH="${REPO_ROOT}"
+
+cd "${REPO_ROOT}"
+
+if [[ ! -d "${POLICY_PATH}" ]]; then
+  echo "Policy path does not exist: ${POLICY_PATH}" >&2
+  exit 1
+fi
+
+if [[ ! -d "${DATASET_ROOT}" ]]; then
+  echo "Dataset root does not exist: ${DATASET_ROOT}" >&2
+  exit 1
+fi
+
+echo "Using policy path: ${POLICY_PATH}"
+echo "Using dataset root: ${DATASET_ROOT}"
+echo "send_real_robot=${SEND_REAL_ROBOT} frequency=${FREQUENCY} task_override=${TASK_OVERRIDE:-<dataset task>}"
+
+PYTHONNOUSERSITE=1 python unitree_lerobot/eval_robot/eval_g1.py \
+  --policy.path="${POLICY_PATH}" \
+  --policy.num_inference_steps="${NUM_INFERENCE_STEPS}" \
+  --repo_id="${DATASET_REPO_ID}" \
+  --root="${DATASET_ROOT}" \
+  --episodes="${EPISODE_INDEX}" \
+  --frequency="${FREQUENCY}" \
+  --episode_duration_s="${EPISODE_DURATION_S}" \
+  --return_to_zero_duration_s="${RETURN_TO_ZERO_DURATION_S}" \
+  --handover_wait_seconds="${HANDOVER_WAIT_SECONDS}" \
+  --pre_handover_wait_seconds="${PRE_HANDOVER_WAIT_SECONDS}" \
+  --arm=G1_23 \
+  --ee='' \
+  --image_host="${IMAGE_HOST}" \
+  --network_interface="${NETWORK_INTERFACE}" \
+  --motion="${MOTION}" \
+  --visualization="${VISUALIZATION}" \
+  --task_override="${TASK_OVERRIDE}" \
+  --arm_tau_mode="${ARM_TAU_MODE}" \
+  --constant_target_duration_s="${CONSTANT_TARGET_DURATION_S}" \
+  --send_real_robot="${SEND_REAL_ROBOT}"

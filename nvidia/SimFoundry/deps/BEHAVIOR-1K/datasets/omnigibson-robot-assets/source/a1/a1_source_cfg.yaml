@@ -1,0 +1,146 @@
+# Absolute path to URDF
+urdf_path: omnigibson/data/assets/source/a1/a1_source.urdf       # (str) Absolute path to robot URDF to import
+name: a1                            # (str) Name to assign to robot
+headless: false                     # (bool) if set, run without GUI
+overwrite: true                     # (bool) if set, overwrite any existing files
+merge_fixed_joints: false           # (bool) whether to merge fixed joints in the robot hierarchy or not
+base_motion:
+  wheel_links: []                   # (list of str): links corresponding to wheels
+  wheel_joints: []                  # (list of str): joints corresponding to wheel motion
+  use_sphere_wheels: false          # (bool) whether to use sphere approximation for wheels (better stability)
+  use_holonomic_joints: false       # (bool) whether to use joints to approximate a holonomic base. In this case, all
+                                    #       wheel-related joints will be made into fixed joints, and 6 additional
+                                    #       "virtual" joints will be added to the robot's base capturing 6DOF movement,
+                                    #       with the (x,y,rz) joints being controllable by motors
+collision:
+  decompose_method: coacd           # (str) [coacd, convex, or null] collision decomposition method
+  hull_count: 8                     # (int) per-mesh max hull count to use during decomposition, only relevant for coacd
+  coacd_links: []                   # (list of str): links that should use CoACD to decompose collision meshes
+  convex_links:                     # (list of str): links that should use convex hull to decompose collision meshes
+    - base_link
+    - arm_seg1
+    - arm_seg4
+    - arm_seg6
+  no_decompose_links: []            # (list of str): links that should not have any post-processing done to them
+  no_collision_links:               # (list of str) links that will have any associated collision meshes removed
+eef_vis_links:                      # (list of dict) information for adding cameras to robot
+  - link: eef_link                  # same format as @camera_links
+    parent_link: arm_seg6
+    offset:
+      position: [0, 0, 0.03]
+      orientation: [0, 0, 0, 1]
+camera_links: []                    # (list of dict) information for adding cameras to robot
+lidar_links: []                     # (list of dict) information for adding cameras to robot
+curobo:
+  self_collision_buffer:
+    base_link: 0.02
+  torso_joints: []  # (list of str) joints that belong to the torso
+  eef_to_gripper_info:              # (dict) Maps EEF link name to corresponding gripper links / joints
+    eef_link:
+      links: ["gripper1", "gripper2"]
+      joints: ["gripper_joint1", "gripper_joint2"]
+  flip_joint_limits: []             # (list of str) any joints that have a negative axis specified in the
+                                    #       source URDF
+  lock_joints: {}                   # (dict) Maps joint name to "locked" joint configuration. Any joints
+                                    #       specified here will not be considered active when motion planning
+                                    #       NOTE: All gripper joints and non-controllable holonomic joints
+                                    #       will automatically be added here
+  self_collision_ignore:            # (dict) Maps link name to list of other ignore links to ignore collisions
+                                    #       with. Note that bi-directional specification is not necessary,
+                                    #       e.g.: "torso_link1" does not need to be specified in
+                                    #       "torso_link2"'s list if "torso_link2" is already specified in
+                                    #       "torso_link1"'s list
+    base_link: ["arm_seg1"]
+    arm_seg1: ["arm_seg2"]
+    arm_seg2: ["arm_seg3"]
+    arm_seg3: ["arm_seg4"]
+    arm_seg4: ["arm_seg5"]
+    arm_seg5: ["arm_seg6"]
+    arm_seg6: ["gripper1", "gripper2"]
+    gripper1: ["gripper2"]
+  collision_spheres:                # (dict) Maps link name to list of collision sphere representations,
+                                    #       where each sphere is defined by its (x,y,z) "center" and "radius"
+                                    #       values. This defines the collision geometry during motion planning
+    - base_link:
+      - "center": [ 0.00, 0.0, 0.055 ]
+        "radius": 0.05
+    - arm_seg1:
+      - "center": [ 0.00, 0.0, 0.06 ]
+        "radius": 0.056
+    - arm_seg2:
+      - "center": [ 0.05, 0.013, 0 ]
+        "radius": 0.05
+      - "center": [ 0.11, 0.019, 0 ]
+        "radius": 0.044
+      - "center": [ 0.17, 0.019, 0 ]
+        "radius": 0.044
+      - "center": [ 0.23, 0.020, 0 ]
+        "radius": 0.044
+      - "center": [ 0.29, 0.020, 0 ]
+        "radius": 0.044
+      - "center": [ 0.35, 0.023, 0 ]
+        "radius": 0.046
+    - arm_seg3:
+      - "center": [ 0.058,  0.037, 0 ]
+        "radius": 0.048
+      - "center": [ 0.08,  0.095, 0 ]
+        "radius": 0.03
+      - "center": [ 0.08, 0.135, 0 ]
+        "radius": 0.03
+      - "center": [ 0.08, 0.176, 0 ]
+        "radius": 0.03
+      - "center": [ 0.077, 0.22, 0 ]
+        "radius": 0.03
+    - arm_seg4:
+      - "center": [ 0.0, 0.0, 0.272 ]
+        "radius": 0.04
+    - arm_seg5:
+      - "center": [ 0.001, -0.059, 0.0 ]
+        "radius": 0.035
+    - arm_seg6:
+      - "center": [ 0.0, 0.0, -0.025 ]
+        "radius": 0.032
+      - "center": [ 0.0, 0.0, -0.055 ]
+        "radius": 0.032
+    - gripper1:
+      - "center": [ 0.008, -0.022, 0.0195 ]
+        "radius": 0.0075
+      - "center": [ 0.008, -0.006, 0.0195 ]
+        "radius": 0.0075
+      - "center": [ 0.024, -0.022, 0.0195 ]
+        "radius": 0.0075  
+      - "center": [ 0.024, -0.006, 0.0195 ]
+        "radius": 0.0075
+      - "center": [0.042, -0.014, 0.0175 ]
+        "radius": 0.0055
+      - "center": [0.057, -0.014, 0.0152 ]
+        "radius": 0.0035
+      - "center": [0.069, -0.014, 0.0135 ]
+        "radius": 0.002
+    - gripper2:
+      - "center": [ 0.008, -0.022, 0.0195 ]
+        "radius": 0.0075
+      - "center": [ 0.008, -0.006, 0.0195 ]
+        "radius": 0.0075
+      - "center": [ 0.024, -0.022, 0.0195 ]
+        "radius": 0.0075  
+      - "center": [ 0.024, -0.006, 0.0195 ]
+        "radius": 0.0075
+      - "center": [0.042, -0.014, 0.0175 ]
+        "radius": 0.0055
+      - "center": [0.057, -0.014, 0.0152 ]
+        "radius": 0.0035
+      - "center": [0.069, -0.014, 0.0135 ]
+        "radius": 0.002
+
+  default_qpos:                               # (list of float): Default joint configuration
+    # arm
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    # grippers
+    - 0.03
+    - 0.03

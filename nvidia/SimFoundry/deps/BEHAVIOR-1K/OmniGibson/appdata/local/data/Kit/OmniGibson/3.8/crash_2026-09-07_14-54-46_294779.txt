@@ -1,0 +1,205 @@
+[crash] Crash detected in pid 294779 thread 294779
+[crash]     Note: some long metadata and file name values below may be truncated.  The
+[crash]           full values of each piece of metadata and each full file name can still
+[crash]           be found in the file '/home/user/Documents/zoo/sim/nvidia/SimFoundry/deps/BEHAVIOR-1K/OmniGibson/appdata/local/data/Kit/OmniGibson/3.8/bdcf9441-0120-4384-d41d2daa-a37e9e03.dmp.toml'.
+[crash]           This file can be found in either the crash report's '.dmp.zip' file or
+[crash]           in the same directory as the crash report file(s):
+[crash]             '/home/user/Documents/zoo/sim/nvidia/SimFoundry/deps/BEHAVIOR-1K/OmniGibson/appdata/local/data/Kit/OmniGibson/3.8'.
+[crash]
+[crash] Crash metadata:
+[crash]  BuildGitlabJobID = '209507876'
+[crash]  CarbSdkVersion = '206.6+release.9587.07f17b1b.gl'
+[crash]  CrashTime = 'Mon Sep  7 06:54:46 2026 GMT'
+[crash]  DriverShaderCacheWrapper = 'disabled'
+[crash]  DumpId = 'bdcf9441-0120-4384-d41d2daa-a37e9e03'
+[crash]  LastUploadStatus = '0'
+[crash]  ProductName = 'OmniverseKit'
+[crash]  PythonTracebackStatus = ''py-spy' successfully wrote info to '/home/user/Documents/zoo/sim/nvidia/SimFoundry/deps/BEHAVIOR-1K/OmniGibson/appdata/local/data/Kit/OmniGibson/3.8/bdcf9441-0120-4384-d41d2daa-a37e9e03.py.txt''
+[crash]  RetryCount = '0'
+[crash]  StartupTime = '1788763808'
+[crash]  UploadSuccessful = '0'
+[crash]  UptimeSeconds = '278'
+[crash]  UserStory = ''
+[crash]  UserStoryStatus = ''crashreport.gui' exited with code 2'
+[crash]  Version = '107.3.3+production.229672.69cbf6ad.gl'
+[crash]  aftermath_enabled = '1'
+[crash]  aftermath_flags = '3'
+[crash]  aftermath_status = 'auto-enabled'
+[crash]  aftermath_version = '2024.1'
+[crash]  appName = 'OmniGibson'
+[crash]  appState = 'started'
+[crash]  appVersion = '3.8.0'
+[crash]  autoloadExts = ''
+[crash]  buildBranch = 'production'
+[crash]  buildCi = 'gl'
+[crash]  buildConfig = 'release'
+[crash]  buildGitlabJobName = 'kit-build-release-linux-x86_64'
+[crash]  buildGitlabJobStage = 'kit-build'
+[crash]  buildGitlabPipelineID = '34875094'
+[crash]  buildHash = '69cbf6ad'
+[crash]  buildMajor = '107'
+[crash]  buildMinor = '3'
+[crash]  buildNumber = '229672'
+[crash]  buildPatch = '3'
+[crash]  buildVersion = '107.3.3'
+[crash]  carboniteFrameworkVersion = '206.6+release.9587.07f17b1b.gl'
+[crash]  carboniteSdkVersion = '206.6+release.9587.07f17b1b.gl'
+[crash]  commandLine = 'python scripts/pipeline/A_reconstruction/stages/14_create_og_scene.py root_dir=/home/<username>/Documents/zoo/sim/nvidia/SimFoundry/Data scene_name=fruits_demo s14_og.interactive=true s14_og.fast_process_exit=false'
+[crash]  cpuCoreLimited = '32'
+[crash]  cpuId = 'Intel64 Family 6 Model 183 Stepping 1'
+[crash]  cpuLogicalCoresBareMetal = '48'
+[crash]  cpuName = 'Intel(R) Core(TM) i9-14900KF'
+[crash]  cpuPhysicalCoresBareMetal = '24'
+[crash]  cpuUsageQuota = '-1.000000'
+[crash]  cpuVendor = 'GenuineIntel'
+[crash]  desktopOrigin = '(0, 0)'
+[crash]  desktopSize = '1920x1080'
+[crash]  displayCount = '1'
+[crash]  displayRes_0 = '1920x1080x32bit@60Hz'
+[crash]  environmentName = 'Individual'
+[crash]  externalBuild = '1'
+[crash]  gpuDriver_0 = '580.105'
+[crash]  gpuVRAM_0 = '51312066560'
+[crash]  gpu_0 = 'NVIDIA RTX PRO 5000 Blackwell'
+[crash]  kitRendererDriverVersion = '580.105'
+[crash]  lastCommand = 'TransformPrimCommand(path=/World/viewer_camera,new_transform_matrix=?,old_transform_matrix=?,time_code=?,had_transform_at_key=False,usd_context_name=)'
+[crash]  lastCommands = 'SelectPrimsCommand(old_selected_paths=?,new_selected_paths=?,expand_in_stage=True),SelectPrimsCommand(old_selected_paths=?,new_selected_paths=?,expand_in_stage=True),SelectPrimsCommand(old_selected_paths=?,new_selected_paths=?,expand_in_stage=True),SelectPrimsCommand(old_selected_paths=?,new_selected_paths=?,expand_in_stage=True),Group,TransformPrimCommand(path=/World/viewer_camera,new_transform_matrix=?,old_transform_matrix=?,time_code=?,had_transform_at_key=False,usd_context_name=),ChangePropertyCommand(prop_path=/World/viewer_camera.omni:kit:centerOfInterest,value=?,prev=?,usd_context_name=),SelectPrimsCommand(old_selected_paths=?,new_selected_paths=?,expand_in_stage=True),Group,TransformPrimCommand(path=/World/viewer_camera,new_transform_matrix=?,old_transform_matrix=?,time_code=?,had_transform_at_key=False,usd_context_name=)'
+[crash]  lib_isaacSim_buildBranch = 'release'
+[crash]  lib_isaacSim_buildDate = 'Fri Oct 17 03:55:10 2025 +0000'
+[crash]  lib_isaacSim_buildHash = '9c81211'
+[crash]  lib_isaacSim_buildRepo = 'https://gitlab-master.nvidia.com/omniverse/isaac/omni_isaac_sim.git'
+[crash]  lib_isaacSim_buildVersion = '5.1.0-rc.19'
+[crash]  lib_physx_buildBranch = 'HEAD'
+[crash]  lib_physx_buildDate = 'Oct-03-2025'
+[crash]  lib_physx_buildHash = '3a61992'
+[crash]  lib_physx_buildRepo = 'gitlab-master.nvidia.com/omniverse/physics'
+[crash]  lib_physx_buildVersion = '107.3.26'
+[crash]  memoryStats = '(avail/total) RAM: 104.664/125.575GB, Swap: 0/0GB, VM: 1.71799e+10/1.71799e+10GB'
+[crash]  nvidia-smi = '
+==============NVSMI LOG==============
+
+Timestamp                                 : Mon Sep  7 14:50:08 2026
+Driver Version                            : 580.105.08
+CUDA Version                              : 13.0
+
+Attached GPUs                             : 1
+GPU 00000000:01:00.0
+    Product Name                          : NVIDIA RTX PRO 5000 Blackwell
+    Product Brand                         : NVIDIA RTX
+    Product Architecture                  : Blackwell
+    Display Mode                          : Requested functionality has been deprecated
+    Display Attached                      : Yes
+    Display Active                        : Enabled
+    Persistence Mode                      : Disabled
+    Addressing Mode                       : HMM
+    MIG Mode
+        Current                           : N/A
+        Pending                           : N/A
+    Accounting Mode                       : Disabled
+    Accounting Mode Buffer Size           : 4000
+    Driver Model
+        Current                           : N/A
+        Pending                           : N/A
+    Serial Number                         : 1794425088471
+    GPU UUID                              : GPU-79900caa-5477-48ce-d0ce-44d41e83a5dd
+    GPU PDI                               : 0x7e12ba366f5e7a60
+    Minor Number                          : 0
+    VBIOS Version                         : 98.02.92.00.01
+    MultiGPU Board                        : No
+    Board ID                              : 0x100
+    Board Part Number                     : 900-5G153-0050-000
+    GPU Part Number                       : 2BB3-850-A1
+    FRU Part Number                       : N/A
+    Platform Info
+        Chassis Serial Number             : 
+        Slot Number                       : 0
+        Tray Index                        : 0
+        Host ID                           : 1
+        Peer Type                         : Direct Connected
+        Module Id                         : 1
+        GPU Fabric GUID                   : 0x0000000000000000
+    Inforom Version
+ ...'
+[crash]  osDistro = 'ubuntu'
+[crash]  osName = '22.04.5 LTS (Jammy Jellyfish)'
+[crash]  osVersion = '22.04.5'
+[crash]  portableMode = '1'
+[crash]  primaryDisplayRes = '1920x1080x32bit@60Hz'
+[crash]  runEnvironment = 'Individual'
+[crash]  runningInContainer = '0'
+[crash]  shaderdb_debugSymbols = '0'
+[crash]  shaderdb_dumpIncludeOverrides = '0'
+[crash]  shaderdb_dumpIntermediates = '0'
+[crash]  shaderdb_obfuscateCode = '1'
+[crash]  shaderdb_optimizationLevel = '1'
+[crash]  systemInfo = '
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 580.105.08    | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA RTX PRO 5000 Blackwell    | Yes: 0 |     | 48935   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2bb3      | 79900caa.. |
+|     |                                  |        |     |            | 1         |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 6.8.0-138-generic
+| XServer Vendor: The X.Org Foundation, XServer Version: 12101004 (1.21.1.4)
+| Processor: Intel(R) Core(TM) i9-14900KF
+| Bare Metal Cores: 24 | Bare Metal Logical Cores: 48
+| Available Cores:  32 
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 128589 | Free Memory: 112083
+| Total Page/Swap (MB): 0 | Free Page/Swap: 0
+|---------------------------------------------------------------------------------------------|
+'
+[crash]  telemetrySessionId = '18252112648270183431'
+[crash]  terminatedByAbort = '0'
+[crash]  totalRamBareMetalMB = '128589'
+[crash]  totalRamLimitedMB = '128589'
+[crash]  totalSwapBareMetalMB = '0'
+[crash]  totalSwapLimitedMB = '0'
+[crash]  userId = 'default'
+[crash]  workingDirectory = '/home/<username>/Documents/zoo/sim/nvidia/SimFoundry/scripts/cfg'
+[crash]
+[crash] Crash files:
+[crash]  metadataFile = '/home/user/Documents/zoo/sim/nvidia/SimFoundry/deps/BEHAVIOR-1K/OmniGibson/appdata/local/data/Kit/OmniGibson/3.8/bdcf9441-0120-4384-d41d2daa-a37e9e03.dmp.toml'
+[crash]  upload_file_minidump = '/home/user/Documents/zoo/sim/nvidia/SimFoundry/deps/BEHAVIOR-1K/OmniGibson/appdata/local/data/Kit/OmniGibson/3.8/bdcf9441-0120-4384-d41d2daa-a37e9e03.dmp'
+[crash]  upload_file_traceback = '/home/user/Documents/zoo/sim/nvidia/SimFoundry/deps/BEHAVIOR-1K/OmniGibson/appdata/local/data/Kit/OmniGibson/3.8/bdcf9441-0120-4384-d41d2daa-a37e9e03.py.txt'
+[crash]
+[crash] Thread 294779 backtrace follows:
+000: libc.so.6!__sigaction+0x50 (libc_sigaction.c:?)
+001: libomni.syntheticdata.plugin.so!std::__throw_bad_variant_access(char const*)+0xaff87 (??:?)
+002: libomni.syntheticdata.plugin.so!std::__throw_bad_variant_access(char const*)+0xb0378 (??:?)
+003: libomni.graph.core.plugin.so!std::__detail::_Map_base<omni::graph::core::GraphPipelineStage, std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex>, std::allocator<std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex> >, std::__detail::_Select1st, std::equal_to<omni::graph::core::GraphPipelineStage>, std::hash<omni::graph::core::GraphPipelineStage>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](omni::graph::core::GraphPipelineStage&&)+0x43259 (??:?)
+004: libomni.graph.core.plugin.so!std::__detail::_Map_base<omni::graph::core::GraphPipelineStage, std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex>, std::allocator<std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex> >, std::__detail::_Select1st, std::equal_to<omni::graph::core::GraphPipelineStage>, std::hash<omni::graph::core::GraphPipelineStage>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](omni::graph::core::GraphPipelineStage&&)+0x605dd (??:?)
+005: libomni.graph.core.plugin.so!std::__detail::_Map_base<omni::graph::core::GraphPipelineStage, std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex>, std::allocator<std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex> >, std::__detail::_Select1st, std::equal_to<omni::graph::core::GraphPipelineStage>, std::hash<omni::graph::core::GraphPipelineStage>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](omni::graph::core::GraphPipelineStage&&)+0x5f25b (??:?)
+006: libomni.graph.core.plugin.so!std::__detail::_Map_base<omni::graph::core::GraphPipelineStage, std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex>, std::allocator<std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex> >, std::__detail::_Select1st, std::equal_to<omni::graph::core::GraphPipelineStage>, std::hash<omni::graph::core::GraphPipelineStage>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](omni::graph::core::GraphPipelineStage&&)+0x5fd8d (??:?)
+007: libomni.graph.core.plugin.so!std::vector<unsigned long, std::allocator<unsigned long> >::_M_default_append(unsigned long)+0x1829d (??:?)
+008: libomni.graph.core.plugin.so!std::vector<unsigned long, std::allocator<unsigned long> >::_M_default_append(unsigned long)+0x1860d (??:?)
+009: libomni.graph.core.plugin.so!std::__detail::_Map_base<omni::graph::core::GraphPipelineStage, std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex>, std::allocator<std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex> >, std::__detail::_Select1st, std::equal_to<omni::graph::core::GraphPipelineStage>, std::hash<omni::graph::core::GraphPipelineStage>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](omni::graph::core::GraphPipelineStage&&)+0x5fea7 (??:?)
+010: libomni.graph.core.plugin.so!std::__detail::_Map_base<omni::graph::core::GraphPipelineStage, std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex>, std::allocator<std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex> >, std::__detail::_Select1st, std::equal_to<omni::graph::core::GraphPipelineStage>, std::hash<omni::graph::core::GraphPipelineStage>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](omni::graph::core::GraphPipelineStage&&)+0x5f25b (??:?)
+011: libomni.graph.core.plugin.so!std::__detail::_Map_base<omni::graph::core::GraphPipelineStage, std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex>, std::allocator<std::pair<omni::graph::core::GraphPipelineStage const, std::recursive_mutex> >, std::__detail::_Select1st, std::equal_to<omni::graph::core::GraphPipelineStage>, std::hash<omni::graph::core::GraphPipelineStage>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, false, true>, true>::operator[](omni::graph::core::GraphPipelineStage&&)+0x5fd8d (??:?)
+012: libomni.graph.core.plugin.so!carbOnPluginPreStartup+0x1d4f (??:?)
+013: libomni.graph.core.plugin.so!carbOnPluginShutdown+0x22b (??:?)
+014: libcarb.so!omniCoreStart+0x617a (??:?)
+015: libcarb.so!quickReleaseFrameworkAndTerminate+0x10305 (??:?)
+016: libcarb.so!omniCoreStart+0x106fc (??:?)
+017: libcarb.so!quickReleaseFrameworkAndTerminate+0xa6d5 (??:?)
+018: libcarb.scripting-python.plugin.so!carbOnPluginStartup+0x1691 (??:?)
+019: libcarb.scripting-python.plugin.so!std::__detail::_Map_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, void*>, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, void*> >, std::__detail::_Select1st, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&)+0x5d26 (??:?)
+020: python!cfunction_call+0x36
+021: python!PyObject_Call+0xbe
+022: python!atexit_callfuncs+0x43
+023: python!Py_FinalizeEx+0x53
+024: python!Py_Exit+0x8
+025: python!handle_system_exit+0x29
+026: python!PyErr_PrintEx+0x11
+027: python!_PyRun_SimpleFileObject.cold+0xd7
+028: python!_PyRun_AnyFileObject+0x44
+029: python!Py_RunMain+0x271
+030: python!Py_BytesMain+0x37
+031: libc.so.6!__libc_init_first+0x90 (./csu/../sysdeps/nptl/libc_start_call_main.h:58)
+032: libc.so.6!__libc_start_main+0x80 (./csu/../csu/libc-start.c:128)
+033: python!_start+0x2e

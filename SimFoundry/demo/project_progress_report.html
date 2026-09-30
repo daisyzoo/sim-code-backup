@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SimFoundry 项目进度汇报</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --surface2: #243044;
+      --text: #e7ecf3;
+      --muted: #8b9cb3;
+      --accent: #3d8bfd;
+      --accent2: #5eead4;
+      --warn: #fbbf24;
+      --ok: #34d399;
+      --border: #2d3a4f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle { color: var(--muted); font-size: 1.05rem; }
+    .meta {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.25rem 0.85rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    h2 {
+      font-size: 1.35rem;
+      margin: 2.25rem 0 1rem;
+      color: var(--accent2);
+      font-weight: 600;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin: 1.5rem 0 0.75rem;
+      color: var(--text);
+    }
+    p { margin-bottom: 0.85rem; color: #c5d0de; }
+    section { margin-bottom: 1.5rem; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .stat {
+      text-align: center;
+      padding: 1.25rem;
+    }
+    .stat .num {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+    .stat .label { font-size: 0.85rem; color: var(--muted); margin-top: 0.35rem; }
+    .flow {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-family: ui-monospace, "Cascadia Code", monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      color: #a8b8cc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.65rem 0.85rem;
+      text-align: left;
+    }
+    th { background: var(--surface2); color: var(--muted); font-weight: 600; }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .tag-ok { color: var(--ok); font-weight: 600; }
+    .tag-warn { color: var(--warn); font-weight: 600; }
+    .tag-muted { color: var(--muted); }
+    ul { margin: 0.5rem 0 1rem 1.25rem; color: #c5d0de; }
+    li { margin-bottom: 0.35rem; }
+    .progress-bar {
+      height: 8px;
+      background: var(--surface2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 4px;
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    code {
+      background: var(--surface2);
+      padding: 0.12rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>SimFoundry × Isaac Lab 项目进度汇报</h1>
+      <p class="subtitle">
+        Unitree G1 EDU 双臂 · D435i 头显 · 仿真数据铸造与 Real2Sim 对接
+      </p>
+      <div class="meta">
+        <span class="pill">汇报日期：2026-08-31</span>
+        <span class="pill">代码根目录：zoo/sim/SimFoundry</span>
+        <span class="pill">仿真：Isaac Lab + Newton 无头采数</span>
+        <span class="pill">训练格式：LeRobot v2.1 / Unitree JSON</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>一、项目定位</h2>
+      <div class="card">
+        <p>
+          <strong>SimFoundry</strong> 在本仓库中是一套「场景与机器人解耦」的仿真数据铸造链路：
+          用统一的 <strong>Scene Package</strong> 描述世界（桌面、包裹、背景），用独立的
+          <strong>Embodiment</strong> 描述 G1 23 DoF 本体与 Intel RealSense D435i 相机，
+          在 Isaac Lab 中采集与真机 teleop 对齐的 RGB + 关节轨迹，导出为
+          HuggingFace LeRobot 或 Unitree <code>episode_XXXX</code> 格式，供从零训练 VLA / WAM。
+        </p>
+        <p>
+          项目分两期推进：<strong>A 期</strong>用现成资产 / 手工 Real2Sim 先打通端到端；
+          <strong>B 期</strong>再接视频→mesh→layout 的全自动 SimFoundry 重建链。
+          当前验收重心为<strong>独立分拣台场景</strong>（<code>sorting_station_g1_23</code>）。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>二、整体架构</h2>
+      <div class="flow">
+┌─────────────────────────────────────────────────────────────────────────┐
+│  A 期（已通）                    B 期（接口预留）                          │
+│  手工 layout / YCB / 实拍贴图  →  视频 → Depth/SAM/Pose/Mesh → layout    │
+└───────────────────────────────┬─────────────────────────────────────────┘
+                                ▼
+              scenes/&lt;scene_id&gt;/  （twin/layout.json + cousins/task/*.json）
+                                ▼
+              scene_bridge/  →  USDA + Isaac spawn 配置
+                                ▼
+              isaac_envs/    →  G1 23DoF + D435i 640×480
+                                ▼
+              collect_seed.py + quality_gate（分拣台）
+                                ▼
+              datasets/*.npz  →  unitree_json / lerobot_v21 导出
+                                ▼
+              从零 VLA / WAM 训练（ACT、Pi0、SmolVLA 等）
+      </div>
+      <p style="margin-top:1rem;font-size:0.9rem;color:var(--muted)">
+        核心原则：换场景只换 <code>scenes/&lt;id&gt;/</code> 目录，不改 env 与训练 dataloader 字段约定。
+      </p>
+    </section>
+
+    <section>
+      <h2>三、当前进度概览</h2>
+      <div class="grid2">
+        <div class="card stat">
+          <div class="num">3</div>
+          <div class="label">已接入 Isaac 场景包</div>
+        </div>
+        <div class="card stat">
+          <div class="num">34+</div>
+          <div class="label">0831 push 训练 episode（采集中，目标 200）</div>
+        </div>
+        <div class="card stat">
+          <div class="num">11</div>
+          <div class="label">分拣 teleop 有效 DoF（L5+R5+腰 yaw）</div>
+        </div>
+        <div class="card stat">
+          <div class="num">23</div>
+          <div class="label">仿真动作 / 状态向量维度</div>
+        </div>
+      </div>
+
+      <h3>分拣台批量采数（0831）</h3>
+      <div class="card">
+        <p>
+          任务：<strong>push_box_to_bin</strong>（右手推木色文件盒向右）<br />
+          目录：<code>datasets/sorting_station_g1_23_0831</code> /
+          <code>sorting_station_g1_23_unitree_0831</code><br />
+          标定冻结：<code>sorting_station_frozen_2026-08-31</code>（骨盆 z=0.74 m 站立高度，双臂桌面悬停）<br />
+          质检：quality gate（无穿桌、有接触、Δy 推离）· 接受 kinematic push assist
+        </p>
+        <div class="progress-bar" title="约 34/200"><span style="width:17%"></span></div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;margin-bottom:0">
+          进度约 17%（34/200 ACCEPT，随采数更新；打开本页时可自行刷新统计）
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>四、三大场景与状态</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>scene_id</th>
+            <th>用途</th>
+            <th>Embodiment</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>kitchen_counter_placeholder</code></td>
+            <td>A 期厨房 tabletop（推杯等）</td>
+            <td>g1_edu_23_bimanual</td>
+            <td class="tag-ok">链路已通</td>
+          </tr>
+          <tr>
+            <td><code>indoor_lab_g1_23</code></td>
+            <td>七分区连通室内演示</td>
+            <td>g1_edu_23_bimanual</td>
+            <td class="tag-ok">演示可用</td>
+          </tr>
+          <tr>
+            <td><code>sorting_station_g1_23</code></td>
+            <td>实拍对齐蓝色分拣台 · 当前主战场</td>
+            <td>g1_edu_23_u1_rubber</td>
+            <td class="tag-ok">Real2Sim + 批量采数进行中</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>五、分拣台 A 期三任务规划</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>task_id</th>
+            <th>行为</th>
+            <th>数据集目录</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>push_box_to_bin</code></td>
+            <td>右手推木色盒 → 桌右（−Y）</td>
+            <td><code>sorting_station_g1_23_0831</code></td>
+            <td class="tag-ok">批量采集中 · 训练集专用</td>
+          </tr>
+          <tr>
+            <td><code>nudge_mailer_to_bin</code></td>
+            <td>左手推黑色文件袋 → 桌左（+Y）</td>
+            <td><code>sorting_station_g1_23_mailer_0831</code></td>
+            <td class="tag-warn">脚本已有 · gate 待稳 · 未批量</td>
+          </tr>
+          <tr>
+            <td><code>sweep_parcels_apart</code></td>
+            <td>双臂同时向两侧拨开</td>
+            <td><code>sorting_station_g1_23_sweep_0831</code></td>
+            <td class="tag-muted">待采</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.88rem;color:var(--muted)">
+        约定：每个 task 独立目录树，不混 task；manifest 见各数据集 <code>MANIFEST.json</code>。
+      </p>
+    </section>
+
+    <section>
+      <h2>六、已完成模块（A 期）</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>场景与桥接</h3>
+          <ul>
+            <li>Scene Package 契约（layout / meta / cousins）</li>
+            <li>scene_bridge → USDA / Isaac spawn</li>
+            <li>分拣台实拍纹理、面单标签、layout 标定</li>
+            <li>G1 U1 23DoF 橡胶假手 USD</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>仿真与采数</h3>
+          <ul>
+            <li>SortingStationEnv + D435i 640×480</li>
+            <li>scripted 推/拨关键帧（对齐真机 ref）</li>
+            <li>quality gate + push assist</li>
+            <li>collect_seed · Unitree / LeRobot 导出</li>
+            <li>audit_sorting_dataset 离线质检</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>机器人与标定</h3>
+          <ul>
+            <li>站立骨盆高度 0.74 m（非 sunk stump）</li>
+            <li>双臂桌面悬停，手掌在桌上方入镜</li>
+            <li>11 DoF teleop 与真机 pick_cup_soring_0824 对齐</li>
+            <li>D435i 内参 fx/fy/cx/cy 写入 embodiment</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>数据治理</h3>
+          <ul>
+            <li>0831 仅 push_box 训练集 manifest</li>
+            <li>npz / Unitree 写入 collect_meta（含 assist）</li>
+            <li>--wipe 仅删指定目录，防误删</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>七、待补齐（按优先级）</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>优先级</th>
+            <th>模块</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tag-ok">P0</td>
+            <td>0831 push 采满 + audit</td>
+            <td>当前主线，标定冻结不动</td>
+          </tr>
+          <tr>
+            <td class="tag-warn">P1</td>
+            <td>replay_seed.py</td>
+            <td>npz 在 Isaac 回放验收</td>
+          </tr>
+          <tr>
+            <td class="tag-warn">P1</td>
+            <td>mailer / sweep 采数</td>
+            <td>新目录，与 0831 隔离</td>
+          </tr>
+          <tr>
+            <td class="tag-warn">P1</td>
+            <td>LeRobot 导出 + 训练 smoke test</td>
+            <td>验证 ACT/Pi0 dataloader</td>
+          </tr>
+          <tr>
+            <td class="tag-muted">P2</td>
+            <td>B 期 Extraction</td>
+            <td>DepthAnything + SAM3 + FoundationPose</td>
+          </tr>
+          <tr>
+            <td class="tag-muted">P2</td>
+            <td>MeshBackend</td>
+            <td>Hunyuan / TRELLIS / RemoteMesh，降低手工 layout</td>
+          </tr>
+          <tr>
+            <td class="tag-muted">P2</td>
+            <td>Gemini VLM API</td>
+            <td>自动 task / cousin 提案</td>
+          </tr>
+          <tr>
+            <td class="tag-muted">P3</td>
+            <td>3DGS 背景 / dexhand / locomotion</td>
+            <td>非当前分拣验收范围</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>八、B 期 SimFoundry 全链路（未启动实现）</h2>
+      <div class="card">
+        <p>以下接口已在 <code>adapter/backends/stubs.py</code> 预留，调用即报错，需独立 <code>env_simfoundry</code> 与 Isaac 分时占 GPU：</p>
+        <ul>
+          <li><strong>DepthBackend</strong> — DepthAnything3</li>
+          <li><strong>SegBackend</strong> — SAM3</li>
+          <li><strong>PoseBackend</strong> — FoundationPose</li>
+          <li><strong>MeshBackend</strong> — Hunyuan3D / TRELLIS</li>
+          <li><strong>BackgroundBackend</strong> — splatfacto（3DGS，可后置）</li>
+          <li><strong>PhysicsStabilize</strong> — CoACD + PyBullet</li>
+          <li><strong>VlmBackend</strong> — Gemini API（识物、任务、cousin）</li>
+        </ul>
+        <p>
+          已拍板：B 期与 0831 采数<strong>并行</strong>，<strong>不改标定</strong>；
+          Hunyuan 失败可降级 RemoteMesh / 手工 layout，但期望模型减少 props 手工成本。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>九、技术栈与环境</h2>
+      <table>
+        <thead>
+          <tr><th>组件</th><th>版本 / 说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>仿真</td><td>Isaac Sim 6.0.1 · Isaac Lab · Newton 无头采数</td></tr>
+          <tr><td>Conda</td><td><code>env_isaaclab</code>（Python 3.12）</td></tr>
+          <tr><td>机器人</td><td>Unitree G1 EDU 23 DoF · U1 橡胶假手</td></tr>
+          <tr><td>相机</td><td>Intel RealSense D435i · 640×480 · SN 233622077487</td></tr>
+          <tr><td>GPU</td><td>RTX PRO 5000 Blackwell 48GB · 单卡分时</td></tr>
+          <tr><td>训练导出</td><td>LeRobot v2.1 · Unitree episode JSON @ 15 Hz</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>十、关键路径速查</h2>
+      <div class="card" style="font-size:0.88rem;font-family:ui-monospace,monospace;line-height:1.7;color:#a8b8cc">
+        SimFoundry/<br />
+        ├── scenes/sorting_station_g1_23/     # 分拣 scene 包<br />
+        ├── simfoundry/                       # 核心库<br />
+        │   ├── adapter/                      # A 占位 + B stub<br />
+        │   ├── scene_bridge/                 # layout → Isaac<br />
+        │   ├── isaac_envs/                   # 三套 env<br />
+        │   ├── data/                         # 采数、质检、导出<br />
+        │   └── calibration/sorting_station.py<br />
+        ├── scripts/collect_seed.py           # 主采数入口<br />
+        ├── datasets/sorting_station_g1_23_0831/   # push 训练 npz<br />
+        ├── datasets/sorting_station_g1_23_unitree_0831/<br />
+        ├── demo/real_ref_frames/             # 真机姿态参考<br />
+        └── demo/project_progress_report.html # 本文档<br />
+      </div>
+    </section>
+
+    <section>
+      <h2>十一、近期决策记录</h2>
+      <ul>
+        <li>先验收<strong>单独分拣台</strong>，不绑厨房/室内长任务库。</li>
+        <li>A 期分拣只做 3 个 stump task（push / nudge / sweep），不做 dexhand 抓取。</li>
+        <li>0831 目录<strong>仅 push_box_to_bin</strong>，mailer/sweep 用 sibling 新目录。</li>
+        <li>训练数据<strong>接受 push assist</strong>，并在 collect_meta 中标注。</li>
+        <li>标定冻结，B 期开发不改 embodiment / 骨盆 / D435i 外参。</li>
+        <li>3DGS 非 A 期必补项；B 期背景增强可后置。</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>
+        文档生成：SimFoundry 仓库 · 随采数进度更新 episode 计数与进度条。<br />
+        相关文档：<code>README.md</code> · <code>DEMO.md</code> · <code>pipeline_resources.md</code> · <code>g1_23_task_library.md</code>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

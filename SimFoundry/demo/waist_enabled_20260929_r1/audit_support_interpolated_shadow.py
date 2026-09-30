@@ -1,0 +1,37 @@
+"""Offline-only selector sensitivity on recorded poses; not closed-loop evidence."""
+from pathlib import Path
+import sys,json
+import numpy as np
+from scipy.spatial.transform import Rotation
+root=Path(__file__).resolve().parent
+source=(root/'audit_terminal_reach.py').read_text()
+exec(compile(source.split('results=[];rng')[0],'<validated_cached_fk_setup>','exec'))
+run=Path(sys.argv[1]).resolve();mesh=json.loads((root.parents[1]/'assets/robots/g1_hand_support_vertices.json').read_text())['vertices'];rows=[]
+for ep in sorted(run.glob('case_*/layout_*')):
+ side='right' if 'push_box' in ep.name else 'left';key='box' if side=='right' else 'mailer';z=np.load(ep/'raw.npz');ori=np.load(ep/'parcel_orientation.npz');log=json.loads((ep/'frontal_bypass.json').read_text())['rows'];vertices=np.array(mesh[side]);series=[]
+ for row in log:
+  if row.get('control_offset_local') is None:continue
+  t=row['step'];q=dict(zip(names,z['q'][t,12:23]));m=np.eye(4);m[:3,3]=[.08,0,.793]
+  for name,orig,axis in chains[side]:
+   m=m@orig
+   if axis is not None:
+    a=np.eye(4);a[:3,:3]=Rotation.from_rotvec(axis*q.get(name,0)).as_matrix();m=m@a
+  normal=m[:3,:3].T@Rotation.from_quat(ori[key][t]).as_matrix()[:,2];series.append((t,normal))
+ variants=[]
+ for tolerance in (0.,.0001,.0002,.0005):
+  previous=None;selected=[];excess=[];changes=[]
+  for t,normal in series:
+   heights=vertices@normal;idx=int(np.argmin(heights));minimum=heights[idx]
+   selected_point=vertices[idx].copy()
+   if previous is not None:
+    old_excess=float(previous@normal-minimum)
+    if old_excess<=tolerance:selected_point=previous.copy()
+    elif tolerance>0:
+     fraction=(old_excess-tolerance*.5)/old_excess
+     selected_point=previous+fraction*(vertices[idx]-previous)
+    jump=float(np.linalg.norm(selected_point-previous));changes.append((t,jump))
+   selected.append(selected_point);excess.append(float(selected_point@normal-minimum));previous=selected_point
+  variants.append(dict(tolerance_m=tolerance,max_height_above_true_support_m=max(excess),max_vertex_jump_m=max(j for t,j in changes),changes_over_3mm=sum(j>.003 for t,j in changes),total_jump_path_m=sum(j for t,j in changes),late_changes_over_3mm=sum(j>.003 for t,j in changes if t>=800)))
+ rows.append(dict(episode=ep.name,variants=variants))
+out=dict(rows=rows,scope='Shadow selector only on unchanged historical poses. Retain previous convex-hull reference if within tolerance, otherwise interpolate toward true support vertex to half tolerance. Reference remains within convex hull, not necessarily a surface vertex. No dynamics or contact geometry guarantee; height difference needs explicit accounting if used. No actual action executed.',training_ready=False)
+(run/'SUPPORT_INTERPOLATED_SHADOW.json').write_text(json.dumps(out,indent=2));print(json.dumps(out))

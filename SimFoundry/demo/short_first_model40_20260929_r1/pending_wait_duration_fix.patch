@@ -1,0 +1,19 @@
+--- SimFoundry/scripts/collect_paired_sorting.py
++++ SimFoundry/scripts/collect_paired_sorting.py
+@@ -28,6 +28,7 @@
+                     help='Diagnostic model-target slew cap [rad/step], 0 disables; raw predictions are retained.')
+ parser.add_argument('--horizon', type=int, default=10)
+ parser.add_argument('--prompt-variant', choices=('short', 'unified_ablation'), default='short')
++parser.add_argument('--wait-steps', type=int, default=70, help='Explicit wait duration; historical default70 frames.')
+ parser.add_argument('--wait-force-n', type=float, default=0., help='Diagnostic only: world-X physical force pulse on left hand, frames20-25 [N].')
+ parser.add_argument('--wait-force-start', type=int, default=20, help='Physical wait-pulse start, 5 or20.')
+ parser.add_argument('--recovery-pilot-contract', type=Path, help='Reviewed exact settings permit fresh forced pilot collection; diagnostics remain quarantined.')
+@@ -277,7 +278,7 @@
+         expert.front_reposition_measured_start = args.expert_front_reposition_measured_start
+         expert.front_reposition_hold_yz = args.expert_front_reposition_hold_yz
+     parcel_orientations = {'box': [], 'mailer': []}
+-    horizon = 70 if args.idle or task_id == 'wait_no_package' else args.steps
++    horizon = 70 if args.idle else (args.wait_steps if task_id == 'wait_no_package' else args.steps)
+     rgbs, qs, acts = [], [], []
+     trace = {key: [] for key in initial}
+     previous = np.zeros(23, dtype=np.float32)

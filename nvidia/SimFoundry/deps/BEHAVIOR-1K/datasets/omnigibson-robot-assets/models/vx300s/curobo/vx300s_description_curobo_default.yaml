@@ -1,0 +1,368 @@
+robot_cfg:
+  kinematics:
+    base_link: base_link
+    collision_link_names:
+    - base_link
+    - shoulder_link
+    - upper_arm_link
+    - upper_forearm_link
+    - lower_forearm_link
+    - wrist_link
+    - gripper_link
+    - gripper_bar_link
+    - left_finger_link
+    - right_finger_link
+    - attached_object_eef_link
+    collision_sphere_buffer: 0.002
+    collision_spheres:
+      base_link:
+      - center:
+        - 0.006
+        - 0.024
+        - 0.038
+        radius: 0.068
+      - center:
+        - -0.006
+        - -0.025
+        - 0.038
+        radius: 0.068
+      - center:
+        - -0.158
+        - 0.002
+        - 0.027
+        radius: 0.057
+      - center:
+        - -0.109
+        - 0.004
+        - 0.027
+        radius: 0.057
+      gripper_bar_link:
+      - center:
+        - 0.0
+        - 0.05
+        - 0.0
+        radius: 0.03
+      - center:
+        - 0.0
+        - -0.05
+        - 0.0
+        radius: 0.03
+      - center:
+        - 0.0
+        - 0.0
+        - 0.0
+        radius: 0.04
+      gripper_link:
+      - center:
+        - 0.023
+        - -0.0
+        - 0.007
+        radius: 0.024
+      - center:
+        - 0.018
+        - 0.0
+        - 0.021
+        radius: 0.024
+      left_finger_link:
+      - center:
+        - 0.03
+        - 0.0
+        - 0.015
+        radius: 0.02
+      - center:
+        - 0.03
+        - 0.0
+        - -0.015
+        radius: 0.02
+      - center:
+        - 0.01
+        - 0.0
+        - -0.015
+        radius: 0.02
+      - center:
+        - 0.01
+        - 0.0
+        - 0.015
+        radius: 0.02
+      - center:
+        - 0.05
+        - 0.0
+        - 0.01
+        radius: 0.02
+      - center:
+        - 0.05
+        - 0.0
+        - -0.01
+        radius: 0.02
+      lower_forearm_link:
+      - center:
+        - 0.027
+        - 0.015
+        - -0.0
+        radius: 0.036
+      - center:
+        - 0.084
+        - -0.005
+        - -0.0
+        radius: 0.036
+      - center:
+        - 0.093
+        - 0.006
+        - 0.0
+        radius: 0.036
+      - center:
+        - 0.022
+        - 0.029
+        - 0.001
+        radius: 0.036
+      right_finger_link:
+      - center:
+        - 0.03
+        - 0.0
+        - 0.015
+        radius: 0.02
+      - center:
+        - 0.03
+        - 0.0
+        - -0.015
+        radius: 0.02
+      - center:
+        - 0.01
+        - 0.0
+        - -0.015
+        radius: 0.02
+      - center:
+        - 0.01
+        - 0.0
+        - 0.015
+        radius: 0.02
+      - center:
+        - 0.05
+        - 0.0
+        - 0.01
+        radius: 0.02
+      - center:
+        - 0.05
+        - 0.0
+        - -0.01
+        radius: 0.02
+      shoulder_link:
+      - center:
+        - 0.001
+        - -0.027
+        - 0.032
+        radius: 0.036
+      - center:
+        - 0.0
+        - 0.024
+        - 0.036
+        radius: 0.036
+      upper_arm_link:
+      - center:
+        - 0.0
+        - 0.0
+        - 0.1
+        radius: 0.025
+      - center:
+        - 0.0
+        - 0.0
+        - 0.15
+        radius: 0.025
+      - center:
+        - 0.0
+        - 0.0
+        - 0.2
+        radius: 0.025
+      - center:
+        - 0.0
+        - 0.0
+        - 0.25
+        radius: 0.025
+      - center:
+        - 0.0
+        - 0.0
+        - 0.3
+        radius: 0.025
+      - center:
+        - 0.055
+        - -0.008
+        - 0.301
+        radius: 0.026
+      - center:
+        - 0.04
+        - 0.025
+        - 0.301
+        radius: 0.026
+      - center:
+        - -0.0
+        - -0.002
+        - 0.048
+        radius: 0.025
+      - center:
+        - 0.028
+        - -0.019
+        - 0.301
+        radius: 0.025
+      upper_forearm_link:
+      - center:
+        - 0.047
+        - -0.004
+        - -0.0
+        radius: 0.035
+      - center:
+        - 0.041
+        - 0.022
+        - 0.001
+        radius: 0.034
+      - center:
+        - 0.171
+        - -0.0
+        - -0.002
+        radius: 0.034
+      - center:
+        - 0.046
+        - -0.018
+        - 0.0
+        radius: 0.035
+      - center:
+        - 0.082
+        - -0.007
+        - 0.0
+        radius: 0.03
+      - center:
+        - 0.119
+        - 0.002
+        - 0.0
+        radius: 0.03
+      wrist_link:
+      - center:
+        - 0.053
+        - 0.001
+        - 0.021
+        radius: 0.024
+      - center:
+        - 0.056
+        - 0.0
+        - 0.003
+        radius: 0.023
+    cspace:
+      cspace_distance_weight:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      joint_names:
+      - waist
+      - shoulder
+      - elbow
+      - forearm_roll
+      - wrist_angle
+      - wrist_rotate
+      - left_finger
+      - right_finger
+      max_acceleration: 15.0
+      max_jerk: 500.0
+      null_space_weight:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      retract_config: null
+    ee_link: eef_link
+    external_asset_path: null
+    extra_collision_spheres:
+      attached_object_eef_link: 32
+    extra_links:
+      attached_object_eef_link:
+        fixed_transform:
+        - 0
+        - 0
+        - 0
+        - 1
+        - 0
+        - 0
+        - 0
+        joint_name: attached_object_eef_link_joint
+        joint_type: FIXED
+        link_name: attached_object_eef_link
+        parent_link_name: eef_link
+    link_names: []
+    lock_joints:
+      left_finger: null
+      right_finger: null
+    mesh_link_names:
+    - base_link
+    - shoulder_link
+    - upper_arm_link
+    - upper_forearm_link
+    - lower_forearm_link
+    - wrist_link
+    - gripper_link
+    - gripper_bar_link
+    - left_finger_link
+    - right_finger_link
+    - attached_object_eef_link
+    self_collision_buffer:
+      base_link: 0.02
+    self_collision_ignore:
+      base_link:
+      - shoulder_link
+      - upper_arm_link
+      gripper_link:
+      - gripper_bar_link
+      - left_finger_link
+      - right_finger_link
+      left_finger_link:
+      - right_finger_link
+      - attached_object_eef_link
+      lower_forearm_link:
+      - wrist_link
+      - gripper_link
+      - gripper_bar_link
+      - left_finger_link
+      - right_finger_link
+      right_finger_link:
+      - attached_object_eef_link
+      shoulder_link:
+      - upper_arm_link
+      - upper_forearm_link
+      upper_arm_link:
+      - upper_forearm_link
+      - lower_forearm_link
+      - wrist_link
+      - gripper_link
+      - gripper_bar_link
+      - left_finger_link
+      - right_finger_link
+      upper_forearm_link:
+      - lower_forearm_link
+      - wrist_link
+      - gripper_link
+      - gripper_bar_link
+      - left_finger_link
+      - right_finger_link
+      wrist_link:
+      - gripper_link
+      - gripper_bar_link
+      - left_finger_link
+      - right_finger_link
+    usd_flip_joint_limits: []
+    usd_flip_joints:
+      elbow: Y
+      forearm_roll: X
+      left_finger: Y
+      right_finger: Y
+      shoulder: Y
+      waist: Z
+      wrist_angle: Y
+      wrist_rotate: X
+    usd_robot_root: /vx300s
+    use_global_cumul: true

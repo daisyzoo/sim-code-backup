@@ -1,0 +1,21 @@
+version: 1
+
+# Only keys 1 through 9 are supported. `language_memory` and `color` are
+# optional; action_text must be non-empty. The editor copies the resolved
+# values into each episode's data.json, so changing this file later does not
+# silently change existing annotations.
+subtasks:
+  "1":
+    action_text: "pick up the cup"
+    language_memory: ""
+    color: "#4CAF50"
+
+  "2":
+    action_text: "pour water"
+    language_memory: "The cup has been picked up."
+    color: "#2196F3"
+
+  "3":
+    action_text: "put down the cup"
+    language_memory: "The pouring action has finished."
+    color: "#FF9800"
