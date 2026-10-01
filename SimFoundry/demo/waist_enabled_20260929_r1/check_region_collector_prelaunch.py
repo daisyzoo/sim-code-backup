@@ -1,0 +1,28 @@
+"""Execute real pre-AppLauncher CLI and actual snapshot writer, no physics."""
+from pathlib import Path
+import sys,types,json,hashlib,tempfile,ast,contextlib,io
+w=Path(__file__).resolve().parent;repo=w.parents[1];stage=w/'staged_contact_patch_approach';sys.path[:0]=[str(stage),str(repo)]
+source=(stage/'collect_paired_sorting.py').read_text();prefix=source.split('app = AppLauncher(args, enable_cameras=True).app')[0];base=list(json.loads((w/'y_path_nearhalf_groups_r1/PROTOCOL.json').read_text())['settings']);plan=json.loads((w/'fresh_trial_contracts_v2_r1/fresh_lateral_00.json').read_text())['layouts'][1]
+with tempfile.TemporaryDirectory(prefix='region_prelaunch_') as td:
+ td=Path(td);layout=td/'layout.json';layout.write_text(json.dumps(plan));cli=base+['--out-dir',str(td/'NOT_LAUNCHED'),'--diagnostic-layout-json',str(layout),'--layout-start',str(plan['layout_id'])]
+ def parse(arguments):
+  name='region_prelaunch_check';m=types.ModuleType(name);m.__file__=str(stage/'collect_paired_sorting.py');sys.modules[name]=m;old=sys.argv;sys.argv=['collector',*arguments]
+  try:
+   with contextlib.redirect_stderr(io.StringIO()):exec(compile(prefix,m.__file__,'exec'),m.__dict__)
+   return m
+  finally:sys.argv=old;sys.modules.pop(name,None)
+ off=parse(cli);on=parse(cli+['--region-top-approach']);assert not off.args.region_top_approach and on.args.region_top_approach and on.ROOT==repo and on.waist_admission is None
+ negative=[]
+ for label,args in [('pilot_role',cli+['--region-top-approach','--role','pilot']),('no_bounded',[x for x in cli if x!='--bounded-coupled-ik']+['--region-top-approach']),('no_projection',[x for x in cli if x!='--expert-top-projected-support']+['--region-top-approach']),('competing_center',cli+['--region-top-approach','--expert-top-contact-center-calibration']),('policy',cli+['--region-top-approach','--policy-port','1234']),('corner',cli+['--region-top-approach','--expert-frontal-top-visible-corner'])]:
+  try:parse(args)
+  except SystemExit as e:assert e.code!=0;negative.append(label)
+  else:raise AssertionError('Accepted invalid configuration: '+label)
+ # Execute exact main AST from paths assignment through provenance writer.
+ tree=ast.parse(source);main=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='main');start=next(i for i,n in enumerate(main.body) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='paths' for t in n.targets));end=next(i for i,n in enumerate(main.body) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='spec' for t in n.targets));snapshot=td/'snapshot';snapshot.mkdir();on.__dict__['root']=snapshot
+ exec(compile(ast.Module(body=main.body[start:end],type_ignores=[]),str(stage/'collect_paired_sorting.py'),'exec'),on.__dict__)
+ provenance=json.loads((snapshot/'provenance.json').read_text());assert provenance['args']['role']=='diagnostic' and provenance['args']['region_top_approach'] is True
+ for relative,digest in provenance['source_sha256'].items():assert hashlib.sha256((snapshot/'source_snapshot'/relative).read_bytes()).hexdigest()==digest==hashlib.sha256((repo/relative).read_bytes()).hexdigest()
+ expected=['contact_patch_approach.py','articulated_hand_geometry.py','region_top_contact.py','region_approach_lifecycle.py','collect_paired_sorting.py']
+ for name in expected:assert str((stage/name).relative_to(repo)) in provenance['source_sha256']
+ report=dict(default_off_and_enabled_cli=True,negative_cli_rejected=negative,actual_snapshot_writer_files=len(provenance['source_sha256']),source_sha256={name:hashlib.sha256((stage/name).read_bytes()).hexdigest() for name in expected},scope='Real installed AppLauncher argument parser and complete collector prelaunch validation executed; actual source snapshot/provenance AST wrote and byte-checked temporary archives. No AppLauncher construction, physics, robot commands, training or pilot admission. Fixtures deleted.',training_ready=False)
+(stage/'PRELAUNCH_AND_SOURCE_CHECK.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))

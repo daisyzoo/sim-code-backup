@@ -1,4 +1,4 @@
-"""Audit completed fresh pilot pushes; wait has its own stability audit."""
+"""Audit completed new-controller episodes without modifying frozen control/data."""
 from pathlib import Path
 import sys,os,json,time,subprocess,hashlib,datetime
 root=Path(__file__).resolve().parent
@@ -20,12 +20,24 @@ while True:
         if ep.name.endswith('_wait_no_package'):continue
         if ep.name in done or not (ep/'quality.json').exists():continue
         raw=hashlib.sha256((ep/'raw.npz').read_bytes()).hexdigest()
-        episode_scripts=list(scripts)+['audit_bounded_top_lead_live.py']
+        episode_scripts=list(scripts)+['audit_contact_bout_yaw_live.py','audit_bounded_top_lead_live.py','audit_clearance_feedback_live.py','audit_initial_top_recovery_live.py','audit_initial_near_half_live.py']
+        frontal=json.loads((ep/'frontal_bypass.json').read_text())
+        if frontal['plan'].get('initial_top_selected'):
+            episode_scripts+=['audit_y_path_clearance_live.py']
+        if frontal['plan'].get('front_route_selected'):
+            episode_scripts+=['audit_front_recovery_height_live.py','audit_recovery_and_anchor.py']
         if (ep/'contact_center_calibration.json').exists():episode_scripts+=['audit_contact_center_live.py','audit_projected_support_live.py']
         for script in episode_scripts:
             with (ep/(script+'.log')).open('w') as log:
                 result=subprocess.run([sys.executable,str(root/script),str(ep)],stdout=log,stderr=subprocess.STDOUT)
             report_specs={
+                'audit_contact_bout_yaw_live.py':('CONTACT_BOUT_YAW_LIVE_AUDIT.json',('passed',)),
+                'audit_y_path_clearance_live.py':('Y_PATH_CLEARANCE_LIVE_AUDIT.json',('passed',)),
+                'audit_front_recovery_height_live.py':('FRONT_RECOVERY_HEIGHT_LIVE_AUDIT.json',('passed',)),
+                'audit_recovery_and_anchor.py':('RECOVERY_AND_ANCHOR_AUDIT.json',('passed',)),
+                'audit_initial_near_half_live.py':('INITIAL_NEAR_HALF_LIVE_AUDIT.json',('passed',)),
+                'audit_initial_top_recovery_live.py':('INITIAL_TOP_RECOVERY_LIVE_AUDIT.json',('passed',)),
+                'audit_clearance_feedback_live.py':('CLEARANCE_FEEDBACK_LIVE_AUDIT.json',('passed',)),
                 'audit_contact_normal_live.py':('CONTACT_NORMAL_LIVE_AUDIT.json',('summary','recording_and_mapping_passed')),
                 'audit_terminal_hold_live.py':('TERMINAL_HOLD_LIVE_AUDIT.json',('recorded_hold_checks_passed',)),
                 'audit_terminal_hold_inputs.py':('TERMINAL_HOLD_INPUT_AUDIT.json',('summary','passed')),

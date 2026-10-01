@@ -24,6 +24,10 @@ if (p/'contact_center_calibration.json').exists():
  calibration=audit(p)
  assert calibration['passed']
  verified_centers={x['step']:np.asarray(x['center_local']) for x in calibration['centers']}
+from audit_region_reference_live import audit as audit_region_reference
+region_reference=audit_region_reference(p);assert region_reference['passed']
+assert not verified_centers or not region_reference['centers']
+verified_centers.update({int(t):np.asarray(c) for t,c in region_reference['centers'].items()})
 records=[];errors=[]
 for row in rows:
  t=row['step'];q=dict(zip(names,qs[t,12:23]));ms={s:transform(s,q) for s in ('left','right')};hulls={s:mesh[s]@ms[s][:3,:3].T+ms[s][:3,3] for s in ms}
@@ -42,4 +46,5 @@ for row in rows:
  records.append(rec)
 summary=dict(passed=not errors,checked_frames=len(records),held_frames=sum(x['held'] for x in records),max_clearance_log_error_m=max(x['clearance_log_error_m'] for x in records),max_load_log_error_n=max(x['load_log_error_n'] for x in records),max_active_error_log_error_m=max(x['active_error_log_error_m'] for x in records),max_inactive_error_log_error_m=max(x['inactive_error_log_error_m'] for x in records))
 out=dict(auditor_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),calibrated_reference_frames=len(verified_centers),summary=summary,errors=errors,records=records,source_sha256={f:hashlib.sha256((p/f).read_bytes()).hexdigest() for f in ('raw.npz','trace.npz','parcel_orientation.npz','solved_contact_forces.json','terminal_joint_hold.json','coordination.json','expert_control.json')},scope='Independent measured-q URDF FK, whole hand hulls and both object oriented top heights; physical projected support and inactive-palm tracking errors; previous-action target-hand vertical force sum. Two-micrometre numerical comparison tolerance only. Does not establish all-substep contacts, unobserved forces or task/model success.',training_ready=False)
+out['region_reference_auditor_sha256']=hashlib.sha256((root/'audit_region_reference_live.py').read_bytes()).hexdigest()
 (p/'TERMINAL_HOLD_INPUT_AUDIT.json').write_text(json.dumps(out,indent=2));print(json.dumps(summary,indent=2));print('errors',errors[:10]);sys.exit(0 if summary['passed'] else 1)

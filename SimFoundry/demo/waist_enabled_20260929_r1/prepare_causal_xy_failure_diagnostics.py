@@ -1,0 +1,20 @@
+"""Only enrich the existing bounds exception; preserve every command and guard."""
+from pathlib import Path
+import json,hashlib,ast,copy,importlib.util
+import numpy as np
+w=Path(__file__).resolve().parent;src=w/'staged_region_causal_xy_response';dst=w/'staged_region_causal_xy_diagnostics';dst.mkdir(exist_ok=False);sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();m=json.loads((src/'MANIFEST.json').read_text())
+for name,h in m['source_sha256'].items():assert sha(src/name)==h;(dst/name).write_bytes((src/name).read_bytes())
+p=dst/'contact_patch_approach.py';s=p.read_text();old="if np.any(q<lower-1e-6) or np.any(q>upper+1e-6):raise ValueError('Measured joints outside working bounds')"
+new="if np.any(q<lower-1e-6) or np.any(q>upper+1e-6):raise ValueError('Measured joints outside working bounds; diagnostic=' + repr(dict(upper11_q=q.tolist(),lower=lower.tolist(),upper=upper.tolist(),violating_indices=np.flatnonzero((q<lower-1e-6)|(q>upper+1e-6)).tolist(),tracking_residual=np.asarray(tracking_residual).tolist(),response_gain=None if response_gain is None else np.asarray(response_gain).tolist(),response_offset=None if response_offset is None else np.asarray(response_offset).tolist())))"
+assert s.count(old)==1;p.write_text(s.replace(old,new));before=ast.parse(s);after=ast.parse(p.read_text());bs=[n for n in ast.walk(before) if isinstance(n,ast.Raise) and ast.unparse(n).startswith("raise ValueError('Measured joints outside working bounds")];aa=[n for n in ast.walk(after) if isinstance(n,ast.Raise) and ast.unparse(n).startswith("raise ValueError('Measured joints outside working bounds")];assert len(bs)==len(aa)==1;aa[0].exc=copy.deepcopy(bs[0].exc);assert ast.dump(before)==ast.dump(after)
+spec=importlib.util.spec_from_file_location('failure_diag',p);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);negative=[]
+for index in [0,3,6,10]:
+ for direction in [-1,1]:
+  q=np.zeros(11);q[index]=direction*1.001
+  def forbidden(v):raise AssertionError('Geometry called after outside-bounds guard')
+  try:module.contact_patch_step(q,forbidden,lower=-np.ones(11),upper=np.ones(11),step_limits=np.full(11,.04),damping=np.full(11,.05),target_size=np.array([.14,.09,.045]),inactive_anchor=np.zeros(3),tracking_residual=np.zeros(11))
+  except ValueError as e:
+   d=ast.literal_eval(str(e).split('; diagnostic=',1)[1]);assert d['violating_indices']==[index] and d['upper11_q']==q.tolist();negative.append(dict(index=index,direction=direction,exception_type='ValueError',context_reconstructed=True))
+  else:raise AssertionError('Bounds exception not raised')
+report=dict(passed=True,identical_ast_except_existing_exception_message=True,original_bounds_and_conditions_unchanged=True,negative_cases=negative,source_sha256={n:sha(dst/n) for n in m['source_sha256']},parent_source_sha256=m['source_sha256'],parent_manifest_sha256=sha(src/'MANIFEST.json'),scope='Only adds measured q/bounds/residual/affine parameters to the already-existing ValueError. No catch/recovery, no changed acceptance, bounds, commands, physics or tasks. Original runtime failure retained; observation rerun is not a numerical retry or success.',training_ready=False);(dst/'EXCEPTION_CONTEXT_CHECK.json').write_text(json.dumps(report,indent=2))
+manifest=dict(created_at_utc=__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),source_sha256=report['source_sha256'],checks_sha256={'EXCEPTION_CONTEXT_CHECK.json':sha(dst/'EXCEPTION_CONTEXT_CHECK.json')},auditor_sha256=m['auditor_sha256'],causal_auditor_sha256=m['causal_auditor_sha256'],parent_manifest_sha256=sha(src/'MANIFEST.json'),parent_validation_scope='Inherited exact normal-path AST and eight byte-identical remaining files; prior21CLI/28wiring/3597default/2197auditor checks remain parent evidence, not reexecuted here.',physical_started=False,collector_wired=True,training_ready=False,scope=report['scope']);(dst/'MANIFEST.json').write_text(json.dumps(manifest,indent=2));print(dst,'bounds diagnostic8negative cases passed')

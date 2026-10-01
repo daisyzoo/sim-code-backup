@@ -53,9 +53,11 @@ parser.add_argument('--expert-front-contact-inset-fraction', type=float, default
 parser.add_argument('--expert-top-tilt-recontact-rad', type=float, default=0., help='Diagnostic independent top tilt withdrawal threshold0..0.10rad, zero disabled; original0.20rad pose gate unchanged.')
 parser.add_argument('--expert-top-object-relative-lead-m', type=float, default=0., help='Diagnostic calibrated top desired XY lead in metres;0 disables, .012..030. Original guards and3mm slew retained; no claim of realized contact lead.')
 parser.add_argument('--expert-top-contact-center-calibration', action='store_true', help='Diagnostic initial load-centroid measurement, lift and recenter before top pushing.')
+parser.add_argument('--expert-top-contact-bout-yaw-hold', action='store_true', help='Diagnostic top pushes: latch hand heading each push bout, reset on recovery/guard/release. Retain original normal tracking and quality gates.')
 parser.add_argument('--expert-top-contact-normal-hold', action='store_true', help='Diagnostic top routes: latch hand-local world-up on first press, preserve tilt through recontacts while world yaw remains free. Original guards keep precedence.')
 parser.add_argument('--expert-terminal-joint-hold', action='store_true', help='Diagnostic only: after confirmed released/clear/unloaded tracking, repeat prior11D joint target; revoke on guard or lost conditions.')
 parser.add_argument('--expert-initial-top-route', action='store_true', help='Diagnostic only: far direct long transfers start with measured-support top approach; full live clearance guards retained.')
+parser.add_argument('--expert-initial-top-near-inset-fraction', type=float, default=None, help='Diagnostic explicit initial-top contact fraction0.5..1 for initial targetX<0.48m only; omitted preserves configured contact. No change to live guards or data quality gates.')
 parser.add_argument('--expert-top-confirmed-release', action='store_true', help='Diagnostic guarded top route: release after ten measured frames satisfy original target position/stability conditions; all original safety/quality gates retained.')
 parser.add_argument('--expert-front-recontact-z', type=float, default=.91, help='Diagnostic front route only: recovery travel height after lost contact; initial approach remains0.91m. Bound0.84..0.91m, original guards retained.')
 parser.add_argument('--expert-front-object-relative-lead', action='store_true', help='Diagnostic front route: latch contact reference offset per acquisition and bound desired XY lead relative to observed object, retaining3mm slew and original guards.')
@@ -201,6 +203,8 @@ if args.expert_top_object_relative_lead_m and not (.012 <= args.expert_top_objec
     parser.error('Bounded top lead requires calibrated contact reference, .012..030m and no competing front lead')
 if args.expert_top_contact_center_calibration and not (diagnostic_or_waist_pilot and args.expert_top_contact_normal_hold and args.expert_top_projected_support and args.expert_frontal_top_guarded_descent and args.expert_frontal_top_continuous_drag and not args.expert_frontal_top_visible_corner and not args.expert_frontal_top_approach_compensation and not args.expert_frontal_top_recovery_clearance_m and not args.policy_port and not args.idle):
     parser.error('Contact center calibration requires normal-held projected guarded top diagnostic, no corner/approach/recovery-height alternatives')
+if args.expert_top_contact_bout_yaw_hold and not (args.role=='diagnostic' and args.expert_top_contact_normal_hold and args.expert_top_projected_support and args.waist_coordinated_expert and args.bounded_coupled_ik and args.trace_solved_contact_forces and not args.policy_port and not args.idle):
+    parser.error('Contact-bout yaw requires traced bounded coordinated diagnostic top expert with original normal/projected support')
 if args.expert_top_contact_normal_hold and not (diagnostic_or_waist_pilot and args.expert_frontal_top_recontact and args.waist_coordinated_expert and args.bounded_coupled_ik and args.trace_solved_contact_forces and not args.policy_port and not args.idle):
     parser.error('Front contact normal hold requires traced bounded coordinated top diagnostic expert')
 if args.expert_terminal_joint_hold and not (diagnostic_or_waist_pilot and args.waist_coordinated_expert and args.bounded_coupled_ik and args.trace_solved_contact_forces and not args.policy_port and not args.idle):
@@ -213,6 +217,8 @@ if args.expert_front_contact_inset_fraction is not None and (not .5<=args.expert
     parser.error('Front contact fraction requires diagnostic projected front route and0.5..1 bound')
 if not 0<=args.expert_top_tilt_recontact_rad<=.10 or (args.expert_top_tilt_recontact_rad and not (diagnostic_or_waist_pilot and args.expert_top_projected_support and args.expert_frontal_top_guarded_descent and args.expert_frontal_top_continuous_drag)):
     parser.error('Tilt recovery requires diagnostic projected guarded continuous top route and0..0.10rad')
+if args.expert_initial_top_near_inset_fraction is not None and not (.5 <= args.expert_initial_top_near_inset_fraction <= 1. and args.expert_initial_top_route):
+    parser.error('Near initial-top inset requires explicit initial-top route and fraction0.5..1')
 if args.expert_initial_top_route and not (diagnostic_or_waist_pilot and args.expert_top_projected_support and args.expert_frontal_top_guarded_descent and args.expert_frontal_top_continuous_drag):
     parser.error('Initial top route requires projected guarded continuous diagnostic')
 if args.expert_top_confirmed_release and not (diagnostic_or_waist_pilot and args.expert_top_projected_support and args.expert_frontal_top_guarded_descent and args.expert_frontal_top_continuous_drag):
@@ -566,6 +572,7 @@ def collect(env, spec, layout, task_id, root, default):
     rgbs, qs, acts = [], [], []
     trace = {key: [] for key in initial}
     previous = np.zeros(23, dtype=np.float32)
+    top_contact_bout_yaw = None
     top_contact_normal_anchor = None
     contact_center_calibration = None
     contact_center_log = []
@@ -679,6 +686,10 @@ def collect(env, spec, layout, task_id, root, default):
                     effective_top_fraction = None
                 if front_route_selected and args.expert_front_contact_inset_fraction is not None:
                     effective_top_fraction = args.expert_front_contact_inset_fraction
+                initial_near_contact_override = bool(initial_top_selected and target[0] < .48 and args.expert_initial_top_near_inset_fraction is not None)
+                if initial_near_contact_override:
+                    effective_top_fraction = args.expert_initial_top_near_inset_fraction
+                frontal_plan['initial_top_contact_location'] = dict(configured_near_fraction=args.expert_initial_top_near_inset_fraction,near_x_threshold_m=.48,override_applied=initial_near_contact_override,effective_top_fraction=effective_top_fraction)
                 frontal_plan['contact_stability_candidate'] = dict(front_contact_inset_fraction=args.expert_front_contact_inset_fraction,applied_front_override=bool(front_route_selected and args.expert_front_contact_inset_fraction is not None),tilt_recontact_rad=args.expert_top_tilt_recontact_rad,original_pose_max_tilt_rad=.20)
                 frontal_plan['confirmed_terminal_release'] = dict(enabled=args.expert_top_confirmed_release,zone_y_m=.20,min_progress_m=.15,consecutive_frames=10,max_endpoint_xy_m=.01,keeps_original_release=True,guard_precedence=True)
                 top_cls, top_extra = TopContactBypassState, {}
@@ -875,9 +886,17 @@ def collect(env, spec, layout, task_id, root, default):
                     top_contact_normal_anchor = (actual_hand_rotation.T@np.array([0.,0.,1.])).tolist()
                 if top_contact_normal_anchor is not None and expert.mode in ('top_lift','top_cross','top_descend','top_press','top_push'):
                     active_normal_anchor = top_contact_normal_anchor
+            active_bout_yaw_anchor = None
+            if args.expert_top_contact_bout_yaw_hold and frontal_plan is not None:
+                from simfoundry.data.contact_bout_yaw import ContactBoutYaw
+                from simfoundry.data.top_contact_bypass import rotation_xyzw
+                if top_contact_bout_yaw is None:
+                    top_contact_bout_yaw = ContactBoutYaw()
+                bout_rotation = rotation_xyzw(robot.data.body_quat_w.torch[0,hands[side]].detach().cpu().numpy()) if expert.mode=='top_push' else None
+                active_bout_yaw_anchor = top_contact_bout_yaw.update(expert.mode, bout_rotation)
             if args.waist_coordinated_expert:
                 from simfoundry.data.waist_coordination import coordinated_step
-                coordination_log.append(dict(step=step, **coordinated_step(robot, hands, action, state=expert, anchor=inactive_anchor, default=default, waist_limit=args.waist_limit_rad, bounded=args.bounded_coupled_ik, active_point_offset=active_control_offset, active_support_reference=projected_support_context if active_control_offset is not None else None, waist_preference=waist_preference, active_normal_anchor_local=active_normal_anchor, trace_jacobian=bool(args.trace_control_jacobian_every and step % args.trace_control_jacobian_every == 0))))
+                coordination_log.append(dict(step=step, **coordinated_step(robot, hands, action, state=expert, anchor=inactive_anchor, default=default, waist_limit=args.waist_limit_rad, bounded=args.bounded_coupled_ik, active_point_offset=active_control_offset, active_support_reference=projected_support_context if active_control_offset is not None else None, waist_preference=waist_preference, active_normal_anchor_local=active_normal_anchor, active_bout_yaw_anchor=active_bout_yaw_anchor, trace_jacobian=bool(args.trace_control_jacobian_every and step % args.trace_control_jacobian_every == 0))))
             if terminal_hold is not None:
                 from simfoundry.data.top_contact_bypass import support_mesh, rotation_xyzw
                 from simfoundry.data.contact_load_control import hand_target_vertical_load
@@ -1082,14 +1101,20 @@ def main():
     paths.extend([ROOT / 'simfoundry/data/projected_support_reference.py', ROOT / 'simfoundry/data/front_clearance_progress.py'])
     paths.extend([ROOT / 'simfoundry/data/front_top_route.py', ROOT / 'simfoundry/data/tabletop_route_candidates.py'])
     paths.append(ROOT / 'simfoundry/data/waist_pilot_protocol.py')
+    paths.append(ROOT / 'simfoundry/data/waist_trial_collection.py')
     paths.append(ROOT / 'simfoundry/data/object_relative_push.py')
     paths.append(ROOT / 'simfoundry/data/terminal_joint_hold.py')
     paths.append(ROOT / 'simfoundry/data/contact_normal_constraint.py')
+    paths.append(ROOT / 'simfoundry/data/contact_bout_yaw.py')
     paths.append(ROOT / 'simfoundry/data/contact_center_calibration.py')
     paths.append(ROOT / 'simfoundry/data/bounded_top_lead.py')
     paths.append(ROOT / 'simfoundry/data/confirmed_position_release.py')
     paths.extend([ROOT / 'simfoundry/data/initial_top_route.py', ROOT / 'simfoundry/data/initial_top_route_candidate.py'])
     paths.extend([ROOT / 'simfoundry/data/hand_obstacle_clearance.py', ROOT / 'simfoundry/data/cross_axis_admittance.py', ROOT / 'simfoundry/data/top_contact_load_geometry.py', ROOT / 'simfoundry/data/top_push_contact_geometry.py', ROOT / 'simfoundry/data/support_vertex_hysteresis.py', ROOT / 'simfoundry/data/parcel_collision_geometry.py', ROOT / 'simfoundry/scene_bridge/isaac_cfg.py', ROOT / 'scenes/sorting_station_g1_23/twin/layout.json'])
+    if waist_admission is not None:
+        for relative in json.loads(contract_bytes)['controller_source_sha256']:
+            bound_source = ROOT / relative
+            if bound_source not in paths: paths.append(bound_source)
     for path in paths:
         snapshot = root / 'source_snapshot' / path.relative_to(ROOT)
         snapshot.parent.mkdir(parents=True, exist_ok=True)

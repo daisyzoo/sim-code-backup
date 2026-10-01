@@ -28,8 +28,13 @@ def prepare(contract_path, collector):
     contract, digest = validate_waist_contract(contract_path)
     if sha(collector) != contract['pilot_collector_sha256']:
         raise ValueError('Collector must match the admitted candidate exactly')
-    reference = Path(contract['feasibility'][0]['root'])
-    settings = list(json.loads((reference/'PROTOCOL.json').read_text())['settings'])
+    if contract['version'] == 2:
+        settings = list(contract['collection_cli'])
+        if not settings or not all(isinstance(x, str) for x in settings):
+            raise ValueError('Missing exact trial CLI')
+    else:
+        reference = Path(contract['feasibility'][0]['root'])
+        settings = list(json.loads((reference/'PROTOCOL.json').read_text())['settings'])
     settings[settings.index('--role')+1] = 'pilot'
     settings = [x for x in settings if x != '--extended-waist-diagnostic']
     settings += ['--waist-pilot-contract', str(contract_path.resolve())]
@@ -80,9 +85,9 @@ def main():
     p.add_argument('--contract',type=Path,required=True)
     p.add_argument('--out',type=Path)
     p.add_argument('--validate-only',action='store_true')
+    p.add_argument('--collector',type=Path,default=REPO/'scripts/collect_paired_sorting.py')
     a=p.parse_args()
-    collector = (W/'staged_waist_collector/collect_paired_sorting.py' if a.validate_only
-                 else REPO/'scripts/collect_paired_sorting.py')
+    collector = a.collector.resolve()
     contract, digest, commands = prepare(a.contract, collector)
     summary=dict(contract_path=str(a.contract.resolve()), contract_sha256=digest,
         collector_sha256=sha(collector), runner_sha256=sha(__file__),

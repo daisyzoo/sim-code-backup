@@ -6,7 +6,7 @@ from simfoundry.data.sorting_quality import PALM_OFFSET
 from simfoundry.robots.g1_assets import G1_U1_23DOF_JOINT_NAMES
 
 
-def coordinated_step(robot, hands, action, *, state, anchor, default, waist_limit, bounded=False, active_point_offset=None, trace_jacobian=False, waist_preference=None, active_support_reference=None, active_normal_anchor_local=None):
+def coordinated_step(robot, hands, action, *, state, anchor, default, waist_limit, bounded=False, active_point_offset=None, trace_jacobian=False, waist_preference=None, active_support_reference=None, active_normal_anchor_local=None, active_bout_yaw_anchor=None):
     """Track active path and keep inactive palm at its initial world position.
 
     Joint regularization limits gratuitous waist motion. Full-arm collision
@@ -54,6 +54,15 @@ def coordinated_step(robot, hands, action, *, state, anchor, default, waist_limi
         rows.append(position_jac.new_tensor(constraint['jacobian']))
         errors.append(position_jac.new_tensor(constraint['error']))
         normal_record = {k:(v.tolist() if isinstance(v,np.ndarray) else v) for k,v in constraint.items()}
+    yaw_record = None
+    if active_bout_yaw_anchor is not None:
+        if active_normal_anchor_local is None:
+            raise ValueError('Contact-bout yaw requires original normal tracking')
+        from simfoundry.data.contact_bout_yaw import contact_bout_yaw_constraint
+        constraint = contact_bout_yaw_constraint(normal_rotation, angular_jac.detach().cpu().numpy(), active_bout_yaw_anchor)
+        rows.append(position_jac.new_tensor(constraint['jacobian']))
+        errors.append(position_jac.new_tensor(constraint['error']))
+        yaw_record = {k:(v.tolist() if isinstance(v,np.ndarray) else v) for k,v in constraint.items()}
     jac = torch.cat(rows)
     error = torch.cat(errors)
     penalty = torch.full((11,), .045**2, device=jac.device, dtype=jac.dtype)
@@ -84,7 +93,7 @@ def coordinated_step(robot, hands, action, *, state, anchor, default, waist_limi
     action[indices] = target - default[indices]
     result = {'palm_positions':palms, 'control_point_positions':points, 'active_point_offset_local':active_point_offset, 'waist_target_rad':float(target[0]),
             'inactive_anchor':anchor['right' if state.side=='left' else 'left'],
-            'bounded_solver':bounded, 'waist_preference_rad':waist_preference, 'preferred_waist_step_rad':float(prior[0]), 'full_arm_clearance_verified':False, 'active_support_reference':active_support_reference, 'contact_normal_tracking':normal_record}
+            'bounded_solver':bounded, 'waist_preference_rad':waist_preference, 'preferred_waist_step_rad':float(prior[0]), 'full_arm_clearance_verified':False, 'active_support_reference':active_support_reference, 'contact_normal_tracking':normal_record, 'contact_bout_yaw_tracking':yaw_record}
     if trace_jacobian:
         result['control_jacobian_world']=position_jac.detach().cpu().numpy().tolist()
         result['upper_q']=current.detach().cpu().numpy().tolist()

@@ -57,7 +57,7 @@ def _bound_json(root, name, expected):
 
 
 def validate_manifest(c):
-    if (c.get('version') != 1 or c.get('motion_protocol') != PROTOCOL
+    if (type(c.get('version')) is not int or c['version'] not in (1,2) or c.get('motion_protocol') != PROTOCOL
             or c.get('approved_for_pilot') is not True or c.get('gates') != GATES):
         raise ValueError('Unapproved waist contract or changed original gates')
     settings = c.get('collector_settings', {})
@@ -96,13 +96,16 @@ def validate_manifest(c):
             raise ValueError('Duplicate or unassigned waiting layout')
         validate_diagnostic_layout(d, d['layout_id'])
         ids.add(d['layout_id'])
-    if not c.get('feasibility') or not REQUIRED_SOURCES <= set(c.get('controller_source_sha256', {})):
+    if (c['version']==1 and not c.get('feasibility')) or not REQUIRED_SOURCES <= set(c.get('controller_source_sha256', {})):
         raise ValueError('Missing physical evidence or controller source bindings')
     for path, digest in c['controller_source_sha256'].items():
         if Path(path).is_absolute() or '..' in Path(path).parts or len(digest) != 64:
             raise ValueError('Invalid relative controller source binding')
     if len(c.get('pilot_collector_sha256', '')) != 64:
         raise ValueError('Missing exact fresh collector source binding')
+    if c['version']==2:
+        from simfoundry.data.waist_trial_collection import validate_trial_schedule
+        validate_trial_schedule(c)
     return groups
 
 
@@ -203,6 +206,13 @@ def validate_waist_contract(path, *, settings=None, layout_id=None, require_live
     path = Path(path); c = json.loads(path.read_text()); validate_manifest(c)
     if settings is not None and semantic_settings(settings) != c['collector_settings']:
         raise ValueError('Fresh collector settings differ from waist contract')
+    if c['version']==2:
+        from simfoundry.data.waist_trial_collection import validate_trial_schedule, validate_trial_sources
+        ids=validate_trial_schedule(c)
+        validate_trial_sources(c,Path(__file__).resolve().parents[2],require_live_sources=require_live_sources)
+        if layout_id is not None and layout_id not in ids:
+            raise ValueError('Layout outside frozen trial contract')
+        return c, file_sha256(path)
     diagnostic_ids = set()
     for source in c['feasibility']:
         diagnostic_ids.update(validate_feasibility(source, c['collector_settings'], c['controller_source_sha256'], require_live_sources=require_live_sources))

@@ -1,0 +1,31 @@
+"""Same closed jointXY parent8+2; add only final joint-direction refinement flag."""
+from pathlib import Path
+import json,copy,hashlib,datetime,sys
+w=Path(__file__).resolve().parent;repo=w.parents[1];parent=w/'rear_joint_xy_groups_r1';stage=w/'staged_joint_edge_command';r=Path(sys.argv[1]).resolve();assert not r.exists();sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();result=json.loads((parent/'RESULT.json').read_text());assert result['push_total']==8 and result['waits_passed']==2 and result['actual_review_complete'] and result['original_control_reports_verified']==80
+for name in ['STATUS.json','CONTROL_EVIDENCE_EXECUTION.json','REGION_DIAGNOSTIC_EXECUTION.json']:
+ d=json.loads((parent/name).read_text())
+ for key in ['pid','collector_pid']:
+  if key in d:assert not Path('/proc',str(d[key]),'cmdline').exists()
+m=json.loads((stage/'MANIFEST.json').read_text())
+for n,h in m['source_sha256'].items():assert sha(stage/n)==h
+for n,h in m['checks_sha256'].items():assert sha(stage/n)==h
+for n,h in m['checker_sha256'].items():assert sha(w/n)==h
+for field,name in [('auditor_sha256','audit_rear_joint_xy_live.py'),('execution_auditor_sha256','audit_joint_edge_execution_live.py'),('front_auditor_sha256','audit_front_edge_speed_live.py')]:assert sha(w/name)==m[field]
+p=json.loads((parent/'PROTOCOL.json').read_text());before=copy.deepcopy(p);oldstage=str((w/'staged_rear_joint_xy').relative_to(repo));newstage=str(stage.relative_to(repo));sources={}
+for rel,h in p['source_sha256'].items():
+ nr=rel.replace(oldstage,newstage);sources[nr]=sha(repo/nr)
+ if nr==rel:assert sources[nr]==h
+assert len(sources)==58
+for name in ['joint_edge_command.py','joint_edge_adapter.py']:
+ newhelper=str((stage/name).relative_to(repo));assert newhelper not in sources;sources[newhelper]=sha(stage/name)
+assert len(sources)==60
+r.mkdir();(r/'layouts').mkdir();layouts={}
+for old,h in p['layout_sha256'].items():
+ src=Path(old);assert sha(src)==h;dst=r/'layouts'/src.name;dst.write_bytes(src.read_bytes());layouts[str(dst)]=h
+for command in p['commands']:command['args']=[a.replace(str(parent),str(r)) for a in command['args']]+['--rear-joint-edge-command']
+for a,b in zip(before['commands'],p['commands']):
+ assert a['layout_id']==b['layout_id'] and a['tasks']==b['tasks'] and a['wait']==b['wait'];assert [x.replace(str(r),str(parent)) for x in b['args'][:-1]]==a['args']
+p.update(created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),collector=str(stage/'collect_paired_sorting.py'),source_sha256=sources,layout_sha256=layouts,settings=p['settings']+['--rear-joint-edge-command'],runner_sha256=sha(w/'run_joint_edge_groups.py'),rear_cop_auditor_sha256=sha(w/'audit_rear_joint_xy_live.py'),rear_execution_auditor_sha256=sha(w/'audit_joint_edge_execution_live.py'),candidate_manifest_sha256=sha(stage/'MANIFEST.json'),parent_result_sha256=sha(parent/'RESULT.json'),parent_protocol_sha256=sha(parent/'PROTOCOL.json'),baseline_push_passed=result['push_passed'],baseline_push_total=8,training_ready=False,scope='Identical closed jointXY parent8push2wait/layout/seed/steps/order. Only final joint-direction refinement after original valid rearXY and all original guards, first loaded excluded; original parent bounded IK independently replayed and final action/FK/bounds/slew/stationarity audited. Numeric fallback preserves parent,60archives. Diagnostic, no data admission.')
+for name in ['audit_rear_joint_xy_live.py','audit_rear_coupled_execution_live.py','audit_joint_edge_execution_live.py','close_joint_edge_group.py','close_joint_edge_full.py']:p['auditor_dependency_sha256'][name]=sha(w/name)
+for n,h in p['auditor_dependency_sha256'].items():assert sha(w/n)==h
+(r/'PROTOCOL.json').write_text(json.dumps(p,indent=2));(r/'INPUT_COMPARISON.json').write_text(json.dumps(dict(passed=True,commands_compared=6,only_new_flag='--rear-joint-edge-command',same_geometry_seed_steps_order=True,parent_protocol_sha256=sha(parent/'PROTOCOL.json'),protocol_sha256=sha(r/'PROTOCOL.json'),additional_readonly_logging='unchanged parent every selected rear top_push IK Jacobian',training_ready=False),indent=2));print(r,sha(r/'PROTOCOL.json'))

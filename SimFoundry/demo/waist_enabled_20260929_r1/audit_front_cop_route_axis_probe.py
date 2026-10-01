@@ -1,0 +1,75 @@
+"""Independent force-packet, geometric route and COP-waypoint reconstruction."""
+from pathlib import Path
+import json,sys,hashlib
+import numpy as np
+from scipy.spatial.transform import Rotation
+
+def reconstruct(rows, plan, tr, ori, packets, key):
+ side='right' if key=='box' else 'left';actor='parcel_box' if key=='box' else 'mailer';other='mailer' if key=='box' else 'box';sizes={'box':np.array([.14,.09,.045]),'mailer':np.array([.15,.145,.04])};direction=-1 if side=='right' else 1;rot={k:Rotation.from_quat(ori[k]).as_matrix() for k in sizes};g=plan['front_route_live_guards'];clear=g['clearance_before_lateral_m'];first=rows[0]['step'];radii={k:abs(rot[k])@sizes[k]/2 for k in sizes};initial_x=tr[other][first,0]-radii[other][first,0]-radii[key][first,0]-clear-.003;final_y=direction*max(.205,direction*tr[key][first,1]+.16)
+ stage='front_x';hold=float(plan['initial_target_xyz'][1]);safe_count=0;anchor=None;last_anchor=None;previous=None;prior_step=None;previous_stage=None;errors=[];records=[]
+ def near(t,name,a,b):
+  error=float(np.max(abs(np.asarray(a)-np.asarray(b))))
+  if not np.isfinite(error) or error>2e-6:errors.append([t,name,error])
+ for row_index,row in enumerate(rows):
+  t=row['step'];f=row.get('cop_slip_following');obj=tr[key][t];r=rot[key][t]
+  if prior_step is not None and t!=prior_step+1:errors.append([t,'noncontiguous_observations'])
+  prior_step=t
+  if f is None:errors.append([t,'missing_feedback_trace']);previous=np.asarray(row['target_xyz'][:2]);continue
+  gap=float(tr[other][t,0]-obj[0]-radii[other][t,0]-radii[key][t,0]);goal_x=min(initial_x,tr[other][t,0]-radii[other][t,0]-radii[key][t,0]-clear-.003)
+  if row['mode']!='front_guard_lift':
+   if stage=='front_x':
+    safe_count=safe_count+1 if gap>=clear else 0
+    if gap>=clear+g['recovery_resume_extra_m'] or safe_count>=g['nominal_clearance_confirmation_frames']:stage='lateral_y'
+   elif gap<clear-g['recovery_hysteresis_m']:stage='front_x';hold=float(obj[1]);safe_count=0
+   near(t,'geometric_goal_x',row['route_goal_x'],goal_x)
+   if row['route_stage']!=stage:errors.append([t,'geometric_route_stage'])
+  phase_reset=previous_stage is not None and stage!=previous_stage
+  if f.get('route_anchor_reset') is not phase_reset:errors.append([t,'route_anchor_reset'])
+  if f.get('previous_route_stage')!=previous_stage:errors.append([t,'previous_route_stage'])
+  if phase_reset:anchor=last_anchor=None
+  previous_stage=stage
+  if row['mode']!='top_push':
+   if f.get('override') or f.get('reason')!='original_non_push_mode':errors.append([t,'override_outside_push'])
+   anchor=last_anchor=None;previous=np.asarray(row['target_xyz'][:2]);continue
+  packet=packets.get(t-1);points=[];weights=[]
+  if packet:
+   near(t,'previous_packet_pose_alignment',packet['post_action_pose'][key],obj)
+   for c in packet['parcel_contacts']:
+    slots=[i for i,label in enumerate(c['shapes']) if '/'+actor+'/' in label]
+    if len(slots)!=1 or not any(side+'_wrist' in label for label in c['shapes']):continue
+    force=np.asarray(c['force_world_N'])*(1 if slots[0]==1 else -1);load=-float(force@r[:,2])
+    if load>.05:points.append(c['position_world']);weights.append(load)
+  if not weights or sum(weights)<.3:
+   if f.get('override') or f.get('reason')!='no_valid_current_loaded_cop':errors.append([t,'override_without_current_load'])
+   anchor=last_anchor=None;previous=np.asarray(row['target_xyz'][:2]);continue
+  if not f.get('override'):errors.append([t,'missing_declared_loaded_override']);previous=np.asarray(row['target_xyz'][:2]);continue
+  cop=np.average(points,axis=0,weights=weights);local=r.T@(cop-obj)
+  if anchor is None:anchor=local.copy()
+  world=obj+r@anchor;feed=np.zeros(2) if last_anchor is None else world[:2]-last_anchor[:2];goal=np.array([goal_x,hold if stage=='front_x' else final_y]);error=goal-obj[:2];distance=np.linalg.norm(error);drive=error*min(.001,distance)/distance if distance else np.zeros(2);raw_correction=.05*(world[:2]-cop[:2]);axis=error/distance if distance else np.zeros(2);removed=(np.dot(raw_correction,error)/np.dot(error,error))*error if distance else np.zeros(2);correction=raw_correction-removed;base=np.asarray(row['observed_support_xyz'][:2]) if previous is None else previous;ref=np.asarray(row['observed_support_xyz'][:2]);desired=base+feed+drive+correction;bounded=np.clip(desired,ref-.030,ref+.030);command=base+np.clip(bounded-base,-.003,.003)
+  compare={'command_xy':command,'previous_command_xy':base,'reference_xy':ref,'anchor_local':anchor,'measured_cop_local':local,'object_anchor_translation_xy':feed,'drive_xy':drive,'slip_correction_xy':correction,'raw_slip_correction_xy':raw_correction,'drive_direction_xy':axis,'removed_parallel_correction_xy':removed,'command_delta_xy':command-base,'command_reference_lead_xy':command-ref}
+  for name,value in compare.items():
+   if name not in f:errors.append([t,'missing_'+name])
+   else:near(t,name,f[name],value)
+  # Parent FrontTopRouteState's cross-axis target, derived independently.
+  # A recontact clears internal command; top_press does not store its emitted XY.
+  parent_base=base if row_index and rows[row_index-1]['mode']=='top_push' else ref
+  parent_desired=ref+np.clip(goal-obj[:2],-.012,.012)
+  parent_xy=parent_base+np.clip(parent_desired-parent_base,-.003,.003)
+  active_axis=0 if stage=='front_x' else 1;cross_axis=1-active_axis
+  emitted=command.copy();emitted[cross_axis]=base[cross_axis]+np.clip(parent_xy[cross_axis]-base[cross_axis],-.003,.003)
+  mix=f.get('route_axis_control')
+  if mix is None:errors.append([t,'missing_route_axis_control'])
+  else:
+   if mix.get('active_axis')!=active_axis:errors.append([t,'wrong_active_axis'])
+   for name,value in [('parent_xy',parent_xy),('original_cop_xy',command),('emitted_xy',emitted)]:
+    if name not in mix:errors.append([t,'missing_axis_'+name])
+    else:near(t,'axis_'+name,mix[name],value)
+  near(t,'actual_waypoint',row['target_xyz'][:2],emitted)
+  for name,value in [('desired_lead_clipped',bool(np.any(abs(bounded-desired)>1e-12))),('retained_slew_lag_outside_lead',bool(np.any(abs(command-ref)>.030+1e-9)))]:
+   # Near threshold float32 geometry can change a boolean; retain distance evidence.
+   boundary=np.min(abs(abs(desired-ref)-.030)) if name=='desired_lead_clipped' else np.min(abs(abs(command-ref)-.030))
+   if boundary>2e-6 and f.get(name)!=value:errors.append([t,name])
+  records.append(dict(step=t,normal_load_n=sum(weights),independent_cop_local_m=local.tolist(),goal_xy=goal.tolist(),command_xy=emitted.tolist(),waypoint_error_m=float(np.max(abs(emitted-row['target_xyz'][:2])))))
+  previous=np.asarray(row['target_xyz'][:2]);last_anchor=world
+ return records,errors
+

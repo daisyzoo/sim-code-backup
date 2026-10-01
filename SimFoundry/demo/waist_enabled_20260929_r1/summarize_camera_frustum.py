@@ -1,0 +1,22 @@
+"""Aggregate full parent8 plus completed candidate4 camera diagnostics; no new gate."""
+from pathlib import Path
+import json,hashlib,ast
+w=Path(__file__).resolve().parent;repo=w.parents[1];sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();rows=[]
+for run in ['joint_edge_groups_r1','joint_edge_retry_groups_r1']:
+ for ep in sorted((w/run).glob('case_*/layout_*')):
+  p=ep/'CAMERA_FRUSTUM_DIAGNOSIS.json'
+  if not p.exists():continue
+  d=json.loads(p.read_text());assert d['checker_sha256']==sha(w/'diagnose_recorded_camera_frustum.py') and d['runtime_camera_pose_samples_checked']==240
+  for n,h in d['source_sha256'].items():assert sha(ep/n)==h
+  quality=json.loads((ep/'quality.json').read_text())
+  rows.append(dict(run=run,episode=ep.name,original_quality_passed=quality['passed'],all_frames=d['all_frames'],top_push=d['top_push'],runtime_camera_samples=240,max_camera_position_error_m=d['max_camera_position_error_m'],max_camera_rotation_matrix_error=d['max_camera_rotation_matrix_error'],declared_intrinsics=d['raw_declared_intrinsics'],actual_intrinsics=d['actual_runtime_intrinsics'],intrinsics_difference=d['raw_minus_runtime_intrinsics'],report_sha256=sha(p)))
+assert len([r for r in rows if r['run']=='joint_edge_groups_r1'])==8 and len(rows)==12
+converter=repo/'scripts/prepare_paired_sorting_lerobot.py';server=repo/'scripts/pi05_policy_server.py';ct=ast.parse(converter.read_text());st=ast.parse(server.read_text());frame=next(n.args[0] for n in ast.walk(ct) if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr=='add_frame');obs=next(n.value for n in ast.walk(st) if isinstance(n,ast.AnnAssign) and isinstance(n.target,ast.Name) and n.target.id=='observation');keys=lambda n:[k.value for k in n.keys]
+assert set(keys(frame))=={'observation.state','action','observation.images.color_0','task'};assert set(keys(obs))=={'observation.state','observation.images.color_0','task','robot_type'}
+out=dict(scope=__doc__,rows=rows,total_runtime_pose_samples_checked=sum(r['runtime_camera_samples'] for r in rows),all_frame_reconstructions=sum(r['all_frames']['frames'] for r in rows),converter_frame_keys=keys(frame),policy_observation_keys=keys(obs),raw_intrinsics_is_direct_policy_input=False,input_path_source_sha256={str(p.relative_to(repo)):sha(p) for p in [converter,server,repo/'simfoundry/data/schema.py']},checker_sha256=sha(Path(__file__)),training_ready=False,limitations='OBB frustum exclusion only; no occlusion/segmentation/pixel accuracy guarantee. Logged240poses/episode validate camera reconstruction, otherframes inferred from measuredq. Uses actual runtimeK; earlier pre-runtimeK reports archived and superseded. Metadata mismatch is not direct model-input cause. Frozen physical/control/camera calibration unchanged.')
+(w/'CAMERA_FRUSTUM_SUMMARY.json').write_text(json.dumps(out,indent=2))
+lines=['# 相机视野与数据有效性：完整父八条 + 新四条困难任务','','**结果：**部分任务在推动阶段长期看不到目标；这与实际图审相符。该问题同时出现在失败和数值成功轨迹，不能用专家成功代替RGB数据有效性。','', '|版本|条件|原任务|推动帧|目标完整包围盒画外帧|目标中心在画内帧|工作掌参考在画内帧|','|---|---|---|---:|---:|---:|---:|']
+for r in rows:
+ p=r['top_push'];lines.append(f"|{r['run']}|{r['episode']}|{'过' if r['original_quality_passed'] else '败'}|{p['frames']}|{p['target_obb_excluded']}|{p['target_center_inside']}|{p['working_palm_reference_inside']}|")
+lines += ['', '每条已有240帧真实camera pos/ROS quat/K记录，全部12条共2880帧核验，重建所有14400帧。相机位置/旋转重建误差见JSON，均低于2e-6；两掌URDF参考核验低于1e-4m。不是逐像素可见性或遮挡判断，未新增每帧必须可见硬门。', '', '## 内参差异与更正', '', '最初诊断只查raw，误称没有实际相机位姿；随后在viewer_observer.json找到每5帧实测记录，已重跑全部。原报告保留为CAMERA_FRUSTUM_DIAGNOSIS_PRE_RUNTIME_POSE.json，不再使用其计数。', '', 'raw默认(fx,fy,cx,cy)=[605.500610,605.413574,326.147003,249.571503]；实际渲染K=[605.457092,605.457092,320,240]。主点误差6.147/9.572像素，焦距约±0.0435像素。新诊断使用实测K，并验证每帧记录一致，未静默放宽原内参相等断言。', '', 'TrajectoryEpisode在未显式传入fx/fy/cx/cy时写校准默认值，而collector未传相机实测K。当前paired转换只导出RGB/state/action/task，推理observation也不含K；该差异会影响几何诊断/使用相机内参的后续工具，但不是当前模型输入差异或22/39→7/39的直接证据。', '', '## 后续决策', '', '本次数值重试后袋仍失败，不能继续只调求解器。完整物理批次关闭后，应联合检查工作姿态的可见性与接触可达性：保持躯干相机原标定和原任务布局，先离线检查改变腰/双臂协调是否有同时可达、原碰撞/关节门内且保留目标观察的姿态，再做单变量物理验证。不能把几何可见当无碰撞或真实接触保证，也不能缩小为只做前侧。', '', '未来新采集需把实际相机K明确写入元数据，并将sorting_env_cfg/embodiment相关来源纳入相机审核；本轮冻结数据/控制器保持不变，不重写历史npz。物理失败组仍禁止进入训练。完整四族12fresh配对→合格整组转换共享RGB11D训练→独立192push3wait多seed实际h10/画面目标保持。']
+(w/'CAMERA_FRUSTUM_SUMMARY.md').write_text('\n'.join(lines)+'\n');print('checked',len(rows),'episodes',out['total_runtime_pose_samples_checked'],'runtime poses; no model K input')
