@@ -65,3 +65,7 @@ source_snapshot/
 /pic/
 /smoke_logs/
 /.code-backup/
+
+# Per-experiment generated source copies
+substep_runtime_sources/
+runtime_source/

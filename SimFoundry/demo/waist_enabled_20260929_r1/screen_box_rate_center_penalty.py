@@ -1,0 +1,44 @@
+"""Offline every completed rear-box recovery input from the1.5mm and1mm trials, soft center penalty with original20mm inset.
+Same-observation minimum-motion parent is computed causally at runtime; here
+its recorded endpoint is the parent seed, never an endpoint from later time.
+No simulation, contact certification, runtime change, or new admission gate.
+"""
+from pathlib import Path
+import sys,json,hashlib,datetime
+import numpy as np
+w=Path(__file__).resolve().parent;repo=w.parents[1];stage=w/'staged_rear_box_rate';sys.path[:0]=[str(w),str(stage),str(repo)]
+from clearance_runtime import ClearanceGuard
+from recontact_scene import RecontactScene
+from offline_center_penalty_plan import plan
+from audit_minimum_motion_plan_reentrant import PlanAudit
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();guard=ClearanceGuard(repo,stage);independent=PlanAudit(repo,stage);rows=[];sources={}
+out=w/'BOX_RATE_CENTER_PENALTY_SCREEN.json';assert not out.exists()
+def save(complete):
+ files=[Path(__file__),w/'offline_center_penalty_plan.py',w/'audit_minimum_motion_plan_reentrant.py',w/'audit_recontact_interior_events.py',w/'audit_recontact_pose_events.py',w/'audit_unloaded_wrist_prior_live.py',w/'audit_unloaded_wrist_task_optimality.py']
+ files+=list(stage.glob('*.py'))+[stage/'elbow_torso_hulls.json',repo/'assets/robots/g1_hand_support_vertices.json',repo/'third_party/unitree_ros/robots/g1_description/g1_23dof_rev_1_0_u1_black.urdf']
+ sources.update({str(p):sha(p) for p in files})
+ out.write_text(json.dumps(dict(scope=__doc__,complete=complete,center_weight_per_m2=400.,rows=rows,source_sha256=sources,physical_validation=False,training_ready=False),indent=2))
+for run in ['rear_slow_drag_groups_r1','rear_box_rate_groups_r1']:
+ cid,task=840001,'push_box_to_bin'
+ ep=w/run/f'case_{cid}'/f'layout_{cid}_{task}'
+ assert json.loads((ep/'quality.json').read_text())['frames']==1200
+ assert json.loads((ep/'ACTUAL_REVIEW_BINDING.json').read_text())['actual_sampled_visual_review']=='completed'
+ events=json.loads((ep/'recontact_pose.json').read_text())['rows'];starts=[e for e in events if e.get('planning')]
+ for event in starts:
+  ctx=event['context'];q=np.array(ctx['current']);scene=RecontactScene(guard,**ctx['scene']);parent=event['planning']
+  result=plan(scene,q,step=event['step'],parent_plan=parent);m=result['minimum_motion_pose'];checks=[]
+  for attempt in m['endpoint_attempts']:
+   if not attempt['accepted']:continue
+   x=np.array(attempt['candidate']);g,d=independent.geometry(x,ctx['scene']);axis=np.linalg.eigh(np.cov(independent.hand.vertices[scene.side].T))[1][:,0];align=abs(d['rotation'][:,2]@d['pose'][:3,:3]@axis)
+   minimum=float(min(align**2-.8**2,*list((d['core'][:2]/2-.020)-abs(d['point'][:2])),g['active_above_top_m']-.006,.007-g['active_above_top_m'],independent.hand.minz(x,scene.inactive)-.84,g['elbow_gap_m']-.005))
+   assert minimum>=-2e-7 and min(g['hand_parcel_gaps_m'].values())>=.01-2e-7 and np.all(x>=independent.lo-2e-7) and np.all(x<=independent.hi+2e-7)
+   assert abs(minimum-attempt['minimum_constraint_m'])<2e-8
+   checks.append(dict(seed=attempt['seed'],point_local_m=d['point'].tolist(),alignment_abs=float(align),minimum_constraint_m=minimum))
+  if m['selected']=='candidate':
+   expected,geometries=independent.path(m['nodes'],ctx['scene']);assert np.array_equal(expected,result['waypoints']);assert all(g['accepted'] for g in geometries)
+   for recorded,actual in zip(m['selected_path_checks'],geometries):independent.compare_geometry(recorded,actual)
+  _,old_detail=independent.geometry(parent['endpoint'],ctx['scene']);_,new_detail=independent.geometry(result['endpoint'],ctx['scene'])
+  old_radius=float(np.linalg.norm(old_detail['point'][:2]));new_radius=float(np.linalg.norm(new_detail['point'][:2]))
+  row=dict(run=run,old_surface_radius_mm=old_radius*1000,new_surface_radius_mm=new_radius*1000,episode=ep.name,step=event['step'],old_waypoints=len(event['planning']['waypoints']),selected=m['selected'],route=m.get('route'),new_waypoints=len(result.get('waypoints',[])),independent_endpoints=checks,fallback_reason=m['fallback_reason'],plan=result);rows.append(row);sources[str(ep/'recontact_pose.json')]=sha(ep/'recontact_pose.json');save(False)
+  print(ep.name,event['step'],m['selected'],m.get('route'),len(result.get('waypoints',[])), 'radius_mm',round(old_radius*1000,2),round(new_radius*1000,2),flush=True)
+assert len(rows)>0;save(True);print('COMPLETE',len(rows),'accepted candidate paths',sum(r['selected']=='candidate' for r in rows),flush=True)
