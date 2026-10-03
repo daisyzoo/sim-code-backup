@@ -1,0 +1,100 @@
+"""Prepare the same complete8push2wait comparison for uncapped loaded-Z stage.
+No data admission and no physics launch. Every original failure stays visible.
+"""
+from pathlib import Path
+import ast,json,hashlib,datetime
+W=Path(__file__).resolve().parent;S=W/'staged_front_loaded_z_priority';P=W/'front_z_priority_physical_preparation_r1';assert not P.exists();P.mkdir();sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();records=[]
+parent=W/'front_initial_physical_r1/PROTOCOL.json';protocol=json.loads(parent.read_text());old=protocol['plan'];commands=[]
+for item in old['commands']:
+ args=list(item['args']);args[args.index('--out-dir')+1]=str(P/f"case_{item['layout_id']}");args.append('--front-loaded-z-priority');commands.append(dict(item,args=args))
+plan=dict(created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),status='prepared_not_launched',collector=str(S/'collect_paired_sorting.py'),collector_sha256=sha(S/'collect_paired_sorting.py'),groups=old['groups'],commands=commands,parent_protocol=str(parent),parent_protocol_sha256=sha(parent),parent_run=str(parent.parent),comparison='uncapped_loaded_z_priority_against_closed_first_center',scope=__doc__,simulation_started=False,training_ready=False)
+(P/'PLAN.json').write_text(json.dumps(plan,indent=2))
+def write(parent,name,text,edits=None):
+ p=W/name;assert not p.exists();ast.parse(text);p.write_text(text);records.append(dict(parent=str(parent),parent_sha256=sha(parent),path=str(p),sha256=sha(p),edits=edits or []))
+for name in ['review_front_projection_stage_episode.py','review_front_projection_incomplete_episode.py','watch_front_projection_numeric_reviews.py']:
+ p=W/name;s=p.read_text().replace('front_projection','front_z_priority').replace('FRONT_PROJECTION','FRONT_Z_PRIORITY').replace('run_front_z_priority_physical_v2.py','run_front_z_priority_physical.py');write(p,name.replace('front_projection','front_z_priority'),s)
+p=W/'watch_front_projection_physical_audits_v2.py';s=p.read_text().replace('front_projection','front_z_priority').replace('run_front_z_priority_physical_v2.py','run_front_z_priority_physical.py');s=s.replace("if len(completed)==10:save('complete');break","if len(completed)==10:\n   assert len(all_rows)==204,('incomplete audit inventory',len(all_rows))\n   save('complete');break");write(p,'watch_front_z_priority_physical_audits.py',s)
+p=W/'close_front_projection_physical.py';s=p.read_text().replace('front_projection','front_z_priority').replace('FRONT_PROJECTION','FRONT_Z_PRIORITY');s=s.replace("W/'front_loaded_physical_r1/RESULT.json'","W/'front_initial_physical_r1/RESULT_WITH_REGION_SUPPLEMENT.json'").replace("W/'front_loaded_physical_r1'","W/'front_initial_physical_r1'").replace("comparison_role='material_projection_against_matched_old_cap_parent'","comparison_role='loaded_z_priority_against_matched_uncapped_first_center_parent'");s=s.replace("assert len(results)==10 and all_rows==audit['rows']", "assert len(results)==10 and len(all_rows)==204 and all_rows==audit['rows']");write(p,'close_front_z_priority_physical.py',s)
+p=W/'queue_front_projection_physical_closure.py';s=p.read_text().replace('front_projection','front_z_priority').replace('watch_front_z_priority_physical_audits_v2.py','watch_front_z_priority_physical_audits.py').replace("len(audit['rows'])==194","len(audit['rows'])==204").replace('audit_rows=194','audit_rows=204');write(p,'queue_front_z_priority_physical_closure.py',s)
+# Retain original runtime launch/collection/failure preservation implementation.
+p=W/'run_front_initial_physical.py';body=p.read_text().split('def main(out,check_only=False):',1)[1];body='def main(out,check_only=False):'+body;body=body.replace('watch_front_initial_physical_audits.py','watch_front_z_priority_physical_audits.py').replace("default=str(W/'front_initial_physical_r1')","default=str(W/'front_z_priority_physical_r1')")
+body=body.replace("PREVIOUS/'COLLECTION_EXECUTION.json',W/'terminal_margin_physical_r1/RESULT_WITH_SUPPLEMENT.json'","PREVIOUS/'COLLECTION_EXECUTION.json',PREVIOUS/'RESULT_WITH_REGION_SUPPLEMENT.json',W/'front_projection_physical_r1/RESULT.json',W/'terminal_margin_physical_r1/RESULT_WITH_SUPPLEMENT.json'")
+a="  (out/'AUDIT_LAUNCH.json').write_text(json.dumps(dict(pid=watcher.pid,script=str(W/'watch_front_z_priority_physical_audits.py')),indent=2))"
+b=a+"\n  with (out/'numeric_watcher.log').open('x') as log:numeric=subprocess.Popen([sys.executable,str(W/'watch_front_z_priority_numeric_reviews.py')],cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)\n  (out/'NUMERIC_LAUNCH.json').write_text(json.dumps(dict(pid=numeric.pid,script=str(W/'watch_front_z_priority_numeric_reviews.py')),indent=2))"
+assert body.count(a)==1;body=body.replace(a,b)
+body=body.replace("parser.add_argument('--check-only',action='store_true');args=parser.parse_args();main(args.out,check_only=args.check_only)","parser.add_argument('--check-only',action='store_true');parser.add_argument('--configuration-only',action='store_true');args=parser.parse_args()\n if args.configuration_only:configuration();print('CONFIGURATION_CHECKED_NO_PHYSICS')\n else:main(args.out,check_only=args.check_only)")
+header='''"""Matched uncapped loaded-Z physical diagnostic, full8push2wait only.
+All194 original audits plus10 actual-command audits; failures retained. The
+source/old-context checks establish readiness to try, never physical success.
+"""
+from pathlib import Path
+import os,sys,json,hashlib,datetime,subprocess,argparse
+W=Path(__file__).resolve().parent;ROOT=W.parents[1];P=W/'front_z_priority_physical_preparation_r1';BASE=W/'fresh_closed_peak_trials_r1';PREVIOUS=W/'front_initial_physical_r1';S=W/'staged_front_loaded_z_priority'
+sys.path[:0]=[str(W),str(ROOT)]
+from front_z_priority_stage_source_binding import verify_trial_provenance
+from front_z_priority_stage_run_contract import primary,controls,ADDITIONAL,REPORTS
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+CHECKS=['staged_front_loaded_z_priority/CHECK.json','FRONT_LOADED_Z_PRIORITY_COLLECTOR_CHECK.json','FRONT_LOADED_Z_PRIORITY_PARENT_RECONSTRUCTION_CHECK.json','FRONT_LOADED_Z_PRIORITY_APPLIED_ROW_CHECK.json','FRONT_LOADED_Z_PRIORITY_COMPLETE_RECORD_CHECK.json','FRONT_Z_PRIORITY_SOURCE_CONTRACT_CHECK.json','FRONT_Z_PRIORITY_AUDIT_DEPENDENCIES_CHECK.json','FRONT_Z_PRIORITY_COMMAND_BRIDGE_CHECK.json']
+MANIFESTS=['FRONT_Z_PRIORITY_AUDIT_FAMILY_PREPARATION.json','FRONT_Z_PRIORITY_SOURCE_BINDING_PREPARATION.json','FRONT_Z_PRIORITY_PHYSICAL_PREPARATION.json']
+_cache={}
+def bound(mapping):
+ for p,h in mapping.items():
+  if p not in _cache:_cache[p]=sha(p)
+  assert _cache[p]==h,p
+
+def configuration():
+ plan=json.loads((P/'PLAN.json').read_text());assert plan['status']=='prepared_not_launched' and plan['simulation_started'] is False
+ assert Path(plan['collector'])==S/'collect_paired_sorting.py' and sha(plan['collector'])==plan['collector_sha256']
+ assert sha(plan['parent_protocol'])==plan['parent_protocol_sha256'];old=json.loads(Path(plan['parent_protocol']).read_text())['plan']
+ assert plan['groups']==old['groups'] and len(plan['commands'])==6 and sum(len(c['tasks']) for c in plan['commands'])==10
+ from prepare_closed_peak_trial import parser_namespace
+ from simfoundry.data.waist_pilot_protocol import semantic_settings
+ for item,original in zip(plan['commands'],old['commands']):
+  args=item['args'];expected=list(original['args']);expected[expected.index('--out-dir')+1]=args[args.index('--out-dir')+1];expected+=['--front-loaded-z-priority'];assert item==dict(original,args=expected)
+  for flag in ['--front-loaded-z-priority','--front-initial-center-landing','--terminal-release-margin','--edge-clearance-intersection']:assert args.count(flag)==1
+  assert not any(x in args for x in ['--front-loaded-reference-cap','--front-loaded-material-projection','--terminal-directional-lead','--push-assist'])
+  if not item['wait']:assert sha(args[args.index('--diagnostic-layout-json')+1])==item['layout_sha256']
+  resolved,_=parser_namespace(S/'collect_paired_sorting.py',args,full=True);settings=semantic_settings(resolved)
+  for key in ['front_loaded_z_priority','front_initial_center_landing','terminal_release_margin','edge_clearance_intersection']:assert settings.pop(key) is True
+  assert settings==json.loads((W/'staged_closed_peak_trial/TRIAL_PROFILE.json').read_text())['prelaunch_settings']
+ prep=json.loads((S/'VALIDATED_PREPARATION.json').read_text());bound(prep['source_sha256'])
+ for n in CHECKS:
+  r=json.loads((W/n).read_text());assert r['passed'] is True
+  if isinstance(r.get('source_sha256'),dict):bound(r['source_sha256'])
+  if 'stage_sha256' in r:bound({str(S/k):h for k,h in r['stage_sha256'].items()})
+ family=json.loads((W/MANIFESTS[0]).read_text());bound(family['dependency_sha256'])
+ for r in family['adapters']:assert sha(r['parent'])==r['parent_sha256'] and sha(r['path'])==r['sha256']
+ generated=json.loads((W/MANIFESTS[2]).read_text())
+ for r in generated['files']:assert sha(r['parent'])==r['parent_sha256'] and sha(r['path'])==r['sha256']
+ deps=json.loads((W/'FRONT_Z_PRIORITY_AUDIT_DEPENDENCIES_CHECK.json').read_text());assert not deps['missing'] and deps['conditions']==10 and deps['expected_audit_invocations']==204
+ try:verify_trial_provenance(PREVIOUS/'case_840022')
+ except (AssertionError,KeyError):pass
+ else:raise AssertionError('Old-source parent admitted as new stage')
+ from watch_front_z_priority_numeric_reviews import check
+ numeric=check();assert numeric['passed'];bound(numeric['source_sha256'])
+ result=dict(passed=True,created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),conditions=10,original_audits=194,new_execution_audits=10,total_audits=204,plan_sha256=sha(P/'PLAN.json'),checks={n:sha(W/n) for n in CHECKS},numeric_routing=numeric,runner_sha256=sha(__file__),simulation_started=False,training_ready=False)
+ (P/'CONFIGURATION_CHECK.json').write_text(json.dumps(result,indent=2));return plan
+
+def preflight():
+ plan=configuration();parent_protocol=json.loads((PREVIOUS/'PROTOCOL.json').read_text());bound(parent_protocol['frozen_files_sha256'])
+ parent=json.loads((PREVIOUS/'RESULT_WITH_REGION_SUPPLEMENT.json').read_text());bound(parent['source_sha256'])
+ assert parent['conditions']==10 and parent['original_audit_invocations']==194 and parent['region_chain_episodes']==8 and not parent['unresolved_audits'] and not parent['training_ready']
+ assert parent['status']=='diagnostic_complete_original_dependency_failures_retained_with_separate_supplement'
+ projection=W/'front_projection_physical_r1';closed=json.loads((projection/'RESULT.json').read_text());bound(closed['source_sha256']);assert closed['conditions']==10 and closed['audit_invocations']==194 and not closed['failed_audit_invocations'] and not closed['training_ready']
+ for run in [PREVIOUS,projection]:
+  protocol=json.loads((run/'PROTOCOL.json').read_text());audit=json.loads((run/'AUDIT_STATUS.json').read_text());assert audit['status']=='complete'
+  for pid in [protocol['producer_pid'],audit['pid']]:
+   path=Path('/proc')/str(pid);assert not path.exists() or (path/'stat').read_text().split()[2]=='Z',('previous process live',pid)
+ records=json.loads((PREVIOUS/'COLLECTION_EXECUTION.json').read_text());assert len(records)==10
+ for r in records:bound(r['source_sha256'])
+ from rear_corridor_storage_budget import require_storage
+ storage=require_storage(ROOT,plan['commands'])
+ gpu=subprocess.run(['nvidia-smi','--query-compute-apps=pid,process_name','--format=csv,noheader'],capture_output=True,text=True,check=True);assert not gpu.stdout.strip(),gpu.stdout.strip()
+ result=dict(preflight_passed=True,created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),plan_sha256=sha(P/'PLAN.json'),configuration_check_sha256=sha(P/'CONFIGURATION_CHECK.json'),storage=storage,runner_sha256=sha(__file__),simulation_started=False,training_ready=False)
+ (P/'LAUNCH_PREFLIGHT.json').write_text(json.dumps(result,indent=2));return plan
+
+'''
+write(p,'run_front_z_priority_physical.py',header+body,[dict(kind='new_bound_preflight_and_original_main_with_numeric_watcher')])
+manifest=dict(created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),scope=__doc__,generator_sha256=sha(__file__),plan_sha256=sha(P/'PLAN.json'),files=records,simulation_started=False,training_ready=False)
+with (W/'FRONT_Z_PRIORITY_PHYSICAL_PREPARATION.json').open('x') as f:json.dump(manifest,f,indent=2)
+print('Prepared full8push2wait runner, reviews and closure; no launch')
