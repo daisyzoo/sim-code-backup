@@ -1,0 +1,69 @@
+"""Historical-input probe of earlier 20mm rear-box edge intervention.
+
+Only changes near-edge eligibility from10mm to20mm in an isolated function.
+Original equations, X slew, forward-Y scaling, Z and mode/load guards retained.
+No simulator/controller edits, new physical outcomes, or data admission.
+"""
+from pathlib import Path
+import ast
+import copy
+import datetime
+import hashlib
+import itertools
+import json
+import numpy as np
+from scipy.spatial.transform import Rotation
+
+W=Path(__file__).resolve().parent
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+sources={}
+def bound(p):sources[str(p)]=sha(p);return p
+def read(p):return json.loads(bound(p).read_text())
+src=W/'staged_front_box_trailing_v2/rear_joint_xy_progress.py'
+text=bound(src).read_text();old='size[:2]/2-abs(cop[:2])<.010';assert text.count(old)==1
+def make(source):
+    env={'np':np,'itertools':itertools}
+    node=next(x for x in ast.parse(source).body if isinstance(x,ast.FunctionDef) and x.name=='govern_rear_joint_xy')
+    exec(compile(ast.Module(body=[node],type_ignores=[]),str(src),'exec'),env)
+    return env['govern_rear_joint_xy']
+original=make(text);candidate=make(text.replace(old,'size[:2]/2-abs(cop[:2])<.020'))
+records=[]
+for version in ['r1','r2']:
+    ep=W/('front_box_trailing_physical_'+version)/'case_840023/layout_840023_push_box_to_bin'
+    fr=read(ep/'frontal_bypass.json');rows=fr['rows'];size=fr['plan']['rear_cop_centering']['actual_core_size_xyz'];direction=fr['plan']['direction']
+    packets={r['after_action_step']:r for r in read(ep/'solved_contact_forces.json')['rows']}
+    with np.load(bound(ep/'trace.npz')) as z:xyz=z['box'].copy()
+    with np.load(bound(ep/'parcel_orientation.npz')) as z:quat=z['box'].copy()
+    previous=None
+    for row in rows:
+        t=row['step'];feedback=row.get('rear_cop_centering',{})
+        if feedback.get('override'):
+            assert previous is not None and row['mode']=='top_push'
+            rot=Rotation.from_quat(quat[t]).as_matrix();points=[];weights=[]
+            for c in packets[t-1]['parcel_contacts']:
+                slots=[i for i,s in enumerate(c['shapes']) if '/parcel_box/' in s]
+                if len(slots)!=1 or not any('right_wrist' in s for s in c['shapes']):continue
+                f=np.asarray(c['force_world_N'])*(1 if slots[0]==1 else -1);load=-float(f@rot[:,2])
+                if load>.05:points.append(c['position_world']);weights.append(load)
+            assert sum(weights)>=.3
+            cop_world=np.average(points,axis=0,weights=weights)
+            np.testing.assert_allclose(cop_world,feedback['cop_world'],atol=2e-6,rtol=0)
+            args=dict(enabled=True,mode=row['mode'],previous_xyz=previous,parent_xyz=feedback['command_xyz'],reference_xyz=row['observed_support_xyz'],object_rotation=rot,core_size=size,cop_local=rot.T@(cop_world-xyz[t]),normal_load_n=sum(weights),direction=direction)
+            before=copy.deepcopy(args);got=original(**args);saved=row['rear_joint_xy_progress']
+            assert got['override']==saved['override'] and got['reason']==saved['reason'],(version,t,got,saved)
+            for k in ['command_xyz','scale','projected_local_xy_delta_m','constraints_mm','rhs_mm']:
+                if k in got:np.testing.assert_allclose(got[k],saved[k],atol=2e-7,rtol=0,err_msg=f'{version}:{t}:{k}')
+            proposed=candidate(**args)
+            for k in args:
+                if isinstance(args[k],(list,np.ndarray)):np.testing.assert_array_equal(args[k],before[k])
+                else:assert args[k]==before[k]
+            parent=np.asarray(args['parent_xyz']);oldcmd=np.asarray(got.get('command_xyz',parent));newcmd=np.asarray(proposed.get('command_xyz',parent))
+            changed=bool(np.max(abs(newcmd-oldcmd))>1e-10)
+            records.append(dict(version=version,step=t,original_reason=got['reason'],candidate_reason=proposed['reason'],original_override=got['override'],candidate_override=proposed['override'],changed=changed,old_command_xyz=oldcmd.tolist(),new_command_xyz=newcmd.tolist(),new_minus_old_mm=((newcmd-oldcmd)*1000).tolist(),margin_mm=((np.asarray(size[:2])/2-abs(args['cop_local'][:2]))*1000).tolist(),candidate_scale=proposed.get('scale')))
+        previous=row['target_xyz']
+for p,h in sources.items():assert sha(p)==h,p
+sources[str(Path(__file__).resolve())]=sha(__file__)
+out=dict(created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),scope=__doc__,original_records_reproduced=len(records),changed_records=sum(r['changed'] for r in records),records=records,source_sha256=sources,limitations=['Recorded parent inputs reused; changed candidate is not recursively replayed through its own prior commands.','Earlier activation may reduce progress or yield infeasible LPs; future executed command must retain parent fallback and all downstream guards.','20mm is an exploratory interior warning margin, not a revised quality threshold or demonstrated optimum.'],training_ready=False)
+dest=W/'front_box_trailing_physical_r2/REAR_EARLIER_EDGE_PROBE_V2.json'
+with dest.open('x') as f:json.dump(out,f,indent=2)
+print(json.dumps({k:v for k,v in out.items() if k not in ['records','source_sha256']},indent=2))

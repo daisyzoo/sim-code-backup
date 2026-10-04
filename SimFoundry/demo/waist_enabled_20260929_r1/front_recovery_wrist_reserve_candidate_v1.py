@@ -1,0 +1,99 @@
+"""Uninstalled recovery wrist-reserve candidate, default zero delegates original.
+A fixed positive reserve tightens only endpoint wrist freedom; measured start,
+path checks, object/hand geometry and original physical joint bounds are unchanged.
+A physical lowest hull vertex is centered, not the virtual support reference.
+Nominal sampled paths do not certify actual tracking, contact COP or task success.
+"""
+import numpy as np
+from scipy.optimize import minimize, Bounds
+from articulated_hand_geometry import skew
+from minimum_motion_recontact import interpolate
+
+
+def checked_scene(scene, q):
+    result = scene.check(q)
+    details = scene.details(q)
+    result = dict(result, inactive_lowest_z_m=float(details['inactive_z']))
+    result['accepted'] = bool(result['accepted'] and result['elbow_gap_m'] >= .005-2e-7
+                              and details['inactive_z'] >= .84-2e-7)
+    return result
+
+
+def plan(scene, current, *, step, wrist_reserve_rad=0.):
+    if isinstance(wrist_reserve_rad, (bool,np.bool_)) or not np.isfinite(wrist_reserve_rad) or not 0<=wrist_reserve_rad<=.6:
+        raise ValueError("Invalid explicit planning wrist reserve")
+    if wrist_reserve_rad==0:
+        from front_initial_center_plan import plan as original_plan
+        return original_plan(scene,current,step=step)
+    if scene.side!="left":raise ValueError("Candidate covers front-bag recovery only")
+    q = np.asarray(current, float)
+    if q.shape != (11,) or not np.isfinite(q).all() or type(step) is not int or step < 1:
+        raise ValueError('Invalid current planning observation')
+    guard = scene.guard
+    wrist_index=5
+    wrist_axis=np.eye(11)[wrist_index]
+    metadata = dict(step=step, start=q.tolist(), scene=scene.record(), attempts=[],
+                    scope=__doc__, training_ready=False, wrist_planning_reserve_rad=float(wrist_reserve_rad), original_endpoint_objective_unchanged=True)
+    if not checked_scene(scene, q)['accepted']:
+        return dict(metadata, accepted=False, reason='current_unloaded_geometry_rejected')
+    axis = np.linalg.eigh(np.cov(guard.model.vertices[scene.side].T))[1][:, 0]
+    normal = scene.rotation[:, 2]
+
+    def alignment(x):
+        pose, jl, jw = guard.model.fk(scene.side, x)
+        vector = pose[:3, :3] @ axis
+        return float(normal @ vector), normal @ (-skew(vector) @ jw)
+
+    def objective(x):
+        delta = x-q
+        return float(delta @ delta), 2*delta
+
+    def constraints(x):
+        g = scene.details(x)
+        p, jac = g['point'], g['jacobian']
+        a, da = alignment(x)
+        return (np.r_[a*a-.8**2, .002-p[:2], .002+p[:2],
+                      p[2]-scene.core[2]/2-.006, scene.core[2]/2+.007-p[2],
+                      g['inactive_z']-.84, guard.geometry.constraints(x)-.005,
+                      x[wrist_index]-guard.lower[wrist_index]-wrist_reserve_rad,
+                      guard.upper[wrist_index]-wrist_reserve_rad-x[wrist_index]],
+                np.vstack([2*a*da, -jac[:2], jac[:2], jac[2], -jac[2],
+                           g['inactive_z_jacobian'], guard.geometry.jacobian(x),wrist_axis,-wrist_axis]))
+
+    seeds = [('actual_unloaded', q)] + [(f'neutral_waist_{y}', np.r_[y, np.zeros(10)])
+                                      for y in [-.5, 0., .5]]
+    usable = []
+    for label, seed in seeds:
+        fit = minimize(objective, np.clip(seed, guard.lower, guard.upper), jac=True,
+                       bounds=Bounds(guard.lower, guard.upper), constraints=[
+                           dict(type='ineq', fun=lambda x: constraints(x)[0],
+                                jac=lambda x: constraints(x)[1]),
+                           dict(type='ineq', fun=lambda x: np.array(list(scene.details(x)['gaps'].values()))-.01)],
+                       method='SLSQP', options=dict(maxiter=220, ftol=1e-12))
+        x = np.asarray(fit.x, float)
+        finite = bool(np.isfinite(x).all())
+        minimum = float(min(constraints(x)[0])) if finite else None
+        endpoint_ok = bool(fit.success and finite and minimum >= -2e-7
+                           and checked_scene(scene, x)['accepted']
+                           and np.all(x >= guard.lower-2e-7) and np.all(x <= guard.upper+2e-7))
+        path = interpolate(scene, [q, x]) if endpoint_ok else None
+        if path is not None:
+            path['checks'] = [checked_scene(scene, v) for v in path['waypoints']]
+            path['accepted'] = bool(path['waypoints'] and all(v['accepted'] for v in path['checks']))
+        attempt = dict(seed=label, status=int(fit.status), iterations=int(fit.nit),
+                       endpoint_accepted=endpoint_ok, minimum_constraint_m=minimum,
+                       endpoint=x.tolist() if finite else None,
+                       objective=float(fit.fun) if np.isfinite(fit.fun) else None,
+                       nominal_path=path)
+        metadata['attempts'].append(attempt)
+        if endpoint_ok and path['accepted']:
+            usable.append(attempt)
+    if not usable:
+        return dict(metadata, accepted=False, reason='no_verified_center_endpoint_and_path')
+    selected = min(usable, key=lambda v: v['objective'])
+    path = selected['nominal_path']
+    return dict(metadata, accepted=True, reason='center_endpoint_and_sampled_path',
+                endpoint=selected['endpoint'], waypoints=path['waypoints'],
+                selected_seed=selected['seed'], thin_axis_local=axis.tolist(),
+                nominal_path_nodes=len(path['waypoints']),
+                budget_note='Runtime remains 240 ticks; node count is not physical completion proof.')

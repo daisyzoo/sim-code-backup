@@ -6,7 +6,517 @@
 
 ---
 
+## 2026-10-04T19:26:45.983646+00:00 225原失败排除差分步长解释；未安装解析首轮+发出前KKT门覆盖2398上下文/124修正
+
+上一目标轮progress，本轮progress。REAR_BOX_225_ANALYTIC_FIRST_PROBE_V1精确复现原225命令/defaultoff整record；独立FD1e−6/2e−7/5e−8与解析梯度均残差1.1241697e−6>原1e−6，不能称审核差分误差。原solver仅status8才解析重试；225status成功但没达到独立门。首轮直接解析约束后同原ftol1e−11/maxiter300/目标/边界/0.5mm要求，原独立残差3.699445e−9，最大命令变化1.567602e−5rad；未发物理。
+
+候选V3 joint_edge_inward_analytic_first_candidate_v3默认关保留原算法，开启时初轮解析且在实际float32输出上先核原1e−6 stationarity；若不达标明确final_stationarity_violation并保留拒绝命令和真实solver元数据。独立audit_inward_analytic_first_record_v1不导入候选optimizer/certificate，保留原primal、原FD/NNLS与阈值。V1在非推分支提前要求Jacobian的问题由V2把检查放回原mode/selection保护后，V3只补拒绝solver状态/迭代元数据；未热改当前stage。
+
+两个实际完整后盒（当前失败run及quarter成功父）各1199上下文、49/75共124边缘修正，均过原独立edge/clearance/final guard及新记录审核，无新增拒绝。全部仍用真实q/上一原action，不是候选闭环。实际失败225命令注入solver success后被新门拒绝，独立复算通过；5篡改（阈值/伪通过/伪残差/solver状态/发出被拒动作）均拒绝，原disabled/nonpush/unselected三保护等同。原失败报告不清除。
+
+最新readiness为rear_box_analytic_first_chain_probe_r2/READINESS_REVIEW_V1，候选未安装。仍需隔离collector显式默认关参数、source/原生全链、原全部audit消费者与新拒绝分支接线，然后原全部条件物理验证；不能把2398离线输入或更小残差当分拣/泛化改善。当前原高度run仍推进，全部5872冻结来源逐hash不变；活进程、进度/原失败审核数见LATEST/LIVE_OBSERVATION_V1。首交换2/4退化和前袋失载/腕边界问题保留，0新增准入/转换/训练；完整多样布局共享策略/非目标15mm/首零11D后双臂腰/无助推/h10独立多seed实图目标未完成。
+
+## 2026-10-04T19:13:46.889462+00:00 新高度run原独立审核出现225步最优性失败，49原交集记录定位完成
+
+**新增坏结果保留：**840023后盒的原self-clearance审核失败，实际225步stationarity=1.1241697127381128e−6超过原1e−6。独立复用未改的record auditor在真实raw/姿态上检查49个intersection，仅225失败；该步intersection未改原edge命令。不能称碰撞发生，也不能用接近阈值改判通过。原runtime只检查solver success、float32 primal/bounds，没有相同KKT门；下一步检查225梯度重建与solver收敛，若改候选必须原1e−6验收，不能放宽审计。REAR_BOX_STATIONARITY_FAILURE_LOCALIZATION_V2和REAR_BOX_225_FAILURE_FINDINGS_V1绑定来源。定位脚本V1误传list limits导致类型错误，V2改与原一致的NumPy参数，未改审核数学，失败日志保留。当前collector700067真实身份/CPU见LATEST，原完整条件继续，仍0新增训练准入。
+
+## 2026-10-04T19:08:00.593774+00:00 前袋实际下压全链未丢命令；后段腕角累积触界，未安装恢复余量候选3真实上下文几何/预测通过
+
+上一目标轮progress，本轮progress。FRONT_BAG_LOADED_COMMAND_CHAIN_V1逐父390/新349推帧重算URDF支持点、原task输入、priority→transport→最终raw：最终命令不一致0。新336/349帧压力bias已到原−6mm，peak guard实际hold0；真实24子步均载整体mean1.706N（父1.488），不能把5N目标当已达到。新名义最终支持Z差中位−1.465mm，下一实际同参考Z变化中位+0.00719mm；这是受接触约束的servo目标差，不能据此说电机饱和/物体应被压入。未保存真实joint速度/actuator torque，原因仍有限。原压力/关节/质量门不变。
+
+新增后段问题：新1090–1122共33推帧左腕roll命令贴原上限1.9722rad（float32误差在原容差），不是所有早期失载的原因。实际7次恢复交接腕角逐1.07669→1.31682→1.55588→1.62248→1.79288→1.88483→1.87957rad，原最小运动恢复累积高腕角。
+
+未安装front_recovery_wrist_reserve_candidate_v1：默认0直接委托原plan；正reserve只增加端点腕部内缩约束，不更改原目标函数、当前/路径物理限位、落点中心/高度/姿态/障碍/肘间距。固定0.30rad在真实恢复5/6/7（864/1028/1133）三上下文均有原几何/名义路径与原causal预检通过，端点腕角均1.6722，预测98/36/49步与原一致。仍是假想响应，预测capture丢弃，没发仿真。实际handover原3mrad误差可能使实际余量低于.30，尚须显式actual reserve观测及原生链/全审核接线后再试物理。该候选只针对后段姿态，不替代持续牵引改进。详见front_recovery_wrist_reserve_probe_r2/READINESS_REVIEW_V1；V1用step>=900漏了864而在求解前失败，V2明确真实counter5/6/7，失败保留。
+
+当前原10条件/224审核继续，无stage热改，无新物理/准入/转换/训练；最新实际PID/启动身份、进度和audit计数存LATEST以及候选目录LIVE_OBSERVATION_V1。首交换组2/4退化仍保留；原目标含完整多样布局共享策略、非目标15mm、首11D零位后双臂/腰、无助推/h10、独立布局多seed实际模型画面，仍未完成。
+
+## 2026-10-04T18:53:41.575243+00:00 effective高度首交换组完整2/4退化；前袋推进改善仍失载，5条实际图审完成
+
+本目标轮progress。原collector671066自然完成1200前袋，producer继续原wait与840020；具体当前PID/启动身份/进度见LATEST和front_effective_height_physical_r1/FIRST_SWAP_CONTACT_FINDINGS_V1。没有重启覆盖失败，没有更改运行stage，全部5872冻结来源逐hash核验。
+
+**好结果有限：**前袋840023新transport实际83→467应用、155→3接触primal拒绝，推进38.500499→72.427806mm；24子步有载占比84.3269%→87.2135%，非目标木盒XY0；实际进入lateral_y。**差结果必须突出：**仍原门失败，6失载+1路线换向；6次失载的最后有效COP中5次位于/超出物理core边缘，原最小1mm正向drive仍在。首交换组原3/4→新2/4，后盒258.593895mm失败且新分支0应用，不直接归因修复。8推2wait全run尚未齐，不能扩采或准入。
+
+真实看完新后盒/前袋各8RGB4外视与70wait的8RGB，已存ACTUAL_REVIEW_BINDING；累计5条实际图审。后盒513/685边缘裁切、856以后目标画外，前袋多帧下缘裁切，视野风险保留。等待独立原门通过、11动作全0；前两条困难推独立复算均失败，不能用图像抽帧否定原门。
+
+新增接触证据：后盒24tick有载99.776%→98.820%、均载约5N，单位pushframe推进.554→.444mm；修正历史沿用退出reason，父6倾斜+1正常释放，新1失载+7倾斜+1未完成。材料V2同时推进手/物体同一材料点并含物体旋转，相对沿路线位移均值.648260/.652812mm接近，不能归为更大滑移；绝对servo目标差不是下一帧应完成位移。
+
+FRONT_BAG_TRACTION_COMPARISON_V1基于冻结实际friction/frame：手mu1、桌mu.55，新317有载lasttick中230个手切向L1利用率>.98，中位normal1.847659N；老full-height中位2.063999N也仅44.179078mm失败。末tick不是持续摩擦/净冲量证明，不修改物理材质、不盲目恢复full压力、不恢复已否定固定lead-cap。后续重点持续内部接触与实际牵引，等当前困难前盒完成后选单项候选。
+
+前袋COP诊断V1在1084误把feedback近Y方向当governor严格Y轴而失败；V2重算原分支通过全部2um断言，但numpy整数写JSON失败；V3修计数类型/写前完整序列化通过，两失败保留、原控制/门没改。仍0新增准入/转换/训练；完整多样布局共享策略、非目标15mm、首零后双臂腰、无助推/h10、独立布局多seed模型实图目标未完成。
+
+## 2026-10-04T18:23:02.084952+00:00 未安装约束性能候选完整记录一致、固定两上下文约1.4倍；实际困难前袋继续
+
+上一目标轮progress，本轮progress。复用既有profile而非重复猜测：原85.7秒/5111约束中大量时间在几何与未用雅可比。新增只在单proposal内按完整float64 bytes缓存约束、容量256、每次返回副本的候选，左右两真实保存上下文命令/完整record逐字相同，但51.76→49.99s与2.679→2.477s仅约3–8%，不足以单独开物理版本。随后新增joint_transport_margin_values_v1只省去标量约束不读取的FK/肘雅可比，仍保留原矩阵运算、顶点/83轴分离和全部六约束；270真实/局部扰动/全jointbounds状态的两手pose、两肘gap及两档floor全部逐位一致，输入不变。新value solver左右完整runtime record与原一致，51.239→36.394s、2.684→1.923s，固定两上下文约1.4x；原status9/240迭代仍失败回退，右181仍原合法应用。原maxiter240、ftol1e-10、quality/geometry门均未变。两个缓存对象独立，不跨帧或scene复用。
+
+所有候选在W新文件，未改staged_front_effective_height_v1、生产代码或原审核。effective_height_exact_cache_probe_r1/READINESS_REVIEW_V1保存完整哈希、原失败与限制：只有两个上下文计时，不能宣称整体提速或新分拣成功；之后若安装，仍需隔离collector/source+commandchain审核，不热改运行进程。当前collector671066/start99472023实活、840023前袋最新690步，mode=top_push；原10条件尚未齐，交换后盒失败继续保留，0新准入/转换/训练，完整目标保持未完成。
+
+## 2026-10-04T18:10:24.151411+00:00 当前困难前袋仍实活；未安装10mm规划终点余量候选通过真实8初态和边界反例
+
+上一目标轮progress，本轮progress。当前effective高度run未改，collector671066/start99472023实活，最新840023前袋step360、mode=top_push；完整4任务/10条件尚未完成，不能称修好。实际看360外视：工作手在黑袋附近、木盒在后侧；一帧不证明连续碰撞/接触或分拣通过。ENDPOINT_CANDIDATE_AND_LIVE_OBSERVATION_V1存图像hash/进程身份。
+
+针对已证实的“直达goal恰等release阈值”问题，新增未安装tabletop_endpoint_headroom_candidate_v1，固定10mm只加规划终点，不降低原释放/质量阈值。默认0直接调用原函数，开启后重算每条完整延长路径的物体包围盒分离、桌面边界与长度，不复用旧路径通过判定。8真实reset context默认关与原逐字结果一致，延长后原可行/不可行分类未变；4左右桌边/障碍延长反例原可行而新不可行均拒绝，6非法余量拒绝。V1有2个后侧最终选路未绑定原候选记录、使用通用20mm间距；V2补实际front候选曾被拒绝的12mm上下文，8/8原记录精确绑定，旧V1保留。GEOMETRY_CHECK_V2与endpoint_headroom_candidate_r1/READINESS_REVIEW_V1明确仅固定姿态物体包围盒，未证明双臂/腰可达、连续手臂间距、接触/动力学、视野或模型收益。未安装/未发新物理动作，必须等当前高度完整对照后再决定另版集成，不与当前改动混合归因。
+
+仍0新训练准入/转换/训练，首两条实际图审完成、交换后盒原失败保留、前袋继续；原8推2wait/224审核与完整共享模型目标不变。
+
+## 2026-10-04T18:02:35.343572+00:00 首两条数值图审通过但新分支0应用；交换后盒退化失败；确认直达规划终点与释放阈值无余量
+
+上一目标轮progress，本轮progress。effective高度物理首840022两条1200已READY，原数值+姿态独立复算通过、非目标XY0、首11D零位/无助推，分别推进159.982778/159.319751mm。已实际查看各8RGB4外视并绑定hash；木盒513右缘裁切后685起画外，黑袋171左缘裁切、342起画外；目标视野风险保留，不能抽帧证明连续质量。两条新transport selected/applied0，与父2/2相同，不算修复收益。木盒有211帧terminal；袋末态仍top_push、queryphase缺稳定终止段。RESPONSE_COMPARISON_02_V1只完整READY条件，0训练准入。
+
+坏结果：840023交换后盒新1200已保存，原质量失败，推进258.593895mm未稳定进目标区；父同条实际316.772662mm通过（以当前Q raw/quality为准，不沿用其它run的316.594）。新非目标0、父4.374014mm，均未触15mm门。新旧transport selected/applied均0；首q/action/物体完全相同，第1步q最大差2.95e-14，第2步action差1.86e-9，第57步接触物体差88µm，之后放大。REAR_BOX_PROVISIONAL_REGRESSION_V1证明该条没有新分支动作，不能直接归因高度修复；物理重复敏感性根因未证明。当前同case前袋实际运行，producer664103/collector671066原身份存活，不重试覆盖失败，整组不能提前准入。
+
+新增RELEASE_ENDPOINT_HEADROOM_DIAGNOSIS_V2：父8推+新2推逐步复算释放monitor全部一致。直达goal_y恰等原release边界max(.205,initial_signed_y+.16)，跟踪余量=0。新袋626帧已满足基础位置/稳定条件但始终未达margin，末差0.680249mm；父对应袋差0.640523mm，另两父直达任务末差0.041623/6.033141mm且同样queryphase报错。该结论解释为何缺释放段，不证明机械跟踪误差原因；queryphase失败不等同原任务门失败，也不自动更改准入。V1未处理初始路线早返回不含terminal_position_confirmed而KeyError，原失败保留；V2只在实际调用monitor的行更新窗口。后续若试规划余量，必须另版重新验证完整几何/路径，不能降低释放/任务阈值，当前stage未改。
+
+旧trailing完整RESULT自然关闭：8推5过+2wait过，原224审计、4失败仍同667链，父6/8→5/8退化，0合格组；292结果来源逐hash核验、原408137终止。当前quarter/early及新高度审核继续，LATEST保存计数。READINESS_REVIEW_V4为最新；0新增转换/训练，共享多样布局、非目标15mm、首零后双臂腰、无助推/h10及独立多seed模型实图目标不变且未完成。
+
+## 2026-10-04T17:49:09.840080+00:00 完整1200回归通过，effective高度原10条件物理已启动；首盒通过但未触发修复，不算收益
+
+上一目标轮progress，本轮progress。完整1200前盒默认关闭副本最终source→stream→ledger→parentexecution全部通过、原raw/控制记录不变、3物理入口拒绝，临时copy2已清除。真实六命令配置通过且保留10条件/224审核；初次preflight可用30.05GiB，原>30GiB/25GiB门未改。持续队列自然完成并启动producer664103/start99401233、collector664678/start99405560；audit watcher664590/start99404445与numeric watcher664591/start99404446均实活。新run front_effective_height_physical_r1 当前采集840022；实际97来源绑定和5872冻结来源逐hash通过，ACTUAL_START_AND_SOURCE_VERIFICATION_V1含四进程身份及实看的390外视frame。numeric队列原设计首READY才写STATUS，初期STATUS不存在不代表进程停止；已实查其存活，未重启。
+
+首840022木盒完整1200已写quality：passed=True、推进159.982778mm、非目标全程XY=0、首11Dstate/action零、assist0；父同条159.973808mm亦通过。两版transport selected/applied均0、无proposal，所以不归因修复、不算新策略收益。FIRST_BOX_PROVISIONAL_RESPONSE_V1明确同case黑袋尚未完整READY、未完成独立审核/完整实际图审、非配对组通过、不得训练。390外视实见右手在盒附近/上方、黑袋仍在桌面，一帧不证完整质量。新增compare_effective_height_physical_response_v1仅对READY完整条件作逐类应用数/solver拒绝/初态与原质量比较，不覆盖原审核、不用父未来状态假装候选物理。
+
+最新READINESS_REVIEW_V3，0新准入/转换/训练。下一步完成原全部8推2wait与224审核、实际逐条画面，重点确认困难前袋/前盒新动作是否应用、是否改善且非目标<=15mm。原目标与h10、多样摆放、共享模型独立多seed实图验证不变且未完成。
+
+## 2026-10-04T17:40:02.448376+00:00 高度修复已接入隔离collector与完整审核家族；开关两种70帧等待通过，1200帧父执行复核实活
+
+上一目标轮progress，本轮progress。新staged_front_effective_height_v1以quarter父为直接对照，仅新增明确默认关闭effective-quarter-height开关和4helper，原完整目标函数、2e-7高度容差、原240迭代与solver成功门不变。实际collector六CLI及7拒绝配置、左右真实priority→transport→finalguard→history共6检查、独立记录39篡改拒绝均通过；42审核适配保留原224库存，39实际import+3CLI AST通过。70帧原生等待开/关完整source→stream→ledger→parentexecution均通过，97/93活跃source、25/21负例拒绝；均为独立copy2临时副本，不是新物理，physical入口拒绝fixture。完整1200前盒默认关副本source/observation与transport stream已过，父执行仍在PID657442/start99328681实际计算；不能提前记全过。原始raw/动作/source未改。
+
+准备front_effective_height_physical_preparation_r2完整8推1200+2wait70，原6命令的任务/组/seed/质量门保持，仅新输出目录及高度开关。5数值/图审/审核队列入口逆向逐字核原，数值路由10完整、1短程及5拒绝通过。持续队列PID662623已实查，等待同一1200测试自然结束，成功后自动完整configuration/preflight；GPU空闲、原>30GiB启动与25GiB剩余预算必须过，任何失败停止不重试。当前尚无新物理成功，不以队列启动作为完成。READINESS_REVIEW_V2为新准备状态。V1等待测试导入路径失败、V1计划逆向映射失败和V1launcher语义flag替换失败均保留；修的是测试/生成器新版本，未改冻结stage/旧审计。
+
+按既有清理授权删除handoff明确禁止训练的0902旧JPG38678张，约0.971GiB分配空间；200JSON元数据保留，逐文件SHA与protocol/currentprocess依赖检查、结果存excluded_0902_image_cleanup_r1。目录明确标为不完整不得训练。当前free约29.321GiB仍含约750MiB正在使用的临时完整副本，退出后再由启动器实查，未放宽存储门。三旧审计仍实际运行，quarter 121/224零失败、trailing 162/224四失败、early 115/224两失败，原失败保留；6147三run冻结来源已核不变。本轮0新增训练准入/转换/训练；共享多样布局、类别位置解耦、非目标15mm、首11D零位后双臂腰、无助推/h10与独立多seed模型实图目标保持未完成。
+
+## 2026-10-04T17:03:56.917633+00:00 找到quarter下压与后续双臂协调的高度合同冲突；628步受影响，隔离修复初验通过，尚无新物理成功
+
+补核（2026-10-04T17:05:20.663328+00:00）：trailing_r2第4个失败为task optimality，唯一error仍是667的ambiguous_active_axis，未出现新的失败步骤；原失败保留，见FOURTH_FAILURE_SAME_667_OBSERVATION_V1。
+
+上一目标轮progress，本轮progress。完整扫描quarter父8推：前盒299、前袋329，共628个已应用quarter下压步骤，后续却要求同时保留parent高度并达到原full下压目标。按两个原2e-7m高度门的三角不等式，parent相对full误差>4e-7m，628步条件均相互矛盾。实际尝试297提案全部被loaded contact检查拒绝、0应用；其中13还达到240次solver迭代上限，不把这些失败自动清除。QUARTER_TRANSPORT_HEIGHT_CONTRACT_DIAGNOSIS_V1逐步保存证据。独立重跑前袋190步完整record与原完全一致；cProfile85.722秒，5111次constraints累计85.072秒，主要在几何和数值梯度。原9倍support-cache已经在当前stage集成，旧LATEST未接入状态过期，已纠正；本次高度修复不承诺消除solver迭代耗时。
+
+新增未安装effective_loaded_contact_task_v1仅绑定已验证quarter effective height；保留原完整9维目标函数、2e-7高度门和全部质量门。628上下文通过、297历史提案按正确高度均过该单项；左右两原full任务默认行为核对通过、15篡改拒绝。检查V1错将已right的测试side设right，实际没改而失败；V2明确left后改right，helper未变，旧测试保留。新独立certificate固定14历史未执行提案全部通过（两条solver status9仍不准应用）；真实solver重跑左右各1条候选关节命令与原未执行提案完全一致。完整隔离runtime两条默认关闭record完全相同，开启后经原连续nominal/predicted路径均可应用；只是CPU重建，未发物理动作。effective_height_candidate_v1/READINESS_REVIEW_V1记录还需新隔离collector/全source+stream审核接线和原完整8推2wait物理，不能直接用旧失败数据训练。
+
+相机probe_r2已自然退出，两条各320帧、640RGB完整，首11D state/action均0、非目标XY均0，实际各12帧sheet已看。盒推进71.734mm、袋15.277mm，均原目标区失败；进程code0但case STATUS是Quality gate failed，不能把code0当任务通过。没有复现原生崩溃，但根因/修复未证明。尝试原window全审计在320 vs1200源配置门拒绝，日志保留、未放宽；短程只作相机诊断。原windowR1 watcher已终止为incomplete，两已完成episode共54审核全过且报告/raw/source/log哈希实核，仍2/10且非234完整审核；PARTIAL_CLOSURE_V1明确0合格组。
+
+lateral完整RESULT已关闭：8推6过、2wait过、224全审计过，两个交换组均3/4，仍拒绝训练，无分数改善。TRAILING_R2新增第3失败是下游读取此前失败self-clearance未生成报告，保留原失败链；不是已证明新增碰撞。旧trailing/quarter/early CPU审核继续，以LATEST实查身份为准。冻结6462来源不变；本轮无删除/新物理/准入/转换/训练。现有磁盘29.134GiB，原完整实验>30GiB门保持。优先修明确高度接线问题，再判断窗口收益；完整共享多样摆放、物体+指令、非目标15mm、首零后双臂腰、无助推、h10独立布局多seed模型实图目标不变且未完成。
+
+## 2026-10-04T16:43:20.741690+00:00 窗口物理R1相机原生崩溃退出；两条通过不证明新策略有效；近轴独立局部分析与短程复现
+
+上一目标轮progress，本轮progress。front_contact_window_physical_r1 producer605996及collector613652已自然退出，原生日志exit139，STATUS runtime_or_audit_failed。10条件只有2完整、1中断、7未执行；2实际图审已绑定，但都未选中新窗口，0完整合格组。第3条840023后盒在相机SyntheticData graph.evaluate调用中崩溃，无raw/quality；progress最后90而外视pre_0110已保存，不能把90当准确崩溃步。实际看110外视，两物体在桌面、右手接近，图像不证明故障根因。终态日志、Python栈、最后图像及来源哈希存NATIVE_CRASH_EVIDENCE_V2/NATIVE_CRASH_DIAGNOSIS_V2；V1因终态已无collector_pid而KeyError、空目录保留，没有发kill或重跑原目录。inotify警告也在旧完成轨迹出现，无证据认定显存/磁盘耗尽或根因；未改环境、相机、原stage。
+
+独立相机复现首版150帧被原>=320参数门拒绝(code2)，0物理，全部保留。新window_native_camera_probe_r2用原冻结collector、同case/seed/相机/物理和控制flags，只改新输出路径与320帧，真实parser预检；诊断状态diagnostic_running，见LATEST实查PID。后盒320帧已保存且没有复现原生崩溃；袋仍慢速运行，原quarter父185→190也耗129秒、当前154秒，不能凭慢认定死锁或新窗口独有。只读gdb采样被系统ptrace限制拒绝，没有取得调用栈、未改内存。原全10条件1200/70帧、>30GiB启动门保持；本独立单case保留25GiB+原单case1GiB预算。短程episode timeout随长度缩短，不是位级相同复现，也不是正式成功；即使不崩溃也不能称修好，不能训练或取代失败R1。
+
+TRAILING_R2第667步独立两近轴分支：只有轴38满足原primal，轴138不满足；轴38三FD步长残差约1.242e-8低于原1e-6。保守几何局部界对2e-7rad关节盒和全部165竞争轴核得严格主导余量1.248e-6m，80角点/随机实现检查通过，宽半径证书拒绝；有限浮点界不是全局最优/连续整段碰撞证明。原2µm唯一性门与原失败审计未改，局部诊断不能自动清除失败。READINESS_REVIEW_V8为最新，原CPU审核继续，冻结6462来源实核不变。另筛五个已关闭实验的只读源码归档只可释放3.4MiB，未执行去重；旧失败raw只读盘点亦未删除。0新增准入、转换或训练；共享多样摆放分拣完整目标保持未完成。
+
+## 2026-10-04T16:00:33.353665+00:00 提前避边完整5/8推+2等待、无逐条成败改善；窗口完整开启/关闭验证通过，新10条件启动器实活
+
+上一目标轮progress，本轮progress。early全部10采集与10实际画面复核完成：首交换组2/4、另一组3/4、两等待通过，均拒绝训练；与直接TRAILING_R2父5/8及逐条成败完全一致。840020前盒120.959233mm失败、2倾斜3失载，后袋337.412640mm通过、6失载；840021盒155.400410mm/袋159.995213mm通过，非目标全程XY均0。困难后盒原12.763mm非目标移动仍在原15mm以内，但任务失败。目标后段画外/裁切风险已实看并保留。完整数值图审对比COMPLETE_NUMERIC_VISUAL_COMPARISON_PENDING_AUDITS明确不是完整审核关闭。early收尾queue599186已启动，精确等533900原224及TRAILING_R2父完整RESULT。
+
+提前避边审核两失败同源902：625eligible选择中仅1个candidate reason不一致，其余重建无error。运行时numerical_infeasible、独立LP no_joint_XY_direction，均不override且实际完整回退parent。EARLY_EDGE_902_INFEASIBILITY_V2用Fraction正权消元证两份严格约束矛盾；不能证明加入原1e−8容差后的系统仍不可行，未放宽阈值、未替换原失败audit。前盒未选中新分支，重复初态相同但微小动作/接触差异后放大，不能归因新策略；FRONT_BOX_REPEAT_DIVERGENCE_V1。TRAILING_R2第667步ambiguous_active_axis仍未解决。
+
+窗口补齐完整24tick/实际支持点/失载生命周期独立审核；OBSERVATION_STREAM_CHECK_V1核817原生候选更新、35追加证据、7观测篡改拒绝；完整父前盒1199测试记录通过，伪装旧前袋在790必拒绝。42家族适配保留原224+每条件window1=234，39import+3CLI AST和完整调度库存通过。70wait窗口开/关、1200前袋默认关以及1200前盒窗口开启完整source→transport→ledger→execution→window均通过；这些是独立copy2副本及重建window记录，不是新物理。原始数组/动作和源文件hash不变，所有临时副本已退出清除；此前可写hardlink副本被自动审批拒绝，改用独立copy2后通过，未重试该危险方式。
+
+新front_contact_window_physical_preparation_r1已完整6命令/10条件配置和预检通过，只有out目录和--front-contact-window改变。原8push1200、2wait70、原质量/首零11D/无助推/h10不变；234审核和原图审路由齐备。启动器初版静态复核修正source_binding字段为路径而非dict，修正前文件与派生报告保留；首次配置缺EULA环境在bootstrap失败，正确环境配置v2通过，未启动错误物理。producer605996/start98782638实活，当前collecting，已完成0/10；以LATEST的实查进程为准，不能把启动称任务成功。READINESS_REVIEW_V7最新。
+
+存储：旧/tmp多为已有硬链接，查明删除不会释放空间，因此保留。5个已完成采集run的只读源码归档2814项无损去重，原所有路径/hash保留，工作stage/数据/model未动，实际释放1.286GiB；CPU审核可继续读取，归档今后禁止原地写。按此前清理授权删除20260928旧池6条明确失败且无当前依赖raw，释放0.165GiB，失败质量报告、图片、哈希清单保留（原raw不再可重放）。启动前原>30GiB/后续25GiB门通过，没有改门。0新增正式训练准入、转换或训练；完整多样布局共享图像+指令、非目标15mm、首零后双臂腰、无助推及独立多seed/h10模型实图目标未完成。
+
 补核（2026-10-04T02:55:41.695625+00:00）：余量版840023后盒已写完整1200帧quality，saved passed=True、推程316.594mm。仅采集器数值结果，仍等同case前袋完成的READY、独立数值和实际图审；不能提前记整组通过或归因余量。见`joint_transport_reserve_physical_r1/REAR_BOX_PROVISIONAL_QUALITY.json`。
+
+补核（2026-10-04T13:08:38.603777+00:00）：RESERVE父对照已自动完整关闭，RESULT为8推6过、等待2/2、224控制审核全过；实查原watcher150130已终止，296结果来源逐hash核验。相对JOINT父5/8提高1条，但两交换组各3/4仍全部拒绝训练；见joint_transport_reserve_physical_r1/CLOSURE_OBSERVATION_20261004_V1.json。trailing_r2闭环仍在等待其自身408137原审核，不再缺RESERVE父结果。
+
+## 2026-10-04T15:02:48.285572+00:00 首次None相位审核缺陷已修复；真实首次构造、原生交接与完整4轨迹4796次失载生命周期重建通过
+
+上一目标轮progress，本轮progress。没有改动候选V4/隔离collector v2或正在运行stage。完整流程检查发现新source binder v1错误拒绝合法首帧observed_phase=None；此前817加载段从top_push开始，未覆盖首次构造。用实际collector构造AST、真实case840023首帧raw/FK/物体位姿运行parent与candidate，首次均从None开始、原生输出相同且waypoint匹配原记录。新版front_contact_window_stage_source_binding_v2仅允许action1的observed_phase为None，final/output仍非空字符串，后续None拒绝；旧版保留，之后必须用v2。SOURCE_BINDING_CHECK_V3：12settings/模拟归档、7结构fixtures、27负例过。
+
+NATIVE_LIFECYCLE_CHECK_V3：真实首次更新＋受控17步初始command/handover→press/push→3步完全失载→recovery command/handover→press/push，实际stage的front层/pressure/初始及重接触adapter执行；原生窗口记录在adapter覆盖mode后仍保留、每步消费一次。另原10采样稳定释放先于loss、3次latched routeguard不更新pressure但消费窗口、native异常消费后下一新观测可接受。事件/观测为显式受控输入，不是完整无载planner或新物理。初版测试误将恢复press转push帧固定成首次相同时序，因原滤波状态保留而失败；修正按实际转换帧检查，没有清零原filter。V2末尾写JSON因测试直接传raw float32失败并留下不完整JSON，不能用作proof；V3按实际collector的parcel_xyz Python float和quat.tolist输入验证，序列化通过。失败日志全部保留。
+
+新增独立front_contact_window_loss_lifecycle_v2，未导入controller：逐帧重建压力入口phase、route/tilt/terminal先行保护、失载counter和真实initial/recovery adapter清零/相位重置，明确其他无载motion transition、route几何/事件真实性、当前力/物理几何另由原审计承担，不能冒充全控制证书。对quarter和lateral两困难前袋/前盒完整4×1199=4796更新通过，loss1334、outerguard551、tilt13、route restart2、adapter1618；8漏证据/交接后旧相位负例拒绝。FULL_PARENT_LOSS_LIFECYCLE_CHECK_V2。V1 SciPy近零倾角舍入2.107e-8 vs原0触发严格1e-8比较；V2独立标量四元数公式匹配原算术，原比较及.03倾斜门不变。完整原父轨迹重建不等于window候选新物理结果；还须把真实24tick/末采样/支持点几何与该完整lifecycle合并，并接全原224家族+额外window审计。
+
+READINESS_REVIEW_V6最新，physical_launch_ready仍False。early producer530485/collector554548实活，当前case840020 push_box_to_bin step840、mode=top_push；仍5/10条件及5实际图审，首组4推2过+wait通过整组拒绝；下一组未完成，不能以progress截图当结果。修复watcher及lateral/trailing/quarter审核仍实活、冻结来源逐hash通过；trailing_r2第667步ambiguous_active_axis旧失败仍保留未解决，不放宽2µm唯一性门。free30.347GiB，0新清理/准入/转换/训练。共享多样布局物体+指令、非目标全程15mm、首零后双臂腰、无助推、原h10及独立多seed模型实图完整目标不变且未完成。
+
+## 2026-10-04T14:39:23.835107+00:00 窗口817更新独立力/几何/失载计数审核通过，来源绑定补齐；early首组4推2过+等待、整组拒绝
+
+补核（2026-10-04T14:43:54.398968+00:00）：trailing_r2原完整执行审计新失败1项，已定位840020前盒第667步loaded-Z之前的parent task证书。独立扫描全部95个应用Z且发生原任务override的步骤，仅667拒绝，全部原primal约束通过；左肘gap4.999999269mm，两个最大分离轴差1.615326725µm≤原2µm唯一性门，reason=ambiguous_active_axis，stationarity residual未计算。不是已有证据证明碰撞，也不能当作最优性通过。原auditor/log保留未改，无阈值放宽；LOADED_PARENT_STATIONARITY_DIAGNOSIS_V2.json。需要对近活跃轴的全部分支做独立分析后再决定证书/运行时改进，当前数据仍不准训练。
+
+本目标轮progress。Git备份核验是独立用户任务，不算模型优化进展。窗口候选/隔离collector仍V4/staged_front_contact_window_v2，没有改动运行中stage。新增audit_front_contact_window_loaded_records_v2直接读原24tick子步接触NPZ、原末采样solved JSON、真实碰撞顶点、raw q→FK与物体四元数；未导入候选observer/支持点helper/决策函数。19加载段817更新，独立判815失载分支+2原tilt/route优先退出，35额外接触证据；逐条核阶段、counter、recontacts、当前力、真实支持点和10mm资格，支持点对实录最大误差2.079635e-7m。18负例拒绝，含同步删除两份evidence/改disposition、虚拟点替代真实点、陈旧动作、伪COP、错计数和漏/重/乱序。V1将末NPZ采样误当原solved瞬时力而差2.384e-7N，失败源/log保留；V2分别绑定原来源，原1e-5N跨源一致性门不变、严格记录比较1e-8不放宽，未改控制器。
+
+新增front_contact_window_stage_source_binding_v1保留父全部观测函数AST身份（仅最终函数改名后包裹），逐hash及9编辑反向恢复父collector，98活动来源；6实际case参数×开关2=12settings/归档fixtures，6前侧/非前侧/wait结构fixtures，23非法/缺失拒绝通过。结构绑定明确不等于全流程独立判断；尚未在新真实episode执行完整observation binding。READINESS_REVIEW_V5最新，仍须全phase/初始和重接触交接/早退异常生命周期审核、完整原224审核家族适配+新增window审核，随后原8推2wait物理；817固定未来观测重放不是动态成功。
+
+early840023两个1200帧完整READY/独立数字/各8RGB4外视已实际查看并hash绑定：后盒299.861439mm失败，非目标袋全程最大XY12.763120mm（原15mm以内，非零）；盒513右缘裁切、685仅边角、856后画外，不能凭画外判入区。前袋39.925784mm失败、非目标0，2失载后529起front_guard_lift累计671帧；685–1199袋仍在左手下方、部分底缘裁切，画面基本停滞，通道余量不足真实未解决。DIFFICULT_840023_ACTUAL_REVIEWS_V1。841011等待70帧全11动作0、腰最大3.08735348e-9rad、实际8RGB稳定已绑定；首完整交换组4推2过+wait通过，FIRST_COMPLETE_GROUP_ACTUAL_REVIEW_V1明确拒绝训练。5/10实际图审，另一完整组继续，不能提前缩小实验。早避边两普通成功无该分支，不据此归因新策略。
+
+实查early producer530485/collector554548、533900/533901及原lateral/trailing/quarter审计存活；原运行冻结来源全hash通过，原审计仍未全部关闭。剩余30.356GiB。本轮0清理/准入/转换/训练。完整多样布局共享策略+语言物体决策、另一物体全程15mm、首零后双臂腰、无助推、原h10、独立布局多seed实际模型画面目标不变且未完成。
+
+## 2026-10-04T14:19:01.506501+00:00 窗口新阶段接线完成，817原生加载更新及3改变动作原最终门通过；early首对实审通过、后盒299.861mm仍失败
+
+上一目标轮progress，本轮progress。新隔离staged_front_contact_window_v1从quarter父复制98文件，增加窗口5helper、9处加法编辑，关闭分支AST逐字节结构身份；实际6命令解析、8非法配置拒绝、实际factory/观测→调用→日志/metadata/source归档节点执行过。必须front初始居中+quarter+peak+substeps、无支持点hysteresis、diagnostic，rear/普通/等待不替换控制类。原生产及正在运行early stage未改。
+
+真实加载段重放V1暴露NumPy标量边界：actual collector的edge_core_size是numpy tuple，V3计算margin成为numpy.float64而严格observer拒绝；不是只测试假输入，V3不准启动。新front_window_native_v4只把最终margin归一Python float、原数学阈值不变；新staged_front_contact_window_v2/front_contact_window_preparation_r2保留旧失败源/日志。V2 collector以真实numpy尺寸类型重跑6解析/8拒绝及factory/loop通过。重放V2首166父XY差12.365µm，查明测试手填盒宽95mm而实际collector90mm；重放V3/V4改直接执行collector尺寸AST，未放宽2µm容差。
+
+最新NATIVE_LOADED_BOUT_CHECK_V4：quarter两困难前袋/前盒完整19加载段817更新，父原生waypoint/phase/压力与原记录一致，候选各段只初始化一次后保留自身phase/COP/command/pressure历史；原观测固定，非递归物理、非完整无载规划。35帧增加接触证据，仅790/885/981三个前袋内部失载退出改为继续top_push；222/399/527/669/1098五边缘退出仍原top_lift。三个改变点进一步运行native task IK+实际collector priority→transport→final guard语句，父3动作逐位复现原输出，候选3/3原final guard接受；候选与原动作最大差分别.044305/.049519/.049058rad（这是对原动作差，不是时间slew），均未发给仿真。CHANGED_JOINT_CHAIN_CHECK_V1。READINESS_REVIEW_V4最新：仍须独立source/新观测生命周期审计、全部原224适配、完整source/native fixtures及新物理；不能以817加载段/3单步门通过称整体通过。
+
+early case840022完整两1200及READY、独立数值和每条8RGB4外视实际查看绑定：盒159.983642mm/袋159.386270mm通过、非目标XY0，真实盒4倾斜+1正常release，袋4失载；两条fr记录无early_edge分支，不能把成功归因提前避边。盒342右缘513后画外，袋171左缘342后画外；外视稀疏不证明全程碰撞。FIRST_TWO_ACTUAL_REVIEWS，实审2/10。840023后盒已落完整quality但同case前袋仍采集；provisional推进299.861439mm，比直接trailing_r2父234.008增加仍失败：未稳定越±0.20m目标区，非目标袋最大XY12.763120mm（在原15mm内，但不是0）。REAR_BOX_PROVISIONAL_QUALITY_V1，待完整READY独立数字/实际图审，不提前盖整组通过。
+
+当前early producer530485/collector537557、修复watcher533900/533901均实查活，数值V2已有2review；原quarter/lateral/trailing审计及quarter收尾继续，来源全hash核查。剩余30.855GiB，本轮无删除/转换/训练，仍0新增合格训练数据。完整共享多样类别+指令、非目标全程15mm、首零位后双臂腰、无助推、原h10、独立多seed模型实图目标不变且未完成。
+
+## 2026-10-04T13:56:09.140288+00:00 quarter完整6/8推+2/2等待、两组拒绝；接触窗口原生V3与真实支持点验证；early物理启动、监控名错误已隔离修复
+
+本轮progress。quarter全部10采集+10真实图审、逐hash绑定完成。最后840021盒153.966859mm/袋159.958377mm通过、非目标全程XY0；盒171右缘裁切342后画外，袋342左缘513边角685后画外；等待841010完整70帧、11动作0、腰最大3.087323e−9rad，8RGB实审。全8推6过、2等待过，两组各3/4推+wait，均拒绝训练；直接LATERAL父也是6/8。困难前袋38.500499mm比父44.179078退化，前盒103.952359比父164.244947退化，均失败。完整对比COMPLETED判定见COMPLETE_NUMERIC_VISUAL_COMPARISON_PENDING_AUDITS.json，原224审核仍待；quarter收尾queue535896实查活，等原464857及LATERAL父完整结果，不冒充已关闭。
+
+接触窗口纠正实际父链：复制staged_front_loaded_z_quarter_v1的initial-center Top→FrontRoute→COP，保留原helper、仅默认关loss谓词变更、父import反向字节验证。原生V2用例13+10负例过，但核实当前tip是虚拟参考、非真实物理支持点，不能直接安装。V3用当前手部位置/四元数与实际碰撞支持顶点重建geometry，额外测虚拟/物理不重合，共14原生受控用例+10负例过；guard/nonpush/原生异常明确消费观测，不留陈旧packet；内部路线改phase允许，外部观测后phase变拒绝。4真实困难轨迹4796帧独立原始q→FK支持点复核，最大误差2.727091e−7m、顶点和10mm资格全一致；虚拟点若误代真实点有128帧资格不同。READINESS_REVIEW_V3为最新；当前未改collector、无新窗口物理或完整IK/final链，合成与固定实录不是新轨迹成功。
+
+归档源码快照去重保留所有路径和原字节，排除当前quarter/trailing/lateral三个审核目录，释放2.219GiB；没有删除数据/模型。early原30GiB/25GiB门通过，producer530485/start97985533实际启动，原8推2等待条件未变，当前collector530845持续首组。原两个watcher530768/530769启动即退出，因检查不存在的run_rear_early_edge_trial1_physical_r2.py而非实际r1_v2，0审核/0数值复核，保留原STATUS/日志/lock全部不改。OBSERVER_REPAIR_V2显式记录修复；独立r2 watchers533900/533901实际存活，审核输出AUDIT_STATUS_V2、数值队列STATUS_V2（无首READY时尚不写status是原循环行为），完整原审计脚本和质量门未变，物理未重启。新close...physical_v2和closure_v2已准备但需全10实际图审后才启，旧closer读原incomplete不能再用。冻结来源逐hash重核。
+
+仍0新准入/转换/训练，目标完整多样摆放类别+指令、另一物体全程15mm、首零位后双臂腰、无助推、原h10及独立多seed模型实际画面均保留且未完成。下一步窗口独立collector/source绑定和真实自身历史+IK/finalguard验证；early继续全配对物理并真实审图。
+
+## 2026-10-04T13:30:32.110609+00:00 接触窗口候选发现边缘退出延迟并加当前10mm资格；14,388区间验证，quarter已7实际图审、前盒103.952失败/后袋337.140通过
+
+上一轮progress，本轮progress。front_contact_window_candidate_v1新隔离observer保留原0.2N失载阈值和原末采样力，只给loss counter增加立即前一动作24solver tick中≥12有接触的证据，不造当前COP。12条全部RESERVE8推+quarter首4推共14388真实区间，实际snapshot的原peak extractor对独立向量力汇总；关闭/后侧/非推瞬时判定身份、8非法观测拒绝、0/1/11/12/23tick边界通过。v1测试因普通布局缺front_route_selected字段失败log保留；v2明确默认False并对无top pressure的rear阶段使用已核末采样；v3纠正用实际peak_load_updates.phase_at_update，而非已切换后的row.mode，捕捉790/885/981三退出。不能把固定记录谓词重放当原生新观察闭环。
+
+原生top_contact_window.py仅复制原TopContactBypassState类，原helper函数继续原路径，反向编辑恢复原class字节。默认关，窗口仅替换lost_contact_steps的依据，原压力lasttick/filter、tilt/terminal/peak guard不换。原生受控合成11用例+7负例通过：关闭/后侧/完全无载/单峰/全接触身份，间歇保留推阶段、之后3完全无载仍抬手，倾斜/释放/原10N峰保护优先。仅base，无FrontCopRoute/完整native IK或物理。
+
+谨慎复核发现无几何资格V1会让527/669/1098三边缘事件counter3→2、可能晚一动作抬手，故不直接接线。独立当前support点转目标物体坐标显示这些点已在core外；新增contact_window_evidence_v2要求当前点距core边缘≥10mm（采用已有内部余量尺度，资格不是整只手碰撞证书）。V4重跑同14388区间通过：quarter额外证据40→35帧，RESERVE6不变；5边缘原退出counter仍3，3内部退出counter变0；6边缘门边界和4非法几何拒绝通过。READINESS_REVIEW_V2为最新，明确旧native base仍V1，不能冒充已接V2；还需同帧几何绑定、完整FrontCopRoute包裹/guard早退观察消费、实际自身历史+IK/finalguard/新全配对物理。当前stage/生产采集未改。
+
+quarter840020两条完整1200、READY、独立数值及各8RGB4外视实际复核hash绑定。前盒103.952359mm失败，对直接LATERAL父164.244947mm（父也失败）继续退化；newZ selected1027/applied299，真实1倾斜+7失载+1路线切换，非目标0。后袋337.140366mm通过，非目标0，真实6失载+1正常release，新Z0。盒171–856在右手附近且部分遮挡、1027/1199黑袋可见；袋513左缘裁切685后双物体画外。DIAGONAL_840020_ACTUAL_REVIEW_V1；已7/10实际复核、当前已测6推4过+wait1，两组均有失败拒绝训练，原全10仍继续，不能当最终总分。
+
+实查producer464555/current collector518994、原audit/numeric、earlyqueue505480仍活，queue=waiting_for_exact_quarter_producer；free29.971GiB，原存储/GPU/10实际图审顺序门未改。本轮无清理/转换/训练、0新准入。目标共享多样摆放按类别与指令、非目标全程1.5cm、首零位后双臂腰、无助推、原h10、独立多seed和实际模型画面完整保留且未达成。
+
+## 2026-10-04T13:07:50.016138+00:00 前袋8失载分成5边缘完全滑脱/3内部间歇受力；early三来源兼容完成、完整诊断顺序队列已启动等待
+
+上一轮progress，本轮progress。新diagnose_quarter_front_bag_contact_loss_v2对父LATERAL208推帧/197有效COP、quarter390推帧/346有效COP，独立从前一动作力包重构位置与正常向力，核实际bag碰撞core135×127.6×40mm与源AST、原边缘距离/步长；完整13推动段记录滑移和高度。v1仅JSON序列化numpy.int64失败，保留.py及.json.failed_partial；v2先完整序列化后exclusive写，数学未改。
+
+quarter8真实失载不能全归边缘：最后有效COP有5次距core边缘≤1mm，另外790/885/981退出之前仍有17.864/30.659/17.830mm余量。新substep诊断验证全部1200×32记录与原末采样力包，按每动作最早已完成tick1..24、排除tick0和重复manager边界，量为手-袋绝对竖直力，明确不当有符号冲量/同时刻几何。5边缘事件最后动作全部24tick无力；3内部事件末采样0却分别17/17/16tick>0.3N，均值0.832562/1.111584/0.870138N、峰2.450430/2.265298/1.719360N。原末采样失载逻辑把间歇接触与完全分离都触发抬手；这不是连续接触或新策略成功。CONTACT_OBSERVATION_ACTIONABLE_FINDINGS_V1明确后续仅前一完整动作观测、力符号/ownership/时序绑定、不得捏造当前COP，保持完全失载/倾斜/terminal/几何与最终门；尚无新observer或专家修改。
+
+early source parity V4/session32417正常退出0，三1200前盒/左手/默认关后盒source/stream/ledger和29负例完成；新旧前盒同667同proof拒绝，另两native完整接受。不能称首拒绝后剩余步执行已过。prepare_rear_early_edge_launcher_v2只版本化source兼容前提，显式固定1原拒绝，不伪造V2全过或更改原控制审核；CONFIGURATION_CHECK_V2/session1823过，queue --prepare/session36674过。顺序queue505480/start97727359实查活，状态waiting_for_exact_quarter_producer；等待当前quarter全部10采集+实际图审、GPU空、原30GiB/25GiB门后一次启动early完整8push2wait224审核。新物理尚未启动，原v1源/失败报告保留。
+
+当前quarter仍5/10采集和5实际图审，首组3/4push+wait拒绝，collector498318在840020前盒，最新360附近；后台原审核和trailing闭环继续，计数见LATEST。free30.742GiB，本轮无删除/转换/训练，0新正式准入。总体共享多样摆放类别+指令、非目标全程1.5cm、首零位后双臂腰、无助推、原h10与未调参独立多seed实际模型画面目标不变且未完成。
+
+## 2026-10-04T12:54:45.911476+00:00 quarter首完整交换组3/4推+等待通过但拒绝；前袋减少Z未解决失载，实图已审5/10
+
+本轮继续progress。840023盒/袋各完整1200及READY，独立数值+各8RGB4外视真正查看并hash绑定。后盒316.772662mm通过，末10 signedY205.320701mm，非目标全程最大XY4.374014mm（不是0，仍在原15mm门内）；原真实6倾斜+1正常释放，旧描述7倾斜含遗留原因。新Z selected/applied都0，不归因该分支。盒513右缘裁切，685后画外；袋右下缘/末1199一角可见，稀疏外视不证明全程无碰撞。
+
+关键前袋38.500499mm失败、末10 signedY−53.742442mm、非目标XY0，8次真实lost_contact；新Z selected1045/applied329，首次165，确实执行了新分支。对直接父LATERAL（不是trailing）44.179078mm：推阶段208→390帧、持续front_guard_lift551→0，但失载3→8、推进退化，不能将避免通道停止称任务改善。图审171/342木盒左缘裁切，513后可见；黑袋中下方/后段下缘，反复抬手接近且未分拣离开。SWAPPED_840023_ACTUAL_REVIEW_AND_COMPARISON_V1保留数字和来源。
+
+841011完整70等待原门过、11动作全0、腰最大3.087281e−9rad；实际8RGB空桌双手稳定已绑定，无外视不冒称。FIRST_COMPLETE_GROUP_ACTUAL_REVIEW_DECISION：首组四推3/4+wait1通过、五条实际审查齐，因前袋失败整组拒绝训练；这不是全10条件结果，原控制审核仍未全完。producer464555继续，current collector498318在840020前盒，原计划不缩小。
+
+early源兼容v4/session32417/PID487872实查活，前盒新/父native确实同一步667同proof拒绝，左手后袋新/父native均接受；第三默认关后盒及全部负例完整报告尚待，不当全部通过。原unique_axis拒绝保留、未动门或运行stage；launcher尚无config/queue/新物理。上一节1.498GiB清理已完成，当前free30.681GiB；后续启动实时检查原30GiB门。
+
+仍0新增正式训练准入/转换/训练；完整共享多样摆放、首零位后双臂腰、非目标全程1.5cm、无助推、原h10、独立多seed与实际模型画面目标不变且未完成。
+
+## 2026-10-04T12:48:30.120655+00:00 原前盒667帧唯一轴证明拒绝已定位，新旧审核结果对照中；清理58旧诊断raw释放1.498GiB
+
+本轮progress。完整源push测试v2/PID478355已终止失败，不是还在等待；前盒stream/ledger通过后原verify_parent拒绝。新只读diagnose_rear_early_parent_stationarity_v1真实扫描原父trailing_r2前盒521条self_clearance override，仅step667未获certificate：primal_feasible=true、左肘gap4.999999269mm，在原5mm−0.2µm容差内；最大/次大分离轴差1.615326725µm小于原唯一轴要求2µm，因此reason=ambiguous_active_axis，残差根本未计算。不是新early动作失败，也不能称通过。报告PARENT_STATIONARITY_DIAGNOSIS_V1，未改任何门/原记录。
+
+v3 parity测试启动后发现父run原stream报告还未由队列生成，主动终止PID487396以补齐测试前提；保留脚本和log，并核进程不存在/临时目录时间早于v4后清理其/tmp/rear_early_source_fixture_7gszya0w，仅释放178736392独有字节，原hardlink来源不动。v4/session32417/PID487872已实查活，三原1200前盒/左手/默认关后盒分别新旧明确临时source fixture，父原stream前提只写临时目录，不与后台审核抢写。候选前盒已复现拒绝，正计算父对照。要求相同接受或精确同一步同proof拒绝；完整stream/ledger覆盖1200，native执行遇首拒绝就停，不冒充拒绝后全链过。即使兼容性通过也保留native失败和training_ready=false。
+
+上一轮已准备run_rear_early_edge_trial1_physical_r1、closer及两queue源，LAUNCHER_DERIVATION和QUEUE_SOURCE_PREPARATION绑定；尚未configuration、prepare queue或物理。旧launcher CHECKS仍引用未通过V2报告，后续必须另版本明确接线，不能伪造V2通过。当前quarter实际采集继续，状态2/10，原首两条实际图审与新Z未选中结论不变；最新日志前袋1140，原完整配对、224审核及后续实际图审保持。
+
+按既有清理授权，仅删除5组已完成且未准入的旧诊断58个raw.npz，1,608,221,016字节=1.497772537GiB；729其他文件逐hash保留。6300来源保护/6874文本扫描；唯一引用只是preserved source_snapshot inventory，无raw依赖；264进程检查无冲突，两个受保护系统认证daemon描述符不可读按原流程明记。两组早期训练来源、已通过distance_offset、当前run/所有checkpoint均保留。清单storage_cleanup_20261004_retired_diagnostics_r1；被删旧诊断完整RGB/raw不可再复放，不改变原审核结论。当前free30.712GiB，下一轮原30GiB门仍需实时重算。
+
+0新增正式准入/转换/训练。共享多样摆放按类别与指令、非目标全程1.5cm、首零位后双臂腰、无助推、原h10、独立多seed与实际模型画面目标完整且未完成。
+
+## 2026-10-04T12:16:19.971573+00:00 early原224审核家族与连续重建通过，完整源push测试修正比较对象后继续；quarter首两条实际复核通过但新分支未触发
+
+上一轮progress，本轮progress。prepare_rear_early_edge_audit_family_v1派生42适配器及新source binder，数学新增仅rear_xy的20mm候选独立LP选择/完整原10mm回退检查；原关节no_threatened_core_edge分支已有正确审核，不改原10mm关节约束。39真实import+3 CLI AST及完整10条件224项清单核对通过（session5883）。新binder绑定100开启/98关闭实际归档来源，明示right-rear选择、raw/plan参数与逐帧计数，原来源/物理/控制门保留。
+
+NATIVE_WAIT_SOURCE_CHECK两真实70帧等待的明确临时来源夹具on/off通过，17负例拒绝，包括默认物理入口拒绝夹具；物理数组不变且临时目录删除（session60410）。NATIVE_STAGE_CONTIGUOUS_REAR_AUDIT_V1通过：两历史盒各1199行原记录与拼接候选逐帧重建；候选15段962原生update、自身命令/压力/COP连续，加载间隔仍原记录，不冒充完整原生前缀或递归新物理。每版改变目标、删early元数据、篡改parent回退3项均拒绝（session86736）。原962关节链证据保留。
+
+完整1200前盒/左手/默认关后盒来源测试v1从等待测试复用的parents==raw断言错误：实际前侧transport已应用，中间父命令当然与最终raw不同（2348/13200，最大0.01492964rad）；不是候选物理失效或要放宽门。失败log/脚本保留。v2逐值核parent对原joint_transport.parent_command、output对原raw，只有未应用transport帧要求parent==raw，全部原控制门不变，且补绑定每个原raw/中间日志。新session6757/PID478355实查活，待报告NATIVE_UNCHANGED_PUSH_SOURCE_CHECK_V2.json；不能提前称完整审核集成ready。
+
+early physical plan已准备原同6命令/8push2wait/224审核，直接父trailing_r2，仅新增--rear-early-edge与新输出目录。5评审/队列脚本已准备未启动；新评审修复正常释放继承旧原因的描述误计，原质量数学不变，7真实已知回归和5非法marker拒绝通过。launcher/config/closure/queue尚待准备，计划未排队、未物理；完整接近/重接触及新观测响应仍须在原guard下新鲜物理验证，历史拼接不替代此证据。
+
+quarter_r2已首case840022完整两条1200+READY，独立数值和各8RGB4外视真正查看并哈希绑定。盒159.973808mm、袋159.359477mm均任务/姿态过、非目标XY0；袋query阶段警告保留。盒342右缘、513后画外，袋171左缘裁切342后画外；相机运动不等于另一物体世界位移。两条new-Z selected=applied=0，不能称策略收益；真实盒4倾斜+1正常释放（旧描述5），袋4失载，见FIRST_TWO_ACTUAL_REVIEWS。840023后盒暂存quality1200通过316.772662mm，新Z分支仍0；等整case READY/独立数值和实际图审，暂不记整组通过。
+
+实查quarter producer464555/current collector472149、auditor464857/numeric464858和trailing closure464548继续活；free29.591GiB，当前剩余采集预算原25GiB门保留，后续early启动仍须30GiB。进程start/CPU和原审核计数见LATEST。本轮无清理/转换/训练，0新增正式准入；共享多样物体与指令、非目标全程1.5cm、首零位后双臂腰、无助推、原h10及独立多seed实际模型画面目标保持完整。
+
+## 2026-10-04T11:53:06.359094+00:00 trailing r2完整10实际图审5/8推+2/2等待、两组拒绝；quarter r2已实际启动；提前边缘隔离接线与独立审核组件完成
+
+上一轮progress，本轮progress。剩余840021两条1200及841010等待70已独立数值+实际8RGB4外视/等待8RGB核hash绑定。840021盒153.891876mm、末10signedY285.514295mm通过，袋159.980014mm/318.027139mm通过，非目标全程XY0，两者query-phase缺明确稳定尾段警告保留。图审盒171右缘裁切、342后画外且袋可见；袋171/342左下缘裁切、513部分、685后画外且盒可见。等待11动作全0、腰3.087e-9rad，实际空桌双手稳定；没有等待外视不冒称。
+
+NUMERIC_VISUAL_SUMMARY实际完整10：推5/8、wait2/2；反斜组2/4+wait、斜组3/4+wait，全部拒绝训练。COMPLETE_NUMERIC_VISUAL_COMPARISON_PENDING_AUDITS对直接父RESERVE6/8：只有840023后盒成败变更316.593744→234.008379mm，其余成败同；前盒仍132.646270失败。原审计未完，不能以总分/单条通过入库或简单将后盒退化归因前侧分支。producer407939/collector454743已正常结束；closure464548已实际活并等待原watcher408137的224审核与RESERVE父RESULT。
+
+原quarter队列410690在本次全10实际图审汇总后启动一次，quarter producer464555、collector464957、auditor464857、numeric464858实查活，第一case840022。INITIAL_SOURCE_OBSERVATION逐个核145实际snapshot/current来源（93stage），quarter=True/lateral=True，直接父LATERAL；没有混入trailing开关。尚无完整质量结果，不能将启动当改善。30GiB启动/25GiB余量预算门未改，free30.559GiB。
+
+提前边缘新staged_rear_early_edge_v1：102父文件仅collector修改，另2候选helper复制，逆向6处编辑字节恢复父源；生产/当前运行stage未动。显式--rear-early-edge默认关，仅right rear选择新类；原front/left类及全部质量/最终guard不变，plan/raw元数据与实际归档接线。真实6命令on/off解析一致、10负配置拒绝、4原生类选择与4元数据/归档组合通过（session28759）。prepare v1因metadata marker4处不唯一断言终止未写collector，保留失败准备目录；v2唯一marker完成，不能隐去失败。
+
+audit_rear_early_edge_selection_v1是独立linprog组件，不导入候选算法；857真实输入×on/off/left=2571审核，加选择标记、warning门值、parent/candidate/top原因5篡改拒绝通过（session51104），857原复现/245变化/4保护/12非法输入原回归仍通过。它还没有接入完整审核家族/来源与新物理逐帧记录，所以audit_family_ready=false。上一轮962固定历史候选原关节链结果保留；完整前缀和新物理收益未证，20mm只Cartesian、关节层仍10mm、可能推进减慢的风险保留。
+
+本轮无删除/转换/训练，0新增正式准入；总体共享多样物体与指令、非目标全程1.5cm、首零位后双臂腰、无助推、原h10和未调参独立多seed实际模型画面目标完整保留。
+
+## 2026-10-04T11:37:53.751396+00:00 提前边缘候选962原生关节链全部可行；新物理右前盒132.646mm仍失败、后袋337.698mm通过，7/10已实际图审
+
+本轮progress。check_rear_early_edge_native_bouts_joint_v4/session56411退出0；15推动段共962步，原记录目标经原precision IK、joint edge inward、edge/clearance repair与最终guard复现raw，最大差1.699e-6rad在预定2e-6内。候选自身Cartesian/压力/COP/前关节命令连续传播，962全部原最终门接受。测量q/J/物体与力仍固定历史输入、每段只初始一次；不是全接近/重接触前缀、不是新物理。v3在退出稀疏trace字段active_side缺失退出，旧脚本/日志保留；v4由逐帧真实task_inputs绑定补齐并核所有原已存字段。NATIVE_JOINT_READINESS_REVIEW_V4记录明确范围，不把旧report final_joint_guard_verified=false误改成整链物理认证。
+
+候选风险保留：584原未override、221关节层no_threatened_core_edge、82 nonlinear_joint_direction、61 parent_direction_valid、14模式保护。20mm只提早Cartesian调节，原关节边缘阈值仍10mm；221次不等于提前强制关节向内。减缓Y最多37.280mm，未知是否能满足时限。没有修改当前运行stage，无新采集开关接线/新候选物理，仍not_collector_ready。
+
+front_box_trailing_r2/case840020两条完整1200及READY、独立数值、各8RGB4外视已实际查看并核hash写ACTUAL_REVIEW_BINDING。右前盒失败132.646270mm，末10signedY−30.183608mm、非目标XY0、7真实倾斜+2失载+1路线方向变化；query-phase警告保留。RGB盒持续下缘/右手遮挡，黑袋685后清楚可见。新版恢复标记在真实原生joint path实际执行123步，首220，256/471两次handover，观测/滤波无载及原最终门均核实：旧中断确已修复，但任务没有改善到通过。后袋337.697893mm通过、末10signedY206.075475mm、非目标XY0；真实6失载+1正常释放，旧描述7失载多算了带残留原因的释放。RGB513袋在左缘，685后两物体画外，稀疏外视不证全程无碰撞。报告DIAGONAL_840020_ACTUAL_REVIEW_AND_RECOVERY_V1，失败配对拒绝训练。
+
+采集器436394正常结束；实际新collector454743与producer407939活，正在840021剩余交换两推；7/10已采集/实际图审。原audit/quarter队列仍活，最新审核计数与进程start/CPU实查见LATEST_ACTIVE_RUNS。free31.163GiB，本轮无删除、转换、训练，0正式准入。整体共享多样类别与指令、非目标全程1.5cm、首零位后双臂腰、无助推、h10和未调参独立多seed模型画面目标不变。
+
+## 2026-10-04T11:21:14.427518+00:00 提前边缘候选原生连续15段962更新复现；连续新状态857独立组合LP及倾斜/失载/释放保护通过，推进减缓风险保留
+
+上一轮progress，本轮progress。rear_early_edge_candidate_v1新增隔离rear_cop_route_early.py，仅导入候选helper、默认关字段、依赖校验与调用四处改动，反向字节恢复原staged_front_box_trailing_v2/rear_cop_route.py通过。没有改生产/运行stage或collector。
+
+check_rear_early_edge_native_bouts_v1/session80453正常0：执行实际collector top_cls构造AST+真实RearCopRoute/父模式控制/TracedPeakLoadControl和release monitor。两条历史后盒共15段，每段首loaded动作后从记录初始化一次，之后命令/压力/COP历史不重置，持续到原退出帧（末段到1199）。962原生更新关闭候选时目标与原记录2e-6内、压力1e-9内一致；候选483动作改变，模式0差，13倾斜抬手+1正常释放保留，最后1段仍push。固定后续物理观测、段首状态按记录提供，不声称全前缀/新物理。
+
+v2/session91118为新候选自身累计历史补独立校核，857次原10mm/新20mm/X-Y-Y回退组合由独立linprog复算后逐值核实际候选Cartesian目标，并增加真实类受控修改观测3项：倾斜→top_lift、失载→top_lift、到区→top_release，提前保护均不覆盖原退出；这些是明确人工观测夹具不是新物理。NATIVE_LOADED_BOUT_REPLAY_V2完整通过，49/后续记录来源由报告绑定。
+
+风险：候选相对原目标最大差X27.807mm/Y37.280mm/Z0，Y始终减缓任务前进；更早保护可能拖慢推进，不能只凭通过LP就宣称改善。NATIVE_READINESS_REVIEW_V2仍not_collector_ready，缺完整接近/重接触状态链、新命令native IK/原关节及最终几何guard、显式默认关采集与元数据/来源/审核接线、完整配对物理对照与图审。原READINESS_REVIEW旧状态保留，新记录另立。
+
+实查producer407939、collector436394、auditor408137/numeric408138与quarter410690仍活，840020前盒进度510，还没有整个case落盘；原首组2/4+wait拒绝不变，全10/224和后续quarter顺序保留。free31.970GiB，本轮无删除/新物理/转换/训练，0新正式准入；整体共享多样摆放、类别与指令、非目标全程1.5cm、首零位后双臂腰、无助推、h10和独立多seed实际模型画面目标不变。
+
+## 2026-10-04T11:09:47.132602+00:00 提前边缘候选发现8状态丢原保护风险并修正；857记录/独立LP及开关身份、12负例通过；右前盒仍采集中
+
+上一轮progress，本轮progress。对REAR_EARLIER_EDGE_PROBE_V3进一步查32新增无解：r1有8条原jointXY override=true，直接回退parentY会丢失原已采用的X/Y保护（423/646/650/652/796/797/798/800）。因此旧“保留原Y回退”的试算不足以成为新候选，旧报告保留。新增隔离rear_early_edge_candidate_v1/rear_early_edge_governor.py：原10mm函数仅内部参数化/改名，字节反向恢复核验；右侧显式开启才算20mm，只有可行override采用，其他情形完整保留原10mm结果，关闭及left返回原字典不添元数据。生产与当前stage未改。
+
+check_rear_early_edge_parent_preserving_v1/session35559正常0：857原函数与完整Cartesian组合输出复现、857独立LP核新候选、857关闭身份+857left身份、4非推/低载/无COP保护和12非法输入拒绝均过。修改记录从253降至245；FALLBACK_REGRESSION_CHECK逐条核上述8状态现在新旧命令完全相同。READINESS_REVIEW明确helper_verified_unwired：还缺native路线生成链及原最终guard、新候选自身状态连续回放、显式默认关采集器/元数据/来源/审核接线、完整原配对物理与多seed收益；不能把离线8修复当任务成功。现有32无解风险未隐去，只正确回退。
+
+实查producer407939/collector436394/auditor408137/numeric408138及quarter410690仍活，case840020前盒进度300，超过r1最后210日志但尚无落盘新恢复事件，不能单凭越过旧进度称版本分支或任务通过。原完整10条件/224审核继续；首组2/4+wait拒绝保留，quarter仍等待10实际图审。当前free31.978GiB，本轮无删除/新物理启动/转换/训练，0新正式准入；整体共享多样类别交换、首零位后双臂腰、非目标全程1.5cm、无助推、h10及独立多seed实际模型画面目标未完成。
+
+## 2026-10-04T11:02:47.150915+00:00 r2首完整交换组2/4push+wait实际复核拒绝；前袋647步通道保护；采集进入关键840020前盒
+
+本轮继续progress。原collector414703已正常结束，日志SimulationContext cleared且两个1200轨迹READY，未因此前慢规划重启。840023后盒独立数值234.008379mm失败/末10 signedY122.111917mm，9倾斜恢复；前袋45.406349mm失败/末10 signedY−46.415523mm，3失载退出，647首front_corridor_no_table_margin，后553保护帧。两者非目标全程XY0、query-phase警告均保留。各8RGB4外视已真正查看、原READY/raw/protocol/numeric/sheet/external哈希验证并绑定ACTUAL_REVIEW：盒513右缘部分可见、685后两个物体画外；袋685后下缘裁切且后段停住，盒可见。图像相对运动不当世界位移，稀疏外视不证明全程无碰撞。
+
+841011等待70帧原数值过、全11动作0、腰3.087e-9rad、双掌2.098mm散布；实际8RGB已看空桌稳定并绑定，无外视不冒充有。FIRST_COMPLETE_GROUP_ACTUAL_REVIEW_DECISION：首完整组5条件已实际复核，push2/4+wait1，因两交换任务失败拒绝训练，尚待全控制审核；不是完整10条件的总分。原r1首组3/4push+wait相比退化的后盒保留，不能只说普通2条好。
+
+新collector436394实查活，producer407939正在case840020；这是原r1报版本接收异常的右前盒条件，需核真实新恢复事件及完整任务，而非仅越过旧报错即称通过。quarter队列仍等本run完整10采集+实际图审。当前free31.982GiB，0新正式准入/转换/训练；完整共享策略、类别位置解耦、首零位后双臂腰、另一物体全程1.5cm、无助推、原h10与独立多seed真实模型画面目标不变。
+
+## 2026-10-04T10:55:22.255016+00:00 后盒接触位置/朝向与累计跟踪偏差定位；提前20mm边缘候选857原输入复现+857独立LP，32新增无解须保留回退
+
+上一轮progress，本轮progress。REAR_BOX_CONTACT_LOCATIONS_V1逐动作核子步起始位置/四元数及下一帧末位置、原记录hash/冻结140x90x45mm尺寸，只选24唯一solver ticks、原0.05N描述滤波，记录起/末位姿坐标差。r2重复推动段退出前三动作竖直绝对力加权接触在局部Y约−33至−34mm，距名义45mm半宽约11–12mm；不是有符号COP或净翻转力矩。r1成功第二段盒yaw约10→41deg、104mm推进，r2约8–11deg、每段21mm；朝向差是伴随现象，不能宣称主动旋转必要。完整probe session74801正常0。
+
+REAR_REFERENCE_LEAD_DIAGNOSIS_V1独立复算原rear_joint_xy已采用90r1+53r2记录的局部非向外增量均成立，但每条仍有>1mm累计名义目标相对观测支撑点的向外lead，最大19.442/17.559mm。它并非最终关节/真实COP命令，也存在于成功例，所以不是充分失败解释；确认现有增量保护不消除过去累积偏差。
+
+隔离probe_rear_earlier_edge_v3仅将jointXY eligibility10mm→20mm，原方程/2mm X步/前进Y缩放/Z/模式载荷门不改；没有修改运行中stage。基于原已记录反馈及前一步真实力重新算COP，857原函数+组合Cartesian输出逐条复现，857独立linprog验证新方案，253输出变动；失败r2重复段2–9通常提前11–12帧。但新增25r1+7r2无解，明确保留原Y governor回退，未把更早干预等同改善。第一次v1误用packet action_step键而退出，原日志保留；v2原函数复现但候选回退描述不含parentY，v3修为真实组合并逐条对原targetxyz，session75005正常0。尚未递归回放改变后的控制状态、未走完整native/finalguard新命令链、更无新物理收益；后续若采用须补这些而不是只凭LP绿灯上线。报告REAR_GEOMETRY_AND_EARLY_EDGE_INTERPRETATION_V1。
+
+实查407939/414703/408137/408138与queue410690仍活。前袋progress日志600，实际最后外视pre_0615.jpg更新于2026-10-04T10:55:22.101794+00:00；collector CPU持续增加，慢规划不当终止、不重启。case840023后盒仍暂存失败待整个case READY；原完整10条件/224审核及后续quarter顺序不变。当前free32.478GiB，无删除/新物理/转换/训练，0新增准入；整体多样类别位置解耦共享策略、非目标全程1.5cm、首零位后双臂腰、无助推、h10和独立多seed实际模型画面目标未缩小。
+
+## 2026-10-04T10:43:16.978851+00:00 后盒完整接触比较定位反复倾斜恢复；37条描述计数审核纠正15条历史原因残留误计
+
+上一轮progress，本轮progress。diagnose_trailing_rear_box_contacts_v1/v2实际读取r1/r2后盒各1200动作的24唯一solver ticks与原记录哈希，排除tick0/manager重复，不把力与末状态假设同步。两轮首次有非零腕-盒接触均52步，59步载荷明显分叉。新失败版峰值竖直绝对腕接触10.0745N反而低于旧成功19.5402N，不能以降峰判改善。新503个top_push动作全部有非零腕接触（旧460也全部），但9次真实倾斜恢复；第二至第九完整推动段每次约20.6–22.5mm，旧第二段104.0mm。直接可见问题是反复倾斜撤回的效率损失，不能称简单无接触；动作内部瞬时失载未排除，底层非确定性根因未证。下一步几何诊断关注倾斜前真实接触位置/盒朝向，保留既定完整物理对照和门，不只延长失败样本。
+
+数据解释缺陷已隔离：旧review用保留的last_recontact_reason统计退出，正常top_release仍保留上次倾斜/失载原因，造成多算一次。新v2通过目标mode与recontacts增加分类并区分零力接触记录；原r1后盒报告5实际为4倾斜+1original_margin正常释放，新r2为9。CONTACT_EXIT_COUNT_AUDIT_V1核六个当前/父run已数值复核37条，其中15条描述计数各多1；未改原冻结report、任何raw和成败门。4个未分类transition另核实均front_guard_lift且有route_stop_reason，解释已单独落盘。旧数字阅读须结合此更正，例如r2普通盒倾斜原5应4。不由计数更正批准数据。
+
+实查新r2 producer407939/collector414703/auditor408137/numeric408138与quarter队列410690仍活。当前case840023前袋进度360，已落盘后盒独立复核仍待整个case READY，保持暂存失败身份。各审核计数在LATEST，当前free32.500GiB，本轮没有删除、训练或新物理启动。0新准入/转换/模型；原全部类别交换组、首零位后双臂腰、另一物体全程1.5cm、无助推、h10与未调参独立多seed实际模型画面目标完整保留。
+
+## 2026-10-04T10:36:53.008547+00:00 r2首两条实际复核通过但目标画外/阶段警告保留；交换后盒317→234mm退化，已定位早期接触分叉；补记1.439GiB清理
+
+上一轮goal有实际复核/清理progress，本轮完成实际绑定和新的退化定位，progress。Git备份侧任务已核实私有仓库与c93b9c8，不影响研究继续。
+
+front_box_trailing_physical_r2/case840022两条各8RGB4外视已实际查看，并核READY来源/raw/protocol/numeric/sheet/external后独占写ACTUAL_REVIEW_BINDING。盒159.979708mm、袋159.388475mm，1200帧原任务/姿态门通过、非目标全程XY0。盒5倾斜退出，袋4失载退出；袋query-phase“No distinct active phase and settled ten-frame terminal suffix”保留，实际expert_end_mode=top_push。RGB盒342裁切513后画外；袋171左缘裁切342后画外。相机运动不能当世界位移，稀疏图不证明全程无碰撞。仅普通首两条，非困难恢复有效证据、0训练准入。FIRST_TWO_ACTUAL_REVIEWS已落盘。
+
+新差结果：case840023后盒完整1200暂存quality失败234.008mm，旧r1同条件317.028mm通过；末10目标有符号Y最低205.576→122.112mm，所以新轨迹未过原200mm目标区门，非目标仍0。前袋仍运行，case尚未READY，不冒充独立审核完成。diagnose_trailing_r2_rear_box_divergence_v2已验证两侧原provenance归档哈希、raw/trace/阶段日志：150非bytecode归档只guard声明版本接收改变，args仅out_dir不同，physics元数据一致，两侧恢复selected=false/0rows。q/action首帧相同；q从1帧2.953e-14差异开始，59帧q差0.00014994/action0.00067806，60帧动作差0.00127012，盒54首次差、97模式分叉。新top_cross369vs216，lift101vs57，无release（旧295）。提示接触反馈对微扰敏感，未证明底层非确定性根因，不归因未选用的前恢复分支。v1错误地直接比较带版本目录名/bytecode的快照键而断言退出，未写报告；v2仅修比较夹具，失败脚本保留。
+
+补记10:22:57UTC已执行的retired_relative10_evaluation_r1清理：旧state_relative_chunk10评测60raw移除1545430754bytes=1.439GiB，801其余文件哈希保持。两处现行文本引用实际仅指评测目录外train_only_relative_stats.json且保留；6246来源/6779文本、258进程核对无删除冲突。删除raw不能完整重放，说明已写原目录，不把待图审标成完成。模型/训练源/其余研究基线保留。当前free32.506GiB，采集仍增长。
+
+实查producer407939、collector414703、auditor408137、numeric408138与quarter队列410690在运行；实际审核计数见LATEST，旧reserve/lateral/frontbox仍审核。原10条件/224项不变，quarter仍等待完整r2及10actualreviews，未物理启动。0新增合格组/转换/训练，首零位后双臂腰、无助推、非目标全程1.5cm、原h10及未调参独立布局多seed实际模型闭环目标均不缩小。
+
+## 2026-10-04T10:18:18.830061+00:00 版本接收修复完整接入并启动front-box r2；89原生生成事件接收/最终保护通过；quarter新队列等待r2完整结果
+
+上一轮progress，本轮progress。prepare_front_box_trailing_family_v2新42适配器只在normal_rows/reference_ledger两处接收声明的新版本，原数学/门不改；来源绑定v2核新stage103文件仅waist_coordination_clearance改变，可精确恢复旧源。39模块实际import+3CLI静态入口，原十条件224审核保持。70帧临时来源夹具98来源、21负例通过，实际数组未改且物理入口拒绝夹具。
+
+补齐上次遗漏的控制链：D=front_box_trailing_admission_preparation_r2/check_native_capture_admission.py从原moving_runtime三假想输入流实际构造FrontCopRouteState/TracedPeakLoadControl、执行collector捕获语句生成89事件，再进入真实修改后的coordinated_step接收分支与原guard.command，全部命令逐值等于生成event并通过最终保护。不是新物理轨迹，完整父前缀未回放；报告NATIVE_CAPTURE_ADMISSION_CHECK有真实来源。首次session63078缺Isaac环境变量EOF退出且原日志保留，使用既定OMNI/EXP_PATH的session69132正常0。等待session7825、inventory66923正常0。
+
+COLLECTOR_BINDING_CHECK通过6命令开关两态共12实际parser、原入口字节不变、实际归档语句含新guard。失败夹具记录保留：v2先缺Isaac环境、补环境后错误地用resolved_settings比较prelaunch；v3改原prelaunch合同后又直接读取不存在的运行期push_assist键；v4使用原启动器同一“命令不含--push-assist”检查后正常0/session91640。未改采集器/原质量合同。第一preflight因报告尚缺退出，第二session67273正常0，GPU空闲、free31.925GiB、剩余预算4.5GiB/保护25GiB/启动30GiB通过。
+
+新完整front_box_trailing_physical_r2实际启动10:11:32UTC，producer407939/start96703492，collector408211，auditor408137（实际脚本watch_front_box_trailing_trial2_physical_audits_r1.py）、numeric408138；首case840022日志已见720步。INITIAL_SOURCE_OBSERVATION已调用v2binder核实际provenance与98归档来源，实际snapshot包含新接收分支，不是仍跑旧源。原8推2wait/1200与70帧、直接父reserve、全部224审核及实际图审不变。r1中止5完整+1未落盘+4未执行保留不重启；r2尚无完整质量结论，不可称策略有效。全10实际图审后可启动queue_front_box_trailing_trial2_physical_r2_closure_v1，尚未启动该关闭器；已修其未运行草稿为真实auditor脚本名r1后缀。
+
+quarter原完整检查不变，新增物理准备r2与queue_front_loaded_z_quarter_trial2_physical_v1，仅改变等待对象为front-box r2与新输出/脚本名，quarter collector仍原stage、直接父仍lateral。反向模板恢复与完整CONFIGURATION_CHECK通过，prepare session56708正常0；新queue410690/start96729335已实际启动，等待确切407939终止+完整10采集/10actualreviews、GPU及原存储门。旧queue389855与quarter准备r1保留失败状态，quarter物理仍未启动。不要把新quarter队列误归为旧失败队列，也不要改其直接父。
+
+原JOINT RESULT已完整关闭：5/8push+2wait、224控制审核0bad；REAR也已完整关闭：6/8push+2wait、224中21短1077帧拒绝保留。两者均不能准入或宣称整体目标完成。剩余reserve/lateral/旧frontbox审核的真实计数及进程见LATEST。free31.627GiB，本轮无删除；当前新r2采集还会增长，quarter启动前继续核30/25GiB门。0新正式准入/转换/训练；整体共享多样摆放按物体/指令、非目标1.5cm、首零位后双臂腰、无助推、原h10与独立多seed真实模型画面目标未完成。
+
+## 2026-10-04T09:54:38.581018+00:00 前盒试验因版本接收漏接中止；392原生恢复事件复现并隔离修复，14负例拒绝；首组3/4+wait拒绝；完整接触基线与2.205GiB清理完成
+
+上一轮progress，本轮progress。front-box840023后盒1200/317.028mm原数值/姿态过，5倾斜退出；前袋1200/45.072mm失败，2失载退出，603步front_corridor_no_table_margin后597保护帧。两条各8RGB4外视已实际查看并绑定全部来源；后盒513右缘/685后画外，前袋685后下缘裁切且后段停住。841011等待70帧实际8RGB稳定、全11动作0、腰3.087e-9、双掌散布2.098mm，已绑定。首完整组FIRST_COMPLETE_GROUP_ACTUAL_REVIEW_DECISION：3/4推+wait，5actualreviews，整组拒绝；仍待控制审核。
+
+重大新失败：front-box840020前盒在最后progress210/外视215附近触发`Front recovery override not currently unloaded`，未写episode目录/raw/quality。producer356528、collector387136与numericwatcher均终止；原auditor356748继续处理已经READY的五条，最终完整状态应保持incomplete。实际已看progress.jpg与pre_0215外视，不能当完整图审或测量载荷。RUNTIME_ABORT_DIAGNOSIS_V1明确原计划10项：5完整、1运行中止未落盘、4未执行，不报子集成功率、不入库、不重启原失败源。旧quarter queue389855因此按规则stopped_without_retry，未启动quarter物理。
+
+已定位报错的确定接线问题：staged_front_box_trailing_v1/waist_coordination_clearance.py仍只接受right事件版本front_box_recenter_v1，而trailing_runtime输出front_box_trailing_20mm_reserve_05mm_v1；复合条件统一报unloaded，故不能据报错断定真实载荷非零。以RESERVE原前盒392条真实command/handover执行原接收整个分支：原版本全部过，仅改新marker全部被同文案拒绝；新隔离候选仅允许两个已声明版本后两者通过，14个错误版本/载荷/滤波载荷/模式/侧别/计数/几何/未采用proposal负例均拒绝。check session91724正常0，NATIVE_ADMISSION_CHECK记录完整来源；实际失败事件上下文未保存，勿捏造。另发现audit_front_box_trailing_r1_normal_rows与front_box_trailing_r1_reference_ledger两个消费者同有旧版本硬编码，392真实事件分别验证修复及未知版本/错误side拒绝。新staged_front_box_trailing_v2复制103文件，仅改waist_coordination_clearance.py，原collector入口与其归档列表不变；反向字节恢复核验通过，两个审核修复仅候选。完整source/audit-family及新物理接入尚待，不覆盖失败v1。
+
+quarter完整1200前侧默认关闭检查session87875/PID379151正常0，3物理入口拒绝负例、运输/parent执行全过；完整CONFIGURATION_CHECK已过（原8推2wait/224审核），readiness382269正常结束并曾启动389855。该队列已因上述前置失败终止，不能把ready状态说成仍采集/排队。下一步须明确安排修复后的完整front-box新对照与独立quarter先后，保留quarter直接父lateral和完整范围，不盲目重启旧队列。
+
+完整lateral接触基线新summarize_paired_contact_response_v1对8推2wait全量绑定通过，结果PAIRED_CONTACT_RESPONSE_V1及INTERPRETATION/MD。盒3/4、袋3/4。失败前袋208push/551保护帧，绝对竖直腕组件接触峰30.056N，11动作>既有10N（其中9次priority采用）；失败前盒峰仅4.603N、12倾斜退出、605重新接近/326push。两类不是同一大力峰现象；成功后侧也有>10N。绝对分量和不是净力，腕组件含前臂形状，力/位姿不假设严格同步；只描述相关，不新设力门，不声称减幅实际改善。解释首写曾误调用时间字符串，未产生报告，修正序列化后写出；底层基线计算未变。
+
+按用户已有历史测试清理授权，经当前/排队6058来源、6586文本无引用及进程检查，仅移除旧heldout0/39和model40六local320评测69raw，共2367816152bytes=2.205GiB。1007其余文件校验不变，空间39+original160共46raw、模型与训练源保留；既有pending图审字段不改成已完成，删除样本不能完整RGB重放。证据在demo/storage_cleanup_20261004_retired_local_evaluations_r1。257进程扫描无冲突/无未知本用户不可读FD，sd-pam/ssh-agent受保护描述符限制列明。当前free31.932GiB。0新正式准入/转换/训练，完整共享策略目标仍未完成。
+
+## 2026-10-04T09:28:51.741911+00:00 减幅原生命令链/2398步/双侧独立审核完成，完整10条件计划已准备；rear原224审核终止并保留21短帧拒绝
+
+本轮progress。Git私有代码备份已独立核实完成，当前恢复原完整共享策略目标。quarter原生priority→transport→最终guard七项通过，双前侧完整2398非初始动作流v2已结束通过；右侧321独立记录+7负例通过，左侧198+7已通过。全审核家族39实际导入+3CLI静态入口、十条件224项不变。临时70帧等待夹具开启93来源/32负例与关闭92来源/30负例均通过；原物理数组不变，夹具不能冒充实采。完整1200前盒默认关闭兼容检查session87875/PID379151仍实际运行，来源与观测绑定已过，日志/tmp/front_loaded_z_quarter_defaultoff_front_v1.log；不因安静重启。
+
+新prepare_front_loaded_z_quarter_physical_v1已生成完整原8推2等待/1200与70帧配对计划、数值/实际图审入口、原224审核、启动与关闭脚本；直接父是lateral，保留其lateral开关且唯一追加quarter，当前front-box只作先后顺序前置，不混同比较父。可反向恢复原模板。未启动新quarter物理。readiness continuation PID382269实查活，绑定上述确切checker身份及脚本来源；仅检查完成且报告/配置全过后准备一次物理队列，失败保留停住不重试。物理队列仍须当前front-box完整10采集+10实际图审、producer终止、GPU与原30GiB启动/25GiB保留门满足。quarter的50状态下压反增风险不变，不能宣称实际力降低或任务改善。
+
+rear原auditor222901已终止且AUDIT_STATUS complete224/224，203项过，21项失败逐日志校哈希均包含同840020前盒1077/1200帧拒绝（含三个下游子进程传播）。这只说明首个失败条件，不证明被提前拦下的后续控制检查合格，更不取消原实际肘间隙失败。COMPLETED_AUDIT_FAILURE_ANALYSIS已落盘；完整比较仍等直接父JOINT关闭。front-box producer356528/collector364407仍在840023前袋采集，未写整case READY；之前后盒quality1200/317.028mm通过仍仅暂存，待独立数值和实际图审，勿记整组成功。
+
+最新具体审核计数、活进程和存储在LATEST_ACTIVE_RUNS；空闲30.340GiB，本轮无删除。0新正式准入/转换/训练，训练前仍需完整合格分组及独立验证；完整图像指令共享策略、多样解耦布局、全过程另一物体1.5cm、首零位后双臂腰协调、无助推、原h10及实际模型画面/多seed目标未完成。
+
+## 2026-10-04T09:04:23.155398+00:00 减幅独立198记录+7负例通过，默认关采集器接线通过；发现50状态名义下压反增；前盒试验首两条实际复核
+
+上一轮progress，本轮progress。audit_front_loaded_z_fraction_applied_v1/record_v1保留原父任务重建、原实际载荷/历史/支持点、姿态/肘/桌/步幅/路径/最终guard，只经独立verified_task绑定声明的Z插值目标。左侧完整已改变候选192加6早期保持记录共198独立通过：181采用、10支持点非下移拒绝、1跟踪未改善拒绝、3未捕获+3非push；7篡改负例全部拒绝。记录检查v1复制只读几何proxy导致递归、v2误把SUMMARY当帧记录，原失败均保留；仅修夹具输入复制与四位编号glob，v3/session53149正常0，未改审核门或源轨迹。242来源哈希核验。完整native stream65168/PID353128已完成左1199动作，右侧当前1160/1199，仍实查活。右侧独立record checker session48855/PID367342已准备，绑定原进程身份等待完整RESULT后审核全部右侧已改变候选，未启动新物理。
+
+staged_front_loaded_z_quarter_v1拷贝原lateral97文件，仅新增helper与collector五处参数/保护/工厂/元数据/归档。显式--front-loaded-z-quarter默认关；启用固定.25且限原loadedZ+joint-transport诊断，不允许policy/训练采集。反向字节恢复及去开关AST均精确回到原版；真实6命令参数解析开关两状态、4非法组合、原工厂选类/重用、元数据和归档语句通过，session61652正常0，102来源核验。完整实际priority→transport→final语句及独立audit-family/source接入尚未完成，READINESS明确physical_launch_ready=false，不排物理。
+
+重要限制：LEFT_ACCEPTANCE_COVERAGE对完整1199左观测复算，原版142次采用，quarter181；131共同采用、11新拒绝、50原版拒绝而quarter采用。恰有50状态quarter名义下压比原最终Z命令更多。降低插值系数并不保证每帧较小下压，更不证明实际力峰降低；下一物理须同时看压力突增、失载、yaw与完整配对成功，不能只报关键648一帧收益。
+
+front-box trailing首840022盒159.974mm/袋159.358mm、非目标0、1200原数值/姿态通过，首11状态/动作0、助推0；各8RGB4外视已实际查看并校验READY/raw/protocol/numeric/sheet/external写绑定。盒5倾斜退出、RGB513后画外；袋4失载退出、RGB342后画外，query_phase未找到distinct active及settled末10的原提示保留。普通布局只2/10+2图审，不能证明新困难前盒20mm落点收益；collector364407正在840023交换组。原joint/reserve/rear/lateral/front-box审核继续，rear21短帧拒绝仍保留，最新进程计数见LATEST。
+
+空闲30.355GiB；本轮未再删数据/模型。0新正式准入/转换/训练，目标仍是完整多样位置共享图像指令策略、全过程非目标1.5cm、首零位后双臂腰协调、无助推、独立多seed h10及模型真实画面，未完成。
+
+## 2026-10-04T08:47:50.301996+00:00 lateral完整6/8推+2wait、10条实际图审；前盒落点新物理已启动；减幅整流验证继续；清理释放2.05GiB
+
+上一轮progress，本轮progress。lateral840021盒155.320mm/袋159.979mm，非目标XY0、1200帧原质量/姿态通过；盒8倾斜+5失载退出，袋4失载退出。各8RGB4外视已实际查看并核READY/raw/protocol/numeric/sheet/external后绑定；盒RGB171右缘裁切342后画外，袋342左下裁切513后画外，风险保留。841010空桌70帧8RGB稳定、无外视，全11动作0、腰3.087e−9rad、两掌散布各2.098mm原门通过，实际绑定已写。原summarizer关闭完整NUMERIC_VISUAL_SUMMARY：10图审、6/8推+2wait，两组各有前侧失败，0准入；控制审核未完成。原producer293411已终止，无重启。新lateral关闭队列357633实查活，等待原auditor293646全224和直接父reserve完整RESULT，保留失败、不缩分母。
+
+原front-box trailing queue313429按条件自动仅一次启动producer356528/start96165453，collector356819，auditor356748，front_box_trailing_physical_r1/PROTOCOL已存在并实查采集日志首盒420步。当前普通首条不能证明新右前盒20mmworld+Y落点收益；原两组8推2wait、1200/70、全部审核和30GiB启动/25GiB余量不变。该试验与减幅候选独立，未混改控制。
+
+减幅完整两前侧轨迹逐帧检查v1 session53201在166帧默认元数据比较失败，定位SciPy float64四元数转换与原采集器rotation_xyzw(float32)约1e−8差异，命令相同但路径/旋转元数据不同；保留原失败脚本/日志，绝非忽略精确检查。新v2恢复原函数和输入精度，session65168/PID353128实查活，当前layout_840023_nudge_mailer_to_bin检查到360/1199；变化后重算运输与原最终guard，独立有限差分证书和关节/肘检查，未完成，勿重启。每一步仍取真实历史q/action，绝不是假想闭环轨迹。新独立TASK_BINDING_CHECK核前40已保存候选，只准原Z目标按声明.25插值，7篡改负例拒绝；HISTORY_SOURCE_CHECK两个完整流2398历史条逐值对应raw，92stage来源各与collector归档一致；sessions81882/65106正常0。candidate仍未接完整collector/审核family，无新减幅物理或力/任务成功结论。
+
+沿既有用户清理授权，只删除10个已结束明确拒绝/未准入的旧pre-waist诊断72raw.npz共2198624603字节≈2.05GiB，843其余报告/轨迹控制/图片文件哈希不变。当前与排队来源无直接或文本引用、无任务进程占用；sd-pam/ssh-agent受保护描述符限制明示。部分旧单条通过也不代表旧被拒绝run准入；原RAW/RGB无法完整重放的说明已补。清单/源哈希/保留文件/进程核验在demo/storage_cleanup_20261004_retired_rejected_raw_r1，模型/已入库/当前实验均未动。当前空闲31.160GiB。
+
+0新正式训练准入/转换/训练，完整共享多样摆放、非目标1.5cm、首零位后双臂腰协调、无助推和多seed h10/模型实际图审目标仍未完成。最新审核计数与进程见LATEST，原rear21短1077帧失败保留。
+
+## 2026-10-04T08:31:32.365066+00:00 减幅候选默认/禁用精确保留并通过原真实上下文，lateral再两条完成实际图审
+
+front_loaded_z_fraction_candidate_v1新增隔离模块，默认fraction1精确保留原运行输出与全部元数据，fraction.25显式归档原/修改后Z任务，不篡改原输入/历史；三真实上下文均与上一步探针命令精确一致，7非法参数拒绝。check session61982正常0，NATIVE_CONTEXT_CHECK来源核验；未接采集器、未做完整后续transport/audit，未排新物理。既有LATERAL及front-box queue不变；减幅不是新质量门，尚无实际力或成功率收益。
+
+lateral840020两条各8RGB4外视已实际查看，READY/raw/protocol/numeric/sheet/external来源全部复核并写ACTUAL_REVIEW_BINDING。前盒完整1200推进164.245mm仍原门失败，末10有符号Y最小仅3.244mm、12倾斜退出、非目标0；513近右下缘，685后持续裁切。后袋完整1200推进337.199mm、末10最小Y205.577mm原质量/姿态通过，非目标0、8失载退出；RGB685后袋与手画外。外视采样站立/操作可见，不能据采样排除全部异常。当前7/10采集+7真实图审；旧collector319361正常退出且缺失，新collector346952执行840021，原producer293411和queue313429仍活。两组已各有失败，0准入；剩余3条件和224原审核继续，不删失败也不缩分母。
+
+## 2026-10-04T08:27:37.281100+00:00 前袋下压修正伴随压力/扭转突变，三实际状态12个减幅名义探针通过；后绕端点仅1/3找到
+
+上一交互为已完成Git备份旁支，对分拣未新增进展；本轮重新实查后台并取得progress。独立命令链原v1错误假设所有run运输修正关闭而失败，原脚本/日志保留；新v2 session70783正常0，分别绑定parent→Zpriority→transport→raw，较早reserve运输确有应用，不能混归因。最新lateral648原名义下移−.533299mm→Z修正−1.435712mm，额外.902413mm，运输未改；手平面朝向变化.271519°→1.392057°，该动作实测竖直绝对力峰29.917393N、袋yaw−.432732°；rear648对应29.439817N、额外.983404mm。三run实际/未应用分组仅描述性且有选择偏差，不是因果结论。FRONT_BAG_LOADED_Z_BURST_DIAGNOSIS_V2来源22项核验。前一未交接轮yaw几何反事实显示lateral原宽−.746821mm，仅恢复初yaw可到+3.130758mm、移除微小tilt仍负；SUBSTEP_HISTORY该窗口无盒/右手/其他robot接触力，保留force符号和采样时间限制。不能把单一压力或yaw当已证主因。
+
+新probe_front_loaded_z_fraction_v1.py在三已知失败状态各试.25/.5/.75/1共12单步假想命令，显式修改Z目标/equality，保持原姿态、肘/桌/关节/步幅/非目标路径检查，12个修改后名义任务通过；所有1.0与记录Z命令逐值相同，独立URDF支持点一致，36来源哈希无变化，session42243正常0。lateral648四分之一修正名义下移−.802218mm、朝向.600922°，相对满幅−1.435712mm/1.392057°改善；这是候选几何变化，绝非实际力/袋yaw收益，未复算后续transport、不构成完整控制命令认证。READINESS_REVIEW明确下一步隔离默认关候选/完整链/原8推2wait对照，减幅可能失载/变慢，不能新门替代原任务。当前运行源/门未改，新物理未启动、0新正式训练准入/转换/训练。
+
+后绕screen session66745正常0，ENDPOINT_SCREEN三个固定对象必要端点只首点找到；后两点四起点均失败，26来源核验通过。只证明本地搜索未找到，不证明全局不可达；没有连续路径/接触验证，暂不实施后绕。
+
+当前lateral collector319361仍实际运行840020后袋；前盒quality保存164.245mm/非目标0但未稳定入目标区失败，完整case READY/独立数值/实际图审仍待。5/10完成+5图审不变。joint/reserve/rear/lateral审核仍活，rear21条原审核失败均在1077短前盒，不删失败，最新计数见LATEST。前盒trailing queue313429继续等待lateral全10+10图审及原资源门。
+
+补记已完成第二批瘦身：storage_cleanup_20261004_retired_zero_pass_raw_r1仅五个已关闭零通过旧诊断24raw，792660784字节，341其余文件哈希保持；5860当前保护来源/5708文本无引用，进程占用检查与受保护系统helper限制写在原记录。模型/准入数据未动，原全RGB/raw重审不可用已标注。当前空闲29.732GiB，30GiB启动/25GiB保护门不变。目标仍为多样摆放共享图像指令策略、全过程非目标1.5cm、首帧零位后双臂腰协调、无助推、独立多seed h10及实际模型图审，未完成。
+
+## 2026-10-04T07:46:57.705877+00:00 横通道首组3/4拒绝，前袋实际front_x负宽停止；前盒新落点已核配置并排队；后绕必要可达性探针启动
+
+上一目标轮progress，本轮progress。原default-off session88426/PID298668已0结束；完整1200原前盒arrays/control记录不变的临时fixture通过transport、parent ledger/execution，3默认物理入口拒绝fixture，临时目录已移除。新物理配置session67716及队列准备20549正常0；5275配置来源绑定，原8推2wait/1200与70帧/224审核不变。queue313429实查活，等待当前lateral producer293411全10完成+10真实图审与原GPU/30GiB启动/25GiB余量门。版本继承状态字符串waiting_for_exact_rear_producer，但LAUNCH_QUEUE_PLAN和代码实际绑定run_front_corridor_lateral_trial1_physical_r1.py，绝非旧rear任务。尚未启动前盒物理，不能提前称收益。
+
+lateral840023交换后盒完整1200推进317.095mm原数值/姿态通过，另一物体XY0；前袋完整1200仅44.179mm失败，另一物体XY0。两条实际各8RGB4外视已看并绑定READY/raw/protocol/numeric/sheet/external哈希；后盒513边缘/685后画外，前袋685后袋与手下缘裁切、画面停止风险保留。841011等待70原门通过，实际8RGB稳定、无外视，绑定完成。FIRST_COMPLETE_GROUP_ACTUAL_REVIEW_DECISION：普通/交换四推3/4+wait，5actualviews，因前袋失败整组拒绝，0入库，全部控制审核仍待完成。分组汇总首次把wait当push读取progress_mm产生KeyError，随后仅对等待记录null正确聚合；未改任何原门或源记录。
+
+FRONT_BAG_FIRST_GUARD_DIAGNOSIS独立复算第649步front_corridor_no_table_margin：front_x区间宽−.746821mm；当前桌边27.677mm、物体axisgap34.154mm、hand/othergap127.696mm。不是已证明左手被盒当前挡住；是前侧计划通道没有正宽，开关两状态正确保留停止。完整流128次实际重规划全front_x，1199个record也全front_x，新增lateral_y分支本条未被实际触发；不能把相对reserve分数退化直接归因于新横向分支。旧父对照q>1e−7差异初161、action初17，单次非相同实际轨迹，因果评价限制保留。
+
+同实测固定物体包络，后侧(+X)可用区间[.6887465,.7963741]m；带原12mm物体间隙/5mm桌边/3mm额外余量的候选X=.6917465，包络路线最小axisgap15mm、桌边27.677mm，但需袋向后移动305.443mm。这仅对象几何、绝非机器人路径/接触可行。新screen_front_bag_rear_detour_endpoints_v1.py session66745/PID324345实查运行；用独立URDF/EventAudit，3假想物体waypoints×4起点验证必要端点条件，保留所有失败、不发命令、不改控制、不改变原质量门；首点一个起点已找到姿态，不能当全路径可达。日志/tmp/front_bag_rear_detour_endpoint_screen_v1.log，继续同句柄，勿重启。
+
+按用户既有清理授权，仅移除3已完整复核失败且未入库旧诊断natural_coverage24/approach_geometry/natural_layout_feasibility内52raw.npz，共1460765110字节≈1.36GiB，560其余文件哈希保持。当前/排队5860来源、5708文本未引用这些目录；进程检查首轮因sd-pam/ssh-agent受保护描述符停止且未删除，辨明无任务路径的系统登录/认证助手后继续，限制明确记录，其他当前用户任务均可读且无占用。旧目录RAW_RGB_REMOVED_20261004.md说明完整原始数组/RGB重审不可用，清单和结果在demo/storage_cleanup_20261004_retired_failed_raw_r1；模型、已入库数据和当前实验不动。完成时空闲30.66GiB，后续采集仍需监控。
+
+当前lateral已5/10+5图审，collector319361正在840020前盒；原joint/reserve/rear/audits与关闭队列继续，实际计数见LATEST。0新正式训练组/转换/训练，目标未完成，未缩小原多样布局、类别与位置解耦、非目标1.5cm、首零位后双臂腰协调、无助推和独立多seed h10/真实模型画面目标。
+
+
+## 2026-10-04T07:18:52.277443+00:00 前盒三段恢复流及归档/任务分支验证通过；横通道普通两条完成实际图审；新前盒对照已准备但未启动
+
+本轮progress。RECOVERY_STREAM_CHECK三段220/673/1126、89事件、30负例拒绝；首段含219帧真实历史prefix，后两段显式独立counter边界，命令响应和交接后一帧是假想，不能当新物理轨迹。原session1966正常0结束。ARCHIVE_DISPATCH_CHECK执行实际归档代码默认关闭92stage/144总来源、开启98stage/150总来源；开关两状态×前盒/前袋/后盒/后袋/等待10分派符合原语义，只右前盒更换恢复runtime；6新helper直接本地依赖均归档。session84193正常0结束。新报告来源哈希重新核验，候选源未改。
+
+原完整前盒default-off检查session88426/PID298668实查仍活；源码/观测绑定与1200帧运输fixture已过，parent ledger/execution仍在计算，不能提前称整体通过、不能重启。日志/tmp/front_box_trailing_front_defaultoff_v1.log。front_box_trailing_physical_preparation_r1生成原reserve两完整组8推2wait/1200+70/224审核的PLAN、5review/watcher、runner和closer，逆变换核验、唯一新控制参数--front-box-trailing-landing。准备脚本prepare_front_box_trailing_physical_v1.py；配置核验尚未运行，physical_launch_ready=false，未排队未物理启动；后续须等待当前lateral全10采集+10实际图审以及原GPU/存储条件，保留原对照审核关闭要求。
+
+横通道普通840022盒推进159.981mm/袋159.381mm、另一物体最大XY均0，1200帧、首11状态动作0、助推0。两张各8RGB4外视已实际查看并验证READY/raw/protocol/numeric/sheet/external哈希后写ACTUAL_REVIEW_BINDING。盒513后与袋342后RGB画外风险保留；盒5倾斜退出、袋4失载退出且query_phase没有独立活动/稳定末10帧仍记录。不能据两容易条当完整组通过，0入库。外视机器人站立，接触细节不足以排除异常。实际绑定脚本首次误将外视目录放episode内，未写出绑定；改为原case/viewer_layout目录并全部校验后成功，未改源数据或门。
+
+rear关闭队列308601已实查活，绑定原auditor222901/cwd_v2及真实10图审；等待完整224审核与直接parentjoint的RESULT，最终原closer保留短1077帧失败和完整分母。joint/reserve/rear/lateral原审核继续，当前进度见LATEST，当前lateralproducer293411/collector300265正在840023困难交换任务，未重启。0新正式训练准入/转换/训练；整体共享策略目标未完成。
+
+
+## 2026-10-04T06:53:26.867494+00:00 rear全10条图审完成6/8推+2wait、两组仍拒绝；横推新物理已启动；前盒候选补齐预检和真实状态接线
+
+上一目标轮progress，本轮progress。rear840020前盒在第1077步恢复12触发no_verified_initial_front_command（仅保存1077/1200，缺123帧），独立数值推进153.881mm/非目标0、11次倾斜退出，明确失败。FRONT_BOX_TRUNCATED_STOP_DIAGNOSIS独立URDF复算：实测肘隙.004999390091m低于原.005−2e−7=.0049998m门，超差.409909微米；前帧实测.005004211m、命令名义.005433349m、预测.005010571m，实际预测最大关节差.000571558rad。是原跟踪余量边界失败，不是已证明实体碰撞；不放宽门、不算完成1200帧。初诊断脚本误以为failure副本缺版本字段，实际只缺step；严格更正相等绑定后复算成功，未改原记录。
+
+rear840020后袋完整1200推进336.999mm通过、非目标0、8失载退出。两条各8RGB4外视真实复核并绑raw/READY/numeric/sheet/external哈希；前盒614后和后袋685后裁切/画外风险保留。剩余840021盒155.310mm/袋159.988mm及841010空桌70均通过，也实际图审完成并绑定；空桌11动作全0/waist3.087e−9rad。原summarizer生成NUMERIC_VISUAL_SUMMARY：10实际图审、6/8推+2wait、两个完整组各含失败，0入库；全控制审核尚在进行。producer222727已正常结束，旧collector279123/285545终止，不能重启。
+
+前盒新落点独立selection audit三真实起点的所有静态候选和私有因果preflight回放通过，9预测/余量篡改拒绝；显式保留.8405m名义/预测非活动手余量，绝不复用假想capture作实际交接。NATIVE_CAPTURE_CHECK执行真实FrontCopRouteState、TracedPeakLoadControl owner与collector原构造/交接AST分支，3流89事件逐项匹配已核验小yaw流，法向/非活动臂锚/物理支持顶点仅handover更新，压力及XY/COP历史正确reset。不是完整历史父控制prefix或物理响应证明。session56596/7027已正常0结束。
+
+新42项family适配器+3独立审计helper+front_box_trailing_stage_source_binding_v1完成默认关闭/显式新右盒版本适配，原10条件224检查库存保留；39模块真导入+3CLI AST通过。98活跃stage源码、实际参数与spec绑定，独立临时70帧wait来源/transport/parent command ledger和execution通过，21负例拒绝；fixture默认物理入口继续拒绝、原物理数组完全保持、临时夹具自动移除。session49939/30744正常0结束。READINESS_REVIEW明确正向新恢复流、完整front default-off/控制分支及archive覆盖仍需验证，physical_launch_ready=false，未排前盒物理。
+
+存储原约28.52GiB不足原30GiB启动门。按用户既有清理历史无关中间数据授权，严格扫描5583当前/排队来源无旧fixed_yaw_local_rtx引用且无进程占用后，仅删该已关闭且未准入训练旧固定腰诊断32个raw.npz，释放1.6485GiB，空闲30.1676GiB。保留77个关键数值/控制/布局/报告与已审图片等，模型与最新short-first优化器不变；原目录RAW_RGB_REMOVED_20261004.md明示历史完整RGB/raw重审不可用，删除清单hash在demo/storage_cleanup_20261004_retired_fixed_yaw_r1。旧/tmp大目录为硬链接，删不释放空间，未删；旧冻结report去重计划仍未执行。
+
+原lateral队列232124遵守存储门等待后自动且仅一次启动：producer293411/start95492657，collector293717，auditor293646/numeric293647。已建立front_corridor_lateral_physical_r1/PROTOCOL并实查进程活，840022首盒日志实际90步top_push；原两组8推2wait、1200/70、224审核、无助推/首零位等均不变。与rear20mm独立，不混入前盒新落点。joint26314/reserve150130/rear222901原审核和关闭队列174144/247994继续，当前计数见LATEST。0新正式训练组、转换、训练，目标仍为共享图像+指令、多样位置、非目标1.5cm稳定、首零位后双臂腰yaw允许、独立多seed h10+模型实际画面，未完成。
+
+
+## 2026-10-04T06:14:46.512566+00:00 前盒后移落点完成新鲜规划与隔离采集器接线；微动交接误拒绝已修复，仍未物理启动
+
+上一目标轮progress，本轮progress。front_box_trailing_runtime_preparation_r1完成真实恢复220/673/1126的新鲜planner→私有preflight→真实lifecycle接口→adapter链（无外部缓存plan注入），固定物体4假想响应各3起点12/12handover，默认关闭3个完整首事件/state/reference与原版一致，原240命令/3帧/2mm和保护保持。预测捕获未泄漏到实际runtime。session84832/PID263540正常0结束。状态使用adapter stand-in，不能称完整native collector或真实任务通过。
+
+发现并复现旧候选微动漏洞：ROTATION_CAPTURE_BOUNDARY在原.02rad允许范围内构造.001rad yaw，目标偏移仅.01994mm、2mm门仍满足，但冻结偏好与当前姿态精确比较导致拒绝。失败保留，不修改运行r1源。r2只在原物体位移/旋转门后，按当前实测rotation更新20mm world+Y投影的验收/捕获偏好；规划endpoint保持固定、物体运动2mm/.02rad门不变。新鲜3起点带小yaw变化各37/30/22ticks交接；超界rotation/translation及旧旋转捕获9负例全拒绝。session66960正常0结束。仍是无载假想物体响应，不代表接触/COP/实际分拣改善。
+
+新staged_front_box_trailing_v1基于reserve原97文件，增加6个runtime helper，唯一原文件改collector。显式--front-box-trailing-landing默认关，要求front-box-recenter+joint-transport+diagnostic及原全部前置门；正确记录20mmworld落点/.5mm规划余量/实际2mm、移除含糊center_xy，新增6源码列入存档。COLLECTOR_WIRING_CHECK通过真实parser8情况、原默认参数完全相同、实际runtime类/来源/元数据/归档与2非法runtime参数拒绝。初检查遗漏既有EULA环境、随后父parser污染测试sys.path的两次失败已保留；只修测试启动环境和恢复候选搜索路径，没有跳过保护或改冻结控制源。session70449正常0结束。
+
+独立EVENT_AUDITOR从原URDF verifier派生，仅显式right/20mm当前落点/1.5mm规划约束，保留所有原几何/命令/3帧/240/参考捕获检查，不导入候选控制模块。已完成3流共89事件、27篡改负例均拒绝；session53660/PID270363已正常0退出，无待wait句柄。日志/tmp/front_trailing_independent_events_v1.log。READINESS_REVIEW明确native parent-state/capture、preflight replay和全audit family/source-binding仍待完成；物理launch_ready=false，不新增物理队列。
+
+原joint/reserve/rear协议全5388唯一冻结来源7.52GB核验无变更。rear producer222727/collector244634继续840020前盒（最新实查960步），5/10完整+5实际图审；原首组前袋失败维持拒绝。joint26314/reserve150130/rear222901审核和原关闭队列均继续；lateral232124继续等rear10+10实际图审与原GPU/存储条件。原结果及新审核数见LATEST。0新正式训练组、转换、训练；整体共享策略多样摆放、非目标1.5cm、首零位、双臂腰yaw允许、无助推、独立多seed h10和模型真实图审目标仍未完成。
+
+
+## 2026-10-04T05:45:08.477234+00:00 前盒20mm后移落点增加0.5mm规划内余量，原失败预测跟踪修复；12/12完成但尚未物理接线
+
+上一目标轮progress，本轮progress。新front_box_trailing_landing_reserve_probe_r1独立于r1失败候选，offset_plan仅新增planning_xy_reserve_m默认0（完整原planner输出精确保持），候选用.0005把名义目标误差从2mm收紧1.5mm；实际offset_lifecycle与r1字节相同、原2mm/240步/3连续观测/1cm核心内缩/高度与所有原保护保持。3非法offset和3非法reserve拒绝，源码逆变换核验；没有改原冻结/运行代码。三真实恢复220/673/1126仍找到路径，点数34/27/19（原中心18/17/17），恢复成本继续保留。
+
+新TRACKING_CHECK完成3起点×4假想响应12/12，最长39步、60保护负例全拒绝；原晚期1126变化偏差失败240步→22步handover，同实际验收未放宽。校准响应早37/中30/晚22步，仍比原中心21/20/20多。旧23/24失败报告保留；不重跑未改的12个原中心基线，直接绑定此前完整结果。session53356几何和68480/PID253246跟踪均正常0结束，无待wait句柄。READINESS_REVIEW绑定来源核验，明确固定物体/无载/缓存计划/代理响应，非新实际数据、非接触/任务成功、非训练准入。
+
+重要接线限制：当前offset_lifecycle仍同r1，只证明预先传入收紧后的plan时的跟踪；新实时规划入口、选择器内部假想预检、实际lifecycle的fresh-plan调用必须显式传.0005，不能因为这个测试通过就假定现有默认reserve=0入口已修复。下一步完成默认关闭的fresh-plan+runtime独立核验再考虑新隔离采集，不插队或混入现有rear/lateral试验。
+
+原rear物理producer222727/collector244634及原审核持续；lateral232124仍等rear全10+10实际图审；joint26314/reserve150130原审核及关闭队列174144/247994实查活，未重启。rear首完整组3/4拒绝及front_x负宽停止结论不变。当前完整采集/审核数见LATEST；0新正式训练组、转换、训练，目标保持多样摆放共享图像+指令策略、非目标1.5cm、首零位、双臂腰yaw允许、无助推和独立多seed h10/真实模型图审，未完成。
+
+## 2026-10-04T05:35:17.386354+00:00 补核：前盒后移落点跟踪24场景已完成，23过1失败
+
+同session62309/PID245141已0退出，正常完成检查而非全场景通过。晚期1126/offset_static_best/varying_bias耗尽原240ticks且handover=False；失败保留，未增预算。TRACKING_FAILURE_REVIEW独立重算假想q响应和末100步落点余量：{'last100_xy_outside_original_tolerance': 95, 'last100_endpoint_within_003': 100, 'last100_xy_margin_range_mm': [-0.019479771402280358, -5.4573249577347105e-05], 'max_ready_count': 2}。这是固定物体/无载代理模型失败，不是物理采集失败；候选不可直接宣布跟踪稳健。下一步检查规划点是否贴2mm接受边界，考虑更内侧规划余量而不是放宽实际2mm/240门；当前rear/lateral队列不变。此前下节23/24仍运行是完成前快照，以本补核为准。
+
+## 2026-10-04T05:32:29.893976+00:00 rear首完整组3/4拒绝，前袋负宽通道已独立复核；前盒后移落点跟踪23/24继续
+
+上一轮progress，本轮progress。rear840023盒/袋及841011等待已完成完整独立数值与实际8RGB4外视/等待8RGB图审，raw/READY/协议/numeric/sheet/external来源核验并绑定，现5/10实际图审。好：困难后盒317.770mm通过、非目标0；差：前袋46.816mm失败、非目标0，685以后构图稳定且袋/手底边遮挡，无法据图证明无穿模。盒513边缘、685后画外风险保留。FIRST_COMPLETE_GROUP_ACTUAL_REVIEW_DECISION正式3/4推+wait过、因前袋失败整组拒绝、0入库；全控制审核仍继续。
+
+FRONT_BAG_FIRST_GUARD_DIAGNOSIS用独立几何verifier和真实trace/quat复算650首次front_corridor_no_table_margin，阶段front_x、宽−.119379mm。实际桌边余量25.639mm、物体轴间距31.831mm，不等于当前已经碰撞；是原前通道规划无正宽。启用/关闭lateral开关都正确保持停止，与reserve594 lateral_y正宽.940mm遗漏重规划不同，不能称排队修复能消除所有前袋失败。没有清掉锁存或放宽原间距。
+
+front_box_trailing_landing_probe_r1新增offset_lifecycle及TRACKING_PREPARATION，除显式20mm落点、同2mm围绕新落点的验收外，原240命令/3连续观测/1cm核心内缩/高度/控制限位/保护保持、逆源码对照通过。check_tracking使用3真实恢复起点×原计划/后移计划×4假想响应共24场景，固定物体/无载/缓存计划，没有新命令后套旧未来；每步独立URDF手/肘/几何、逆响应命令、预测q、offset实际最低顶点与交接计数核验。负例5类/场景，240预算负例须将观测step递增，否则原“非连续观测”保护先触发；未冻结测试脚本已修正，原运行物理源没改。当前23/24都handover，最后晚期offset+varying_bias仍在PID245141/start94972909（session62309）真实运行，CPU增长，不因日志未变重启。已完成校准响应：220原21/新37步、673原20/新29、1126原20/新21；新候选有恢复耗时成本。完整TRACKING_CHECK若尚不存在不能提前算24通过、不能启动物理候选；继续同handle。
+
+rear producer222727同进程继续，旧collector229383完成交换和wait，新collector244634采840020第二组；lateral队列232124继续等rear10采集10真实图审/GPU/原存储条件。新增reserve最终关闭队列247994/start95004485已活，等原150130全224退出及直接parent joint完整RESULT再调用原closer，保留每条失败不重跑。最新审核数和真实身份见LATEST。0新正式组/转换/训练，多样共享策略、独立布局多seed h10与模型画面目标仍未完成。
+
+## 2026-10-04T05:17:45.995669+00:00 前盒34次倾斜前法向残差复核；20mm后移落点仅名义可达，恢复路径变长；rear困难后盒暂定通过
+
+上一目标轮progress，本轮progress。新增只读analyze_front_box_normal_and_cop_v1与reserve/FRONT_BOX_NORMAL_COP_ASSOCIATION。严格按step映射1199条coord，不用列表下标当step；原力packet=t-1/currenttrace=t，独立算COP与原记录误差<1.3e-16m。三版recenter/joint/reserve倾斜退出8/13/13共34，退出前最后top_push法向残差都<.03rad；中位.01429/.01650/.01664，最大.01623/.01807/.01829。法向是物体法向在手坐标与捕获锚的残差，非独立世界腕姿态，不能排除接触几何/压力分布/角加速度等因果。原记录angle=acos(未归一化float向量点积)逐项核验；报告独立角度归一化向量，以免小角度float误差。reserve接触段中位24帧、推进12.709mm、末COP局部Y−36.766mm。此证据不支持仅凭倾斜恢复断言突然大幅normal跟踪失稳；不改质量门、不再重复已失败固定降速/有限预载方案。
+
+新增未接线front_box_trailing_landing_probe_r1：真实reserve前盒第1/7/13恢复220/673/1126，目标为world+Y20mm投影到盒局部平面，仍2mm目标跟踪精度、6–7mm预接触高度、原肘/手/桌/他物间距、原名义插值检查；明确改变设计落点，不冒称仍是原中心落点。offset=0完整优化输出与原planner相同，3非法offset拒绝。三个20mm候选均名义几何通过，路径点数原18/17/17→34/26/18；早中期成本显著增加，可能抵消延长接触的收益。RESULT/READINESS_REVIEW标collector_integrated/physical_launch_ready=false，无新实际动作/响应，无额外物理队列。下一步若继续：同原240tick预算的因果跟踪及独立offset几何/交接检查；不能直接把假想落点当实际COP或拖拽改善。probe初运行import名称及metadata声明次序错误已在未冻结候选中修正，最终完整执行成功；session94522已0退出，18085前错误终止。无运行源热改。
+
+rear困难840023后盒已完整1200保存quality=True，推进317.770mm、非目标0；recontact_pose有4个planning/3个实际handover，新trailingpolicy确实记录于planning。REAR_BOX_PROVISIONAL_OUTCOME只暂定采集器结论，仍等同case前袋完成READY后独立数值/正式实际图审及全控制审核；不可算整组或归因20mm。普通两条此前正式图审保持。原producer222727、collector229383、auditor222901及numeric222902继续，lateral队列232124仍等rear全10+10实际图审；完整审核进度/身份见LATEST，未重启或重复采集。0新正式组、转换、训练，完整共享策略多布局多seed独立h10与模型画面目标保持未完成。
+
+## 2026-10-04T05:02:48.212549+00:00 横推完整前侧审核通过并冻结独立对照队列；后盒首2条真实图审通过，困难交换继续
+
+上一轮progress，本轮progress。原PID223903/session92900已正常0退出：NATIVE_FRONT_DEFAULTOFF_CHECK完整1200前袋来源绑定、联合命令流、父命令ledger/父执行检查通过，3个physical入口拒绝fixture；所有原raw/控制记录哈希保持。它只证明默认关闭时兼容，不拿旧未来证明开启后成功。启用边界593/594、名义IK提案、原高度/映射和独立几何/COP既有证据保留。
+
+新front_corridor_lateral_physical_preparation_r1/PLAN固定同reserve两组8推2wait、1200/70帧、原224审核，仅新增--front-corridor-lateral-replan，独立rear20mm实验不混入。派生5个review/watch/summary及launcher/closer，原完整/短轨迹失败与质量公式保留，cwd统一sim避免旧相对源路径问题。配置初查发现多加的verify_settings(parsed)误用“已解析运行配置”validator检查parser未解析配置；当时尚无CONFIGURATION_CHECK/physical目录，保留错误源码和日志后移除这一个重复调用，原精确prelaunch semantic comparison及实际来源resolved检查全保留，逆变换核验通过。随后CONFIGURATION_CHECK成功，冻结5269来源。READINESS_REVIEW汇总已通过的9项既有报告，作为隔离diagnostic物理准备，不是训练准入/模型完成。
+
+新队列PID232124/start94837875实查活，LAUNCH_QUEUE_PLAN绑定配置及同rear producer222727/start94745202，等rear全10采集+10实际图审summary及producer退出、GPU空闲、原30GiB底线才启动；失败不自动重试，不自动标图审或入库。lateral物理尚未创建，不能称成功。后续若空间不足保持原底线并清理无关生成物，不能跳过保护。
+
+rear现2/10 READY，840022普通盒159.978mm、袋159.360mm都过，非目标全过程XY=0；各实际查看8RGB4外视且来源/raw/numeric/sheet/external哈希核验绑定，报告FIRST_TWO_ACTUAL_REVIEWS。盒513以后/袋342以后RGB画外风险保留，首易例不证明困难任务改善。producer222727继续，collector229383已采840023交换；当前joint审核114/224、reserve86/224、rear20/224均尚无已完成项失败（最新数以LATEST为准）。原进程未重启，原冻结代码未热改。
+
+下一步继续rear困难交换、全10图审与审核闭合；后续队列独立测横推修正；先完成合格完整train+val组，再转换/训练共享图像+指令策略和独立多布局多seed h10验证。新增正式入库/转换/训练仍0，整体目标保持未完成。
+
+## 2026-10-04T04:49:55.098139+00:00 余量全10条实际图审完成6/8；后盒实验修复启动目录后进入物理；横推完整审核接线推进
+
+上一目标轮progress，本轮progress。余量10/10 READY及真实图审已完成，新实看840021盒/袋8RGB4外视和841010等待8RGB，所有原READY/raw/numeric/sheet/external来源核验绑定。新增两推153.824/159.992mm均过、非目标XY=0，空桌双掌spread2.098mm且动作0；后段目标画外风险保留。NUMERIC_VISUAL_SUMMARY现6/8推+2wait，两个组仍各3/4，0准入；前袋64.433mm和前盒161.606mm仍失败。FRONT_BOX_RESERVE_RESPONSE_FINDINGS绑定原真实响应：前盒1026次实际端点余量越界89→0，应用子集7/494→0/575；不能据此宣称全路径无碰撞或任务成功。
+
+横推候选42个family适配器/新source binding和原224审核库存通过；FAMILY_NATIVE_WAIT_CHECK70帧+28负例、NATIVE_REAR_STREAM_CHECK两条完整1200共2400帧+6拒绝均过。全部显式来源fixture，不是新物理。NONPUSH_HEIGHT_BOUNDARY_CHECK真实593/未执行594通过原高度/映射检查，5负例拒绝；相同伪造XY不在该层覆盖，仍靠独立原生路线重建核验，限制明确保留。全前袋default-off1200新来源/原命令fixture已启动PID223903，session92900，日志/tmp/front_corridor_lateral_native_front_defaultoff_v1.log；已通过来源/观测绑定，完整stream仍运行，不能热改或重启。开启后的旧未来不当新响应。详见PREPARATION_PROGRESS_V2，lateral物理尚未启动。
+
+rear原队列145102、原producer均已终止，报FileNotFoundError：旧清单相对sim路径与cwd=SimFoundry不一致，未创建物理目录/无仿真轨迹。保留原log/状态，新增run/watch*_physical_cwd_v2及numeric_cwd_v2启动适配，原main可逆对照，仅工作目录/新身份及新增来源冻结；原采集器/计划/数学/质量门/原冻结源全部未动。首次修正预检被原30GiB资源底线拒绝（29.724）。按既有无关数据清理授权，仅移除2026-09-10旧离线部署tar.gz，SHA和成员清单保存在OBSOLETE_OFFLINE_ARCHIVE_CLEANUP_20261004，释放3.057GiB、保留解压源树与私有Git备份、无当前数据/checkpoint删除。未执行冻结报告硬链接去重方案。重验原完整preflight通过，独占CWD_V2_LAUNCH_LOCK后启动PID222727/start94745202；collector222959实际到840022盒330步，auditor222901/numeric222902均活，rear物理正式开始。原错误不是物理失败重采，后续仍原8推2等待224审核。旧closure若识别producer名须使用新身份，但不可跳质量门。
+
+joint/reserve原审核仍继续，最新实际进程/审核数见LATEST_ACTIVE_RUNS；无新训练准入/转换/模型训练。后续：完成横推全前侧来源fixture与原生waypoint核验，冻结独立完整对照；继续rear物理/图审/审核，待合格完整train+val组才转换和训练共享策略。独立192push+3wait、多种子h10及真实模型画面总目标保持未完成。
+
+## 2026-10-04T04:18:27.423518+00:00 横推候选隔离接线及首条名义关节验证完成；余量7/10，前盒仍失败
+
+上一目标轮progress，本轮progress。新staged_front_corridor_lateral_v1基于冻结reserve，仅改选择器/前侧状态机/采集器三源码，default-off，原95份py+参数及补齐未变SUPPORT_ERROR_BOUND.md共96实际来源。COLLECTOR_WIRING_CHECK真实parser off/on过，缺5保护/错误pilot共6拒绝、2类错误构造拒绝；默认参数与父完全一致，实际class开关、phase元数据、重规划计数和archive核验。ARCHIVE_COMPLETENESS_CHECK检查95个literal阶段依赖无缺失。补md不修改任何绑定源或运行任务。
+
+独立新增audit_front_corridor_lateral_record/observations/cop_v1均可逆还原原数学；INDEPENDENT_AUDITOR_CHECK默认全1199行与原审核精确相同，已执行1..593前缀+单条未执行594提案通过，167加载COP行，7类伪造拒绝。显式测试发现非push的594抬手waypoint不在此层覆盖；必须接回原高度/参考/最终命令原生审核，不能把当前绿灯当完整审计。INTEGRATED_NATIVE_BOUNDARY_CHECK使用真实接线的类开关再次复现593重置/594原guard和候选.86抬手。
+
+SINGLE_UNISSUED_JOINT_PROPOSAL从实际q594/q593/u593和原6位置Jacobian出发，重算新目标误差并恢复原法向锚；原停止分支输出先复现到2e-6。法向用名义FK（实际594协调记录因原guard没有记录hand rotation），588..593六真实normal对照误差<2e-6、FD误差1.211e-11，明确nominal_only非bit-exact运行替代。候选经过原精确IK、Z保持、联合余量refine=applied、原finalguard通过，独立elbow检查过；名义/预测相对原底线的inactive-height余量3.084/1.500mm、左肘1.500/1.800mm，其他间距也正。没有把旧595以后当作候选响应，没有新物理试验。完整原生family/source/context/native fixtures及physical计划仍待接线，physical_launch_ready=false。详见front_corridor_lateral_preparation_r1/PREPARATION_PROGRESS.json。
+
+余量新增840020两条完整1200及8RGB4外视实际看图绑定，目前7READY/7真实图审。差：前盒161.606mm仍失败，13次tilt、push322/cross598；好：后袋337.101mm通过，二者非目标全程XY=0。前盒后段仍在图底、袋成功后画外，遮挡/视野风险保留。两条不是训练准入；原首组3/4拒绝不变。响应159281已经开始诊断完整前盒，未重复启动。同producer149940继续，旧collector177923正常结束，新collector203819当前840021；joint审核112/224、reserve77/224，实查原进程身份在LATEST。rear原队列145102继续等10采集/10真实图审，未热改、未重启。新增正式准入/转换/训练=0，完整共享多布局、多seed独立h10与实际模型画面目标未完成。
+
+
+## 2026-10-04T03:54:00.760889+00:00 余量首完整组3/4拒绝；横推通道阶段遗漏已复现并通过原生边界验证
+
+上一目标轮progress（独立Git代码备份旁任务已完成）；本轮progress。余量5/10 READY、5真实图审；本轮实看并绑定840023盒/袋8RGB4外视及841011等待8RGB，所有READY来源与raw/numeric/sheet/external哈希核验。首反斜向完整组3/4推+wait过，因前袋64.433mm失败整组拒绝、0训练准入；后盒316.594mm过且非目标1.206mm，但joint分支0次不能归因余量。目标画外/裁切继续保留。
+
+好结果：余量前袋实际响应报告已完成，214实际应用命令的下一帧均未跌破原底线；差结果：原回退829条中604条实际余量越界，首次595 inactive-height，相对底线最差inactive-height−5.346mm、左肘−.213mm、右肘−.803mm。不是物理碰撞证明，但不能宣称全段安全。详见FRONT_BAG_RESERVE_RESPONSE_FINDINGS.json；不重跑已有响应诊断。
+
+新定位：594首次front_corridor_no_table_margin发生在lateral_y，原目标X=.360722越桌边目标界，当前可行X区间[.362783,.363722]仍有.940mm宽。原中点选择只覆盖front_x，阶段切换后跳过。新增未接线默认关闭front_corridor_lateral_candidate_r1/selection.py，仅扩展阶段且保留原其他保护/锁存/5mm桌边/12mm规划和轴向+斜向路径证明。GEOMETRY_REPRODUCTION四版：recenter首差异782正宽2.925mm；inactive660和joint661负宽仍停止且1199目标完全保留；reserve前593目标保持、第594新中点。独立LP路径最小间距12.470mm、桌边5.388mm，10保护/输入检查。历史未来绝不作为改动后的响应。
+
+NATIVE_BOUNDARY_CHECK从592实际压力/24子步/COP及路线状态重建593确定性重接触重置，11类输出与实际593一致，再从同一状态分叉594；默认逐项复现实际guard。候选继续top_lift，保持593原恢复目标[.30521485,.03477948,.86]，原guard为[.30955929,.03387799,.91]；锁存/手间距负例仍停。只是一条未执行Cartesian提案，不是全前缀控制重放、最终关节/IK证明或物理成功；READINESS_REVIEW明确collector_integrated/joint_command_verified/physical_launch_ready=false。下一优先完成新隔离采集器默认关闭flag/元数据/来源及独立双阶段审计，再首关节与完整配对物理。原始后绕选择保留备选，不急于替换为更长路径。
+
+旧inactive224审核已完且RESULT关闭：5/8+2wait、原1条task-optimality失败保留、两组拒绝。joint原关闭队列174144/start94241564继续等原26314审核；当前joint112/224，reserve68/224。同reserve producer149940/start93984978、collector177923/start94278717实查活，继续840020；响应159281等待前盒；rear队列145102仍等余量10条/10真实图审，未创建rear物理。冻结源无热改，无重启。正式合格验证组仍缺，新增转换/训练=0；完整共享多布局、多种子、独立h10及实际模型画面目标保持未完成。
+
 
 ## 2026-10-04T03:19:04.011197+00:00 同一余量前袋实查到540步，本轮verified wait；正式验证组缺口仍存在
 

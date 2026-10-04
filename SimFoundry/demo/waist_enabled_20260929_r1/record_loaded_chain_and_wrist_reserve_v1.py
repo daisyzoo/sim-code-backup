@@ -1,0 +1,35 @@
+"""Record measured chain diagnosis and uninstalled nominal recovery candidate."""
+from pathlib import Path
+import datetime,hashlib,json,shutil
+W=Path(__file__).resolve().parent;ROOT=W.parents[1];R=W/'front_effective_height_physical_r1';D=W/'front_recovery_wrist_reserve_probe_r2'
+read=lambda p:json.loads(p.read_text());sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();now=datetime.datetime.now(datetime.timezone.utc).isoformat()
+chain=read(R/'FRONT_BAG_LOADED_COMMAND_CHAIN_V1.json');probe=read(D/'RESULT.json')
+for report in [chain,probe]:
+ for p,h in report['source_sha256'].items():assert sha(p)==h,p
+rows=read(R/'case_840023/layout_840023_nudge_mailer_to_bin/front_recontact_center.json')['rows'];original={r['step']:r for r in rows};comparison=[]
+for item in probe['rows']:
+ old=original[item['step']]['planning'];new=item['planning'];a=next(x for x in old['transport_preflight']['trials'] if x['predicted_transport_accepted']);b=next(x for x in new['transport_preflight']['trials'] if x['predicted_transport_accepted'])
+ comparison.append(dict(step=item['step'],recontact_index=item['recontact_index'],old_wrist_rad=item['parent_endpoint_wrist_rad'],new_wrist_rad=item['candidate_endpoint_wrist_rad'],planning_wrist_reserve_rad=item['candidate_endpoint_reserve_rad'],old_predicted_ticks=a['predicted_ticks'],new_predicted_ticks=b['predicted_ticks'],original_maximum_ticks=240,nominal_original_geometry_passed=True,actual_physics=False))
+handovers=[dict(step=r['step'],recontact_index=r['real_recontact_index'],actual_wrist_rad=r['context']['current'][5]) for r in rows if r['kind']=='handover']
+result=dict(created_at_utc=now,scope=__doc__,actual_loaded_chain=[dict(run=r['run'],summary=r['summary']) for r in chain['versions']],actual_recovery_handovers=handovers,late_wrist_bound=dict(joint='left_wrist_roll_joint',steps=list(range(1090,1123)),command_rad=1.9722000360488892,original_upper_rad=1.9722,within_original_float32_tolerance=True,not_all_loss_exits_explained=True),candidate_comparison=comparison,
+ decision=['Current effective-height full10condition run continues unchanged; do not mix this candidate into it.','Nominal wrist reserve is a secondary candidate addressing observed late wrist saturation; not a solution to earlier losses or proof of traction improvement.','Keep original material, pressure bias limits, original geometry/quality/phase guards. Do not increase load or change actuator gains without new causal evidence.','Before any installation: explicit default-off recovery selection, unchanged parent fallback before commitment, full native command/handover/source+audit binding, actual handover reserve observation and full same-condition physics.'],
+ limitations=['No joint velocity or actuator torque was recorded; motor saturation remains unknown.','Negative nominal support Z is a servo-position reference, not expected physical penetration or force prediction.','Candidate uses endpoint reserve only; original start/path joint bounds are unchanged. Existing predicted handover has3mrad joint tracking tolerance, so endpoint0.30rad reserve does not prove actual0.30rad reserve.','Reported independent_scene_checks recompute the original checked_scene; they are not an independent implementation of fullbody or continuous collision geometry.','Three predicted paths and unchanged predicted timings do not establish whole-task success or improved physical contact.'],
+ preparation_failures=['ProbeV1 selected step>=900 and missed real recovery5 planning at864; failed before candidate solve. ProbeV2 selects actual recovery indices5,6,7 and preservesV1 log/directory.'],
+ source_sha256={str(p):sha(p) for p in [Path(__file__),R/'FRONT_BAG_LOADED_COMMAND_CHAIN_V1.json',D/'RESULT.json',W/'front_recovery_wrist_reserve_candidate_v1.py',W/'probe_front_recovery_wrist_reserve_v2.py']},installed=False,training_ready=False,new_admissions=0,new_conversions=0,new_training=0,goal_complete=False)
+with (D/'READINESS_REVIEW_V1.json').open('x') as f:json.dump(result,f,indent=2)
+status=read(R/'STATUS.json');processes={}
+for pid in [status['pid'],status.get('collector_pid'),664590,664591,464857,533900]:
+ if pid is None:continue
+ p=Path('/proc')/str(pid)
+ try:
+  st=(p/'stat').read_text().rsplit(')',1)[1].split();processes[str(pid)]=dict(state=st[0],start=st[19],utime=st[11],stime=st[12],cmdline=(p/'cmdline').read_bytes().replace(b'\0',b' ').decode())
+ except FileNotFoundError:processes[str(pid)]=dict(present=False)
+progress=R/f"case_{status.get('layout_id')}/progress.json";audits={}
+for run,name in [('front_effective_height_physical_r1','AUDIT_STATUS.json'),('front_loaded_z_quarter_physical_r2','AUDIT_STATUS.json'),('rear_early_edge_physical_r1','AUDIT_STATUS_V2.json')]:
+ d=read(W/run/name);rr=d.get('rows',[]);audits[run]=dict(updated_at_utc=d['updated_at_utc'],rows=len(rr),failures=sum(r['returncode']!=0 or r['report_passed'] is not True for r in rr),expected=224)
+observation=dict(created_at_utc=now,processes=processes,status=status,progress=read(progress) if progress.exists() else None,audits=audits,free_gib=shutil.disk_usage(W).free/1024**3,training_ready=False)
+with (D/'LIVE_OBSERVATION_V1.json').open('x') as f:json.dump(observation,f,indent=2)
+latest=W/'LATEST_ACTIVE_RUNS.json';d=read(latest);d['last_goal_turn_classification']='progress';d['effective_height_loaded_chain_and_wrist_reserve']=dict(created_at_utc=now,report=str(D/'READINESS_REVIEW_V1.json'),report_sha256=sha(D/'READINESS_REVIEW_V1.json'),candidate_comparison=comparison,installed=False,training_ready=False);d['latest_effective_height_progress']=observation;latest.write_text(json.dumps(d,indent=2))
+p=ROOT/'handoff.md';s=p.read_text();at=s.index('---\n')+4
+entry=f'''\n## {now} 前袋实际下压全链未丢命令；后段腕角累积触界，未安装恢复余量候选3真实上下文几何/预测通过\n\n上一目标轮progress，本轮progress。FRONT_BAG_LOADED_COMMAND_CHAIN_V1逐父390/新349推帧重算URDF支持点、原task输入、priority→transport→最终raw：最终命令不一致0。新336/349帧压力bias已到原−6mm，peak guard实际hold0；真实24子步均载整体mean1.706N（父1.488），不能把5N目标当已达到。新名义最终支持Z差中位−1.465mm，下一实际同参考Z变化中位+0.00719mm；这是受接触约束的servo目标差，不能据此说电机饱和/物体应被压入。未保存真实joint速度/actuator torque，原因仍有限。原压力/关节/质量门不变。\n\n新增后段问题：新1090–1122共33推帧左腕roll命令贴原上限1.9722rad（float32误差在原容差），不是所有早期失载的原因。实际7次恢复交接腕角逐1.07669→1.31682→1.55588→1.62248→1.79288→1.88483→1.87957rad，原最小运动恢复累积高腕角。\n\n未安装front_recovery_wrist_reserve_candidate_v1：默认0直接委托原plan；正reserve只增加端点腕部内缩约束，不更改原目标函数、当前/路径物理限位、落点中心/高度/姿态/障碍/肘间距。固定0.30rad在真实恢复5/6/7（864/1028/1133）三上下文均有原几何/名义路径与原causal预检通过，端点腕角均1.6722，预测98/36/49步与原一致。仍是假想响应，预测capture丢弃，没发仿真。实际handover原3mrad误差可能使实际余量低于.30，尚须显式actual reserve观测及原生链/全审核接线后再试物理。该候选只针对后段姿态，不替代持续牵引改进。详见front_recovery_wrist_reserve_probe_r2/READINESS_REVIEW_V1；V1用step>=900漏了864而在求解前失败，V2明确真实counter5/6/7，失败保留。\n\n当前原10条件/224审核继续，无stage热改，无新物理/准入/转换/训练；最新实际PID/启动身份、进度和audit计数存LATEST以及候选目录LIVE_OBSERVATION_V1。首交换组2/4退化仍保留；原目标含完整多样布局共享策略、非目标15mm、首11D零位后双臂/腰、无助推/h10、独立布局多seed实际模型画面，仍未完成。\n'''
+p.write_text(s[:at]+entry+s[at:]);print(json.dumps(dict(recorded=True,candidate_rows=len(comparison),status=status,audits=audits,free_gib=observation['free_gib'])))

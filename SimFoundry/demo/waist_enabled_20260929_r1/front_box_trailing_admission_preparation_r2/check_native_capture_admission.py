@@ -1,0 +1,59 @@
+"""Native collector construction and measured-recovery capture branch on three
+hypothetical streams. Executes actual FrontCopRouteState, pressure owner and
+collector AST; scene access is supplied from bound observations. No full-prefix
+parent-controller replay, new physical response or task success is claimed.
+"""
+from pathlib import Path
+from types import SimpleNamespace
+import ast,sys,json,copy,datetime,hashlib,contextlib,io
+import numpy as np
+D=Path(__file__).resolve().parent;W=D.parent;ROOT=W.parents[1];S=W/'staged_front_box_trailing_v2';sys.path[:0]=[str(S),str(D),str(W),str(ROOT)]
+from prepare_closed_peak_trial import parser_namespace
+from clearance_runtime import ClearanceGuard
+from simfoundry.data.frontal_bypass import FrontalBypassState
+import torch
+# Execute the actual changed admission branch, then the unchanged final guard.
+admission_source=S/'waist_coordination_clearance.py'
+fn=next(n for n in ast.parse(admission_source.read_text()).body if isinstance(n,ast.FunctionDef) and n.name=='coordinated_step')
+admission_block=next(n for n in fn.body if isinstance(n,ast.If) and ast.unparse(n.test)=='front_recontact_override is not None')
+admission_tree=ast.parse('def admit():\n pass');admission_tree.body[0].body=[admission_block]
+admission_code=compile(ast.fix_missing_locations(admission_tree),str(admission_source),'exec')
+def receive_and_guard(event,guard):
+ current=np.asarray(event['context']['current'],dtype=np.float32);previous=np.asarray(event['context']['previous_command'],dtype=np.float32)
+ native=dict(np=np,front_recontact_override=event,robot=SimpleNamespace(data=SimpleNamespace(joint_pos=SimpleNamespace(torch=torch.tensor(current[None])))),joint_ids=list(range(11)),indices=list(range(12,23)),default=np.zeros(23,dtype=np.float32),action=np.zeros(23,dtype=np.float32),bounded=True,clearance_geometry=guard.geometry,previous_command=previous,state=SimpleNamespace(side='right'),palms={},points={},active_point_offset=None,active_support_reference=None,anchor={'left':np.zeros(3),'right':np.zeros(3)})
+ exec(admission_code,native);record=native['admit']();assert record['front_recontact_center_override']==event and record['controller_kind']=='verified_unloaded_front_recontact_joint_path'
+ command=native['action'][12:23];np.testing.assert_array_equal(command,np.asarray(event['command'],dtype=np.float32))
+ final=guard.command(command,current,previous,first=False);assert final['accepted'],final
+ return dict(native_admission=True,unchanged_final_guard=True,command_equals_generated_event=True)
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();source=W/'front_box_trailing_runtime_preparation_r2/MOVING_RUNTIME_CHECK.json';proof=json.loads(source.read_text());assert proof['complete']
+for p,h in proof['source_sha256'].items():assert sha(p)==h,p
+cli_path=W/'joint_transport_reserve_physical_preparation_r1/PLAN.json';cli=json.loads(cli_path.read_text())['commands'][0]['args']+['--front-box-trailing-landing']
+with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):parsed,_=parser_namespace(S/'collect_paired_sorting.py',cli,full=True)
+args=SimpleNamespace(**parsed);sys.path[:0]=[str(S),str(D),str(W),str(ROOT)];collector=S/'collect_paired_sorting.py';tree=ast.parse(collector.read_text());nodes=list(ast.walk(tree));test=lambda n:ast.unparse(n.test) if isinstance(n,ast.If) else ''
+front=next(n for n in nodes if test(n)=='front_route_selected' and any(isinstance(x,ast.Assign) and 'top_extra' in ast.unparse(x) for x in n.body));edge=next(n for n in front.body if test(n)=='args.front_cop_edge_speed');initial=next(n for n in front.body if test(n)=='args.front_initial_center_landing');prefix=front.body[:front.body.index(edge)];edge_update=next(n for n in edge.body if isinstance(n,ast.Expr) and ast.unparse(n).startswith('top_extra.update('));make_rear=next(n for n in nodes if isinstance(n,ast.Assign) and isinstance(n.value,ast.Call) and isinstance(n.value.func,ast.Name) and n.value.func.id=='FrontalBypassState');make_top=next(n for n in nodes if isinstance(n,ast.Assign) and isinstance(n.value,ast.Call) and isinstance(n.value.func,ast.Name) and n.value.func.id=='top_cls');load=next(n for n in nodes if test(n)=='args.peak_load_bias_guard' and any(isinstance(x,ast.ImportFrom) and x.module=='peak_load_update_trace' for x in n.body));capture=next(n for n in nodes if test(n)=='front_recontact_runtime is not None' and any(isinstance(x,ast.Call) and isinstance(x.func,ast.Attribute) and x.func.attr=='update' for x in ast.walk(n)))
+compile_nodes=lambda ns:compile(ast.fix_missing_locations(ast.Module(body=copy.deepcopy(ns),type_ignores=[])),str(collector),'exec')
+loop=ast.For(target=ast.Name(id='_capture_once',ctx=ast.Store()),iter=ast.Tuple(elts=[ast.Constant(0)],ctx=ast.Load()),body=[copy.deepcopy(capture)],orelse=[]);capture_code=compile_nodes([loop]);init_code=compile_nodes([make_rear,*prefix,edge_update,initial,make_top,load]);ep=W/'joint_transport_reserve_physical_r1/case_840020/layout_840020_push_box_to_bin';fr=json.loads((ep/'frontal_bypass.json').read_text());parent_rows={x['step']:x for x in fr['rows']};coord={r['step']:r for r in json.loads((ep/'coordination.json').read_text())};guard=ClearanceGuard(ROOT,S);results=[]
+for case in proof['rows']:
+ first=case['trace'][0]['event'];ctx=first['context'];z=ctx['scene'];plan=copy.deepcopy(fr['plan']);core=plan['front_cop_slip_following']['edge_speed']['actual_core'];assert core['collision_core_size_xyz']==z['core_size'];assert not args.expert_frontal_top_collision_core
+ env=dict(np=np,json=json,hashlib=hashlib,STAGE=S,FrontalBypassState=FrontalBypassState,args=args,frontal_plan=plan,side='right',obstacle_size=z['other_size'],edge_size=np.asarray(z['core_size']),edge_core=core,target_size=(.14,.09,.045),clearance_guard=guard,task_id='push_box_to_bin',front_route_selected=True,contact_size=tuple(plan['top_recontact']['contact_size_xyz']),effective_drag_step_m=plan['top_recontact']['drag_step_m'],effective_top_fraction=plan['top_recontact']['effective_top_fraction']);exec(init_code,env);state=env['frontal_state'];runtime=env['front_recontact_runtime'];counter=first['real_recontact_index'];runtime.last_counter=counter-1;state.recontacts=counter;state.top_mode=state.mode=ctx['parent_mode'];state.load.filtered_n=ctx['filtered_load_n'];assert type(state).__name__=='FrontCopRouteState' and state.load._owner is state and runtime.trailing_landing
+ # These pre-existing state values are deliberately nonempty to verify reset
+ # ownership. Their value does not generate any proposed robot command.
+ state.command=(.1,.2,.3);state.push_x_anchor=.4;state.relative_contact_anchor=(.2,.3);state.approach_xy_bias=[.001,.002];state.load.bias_m=-.001;state.cop_slip.local_anchor=np.array([.001,.002,.003]);state.cop_slip.previous_anchor_world=np.array([.1,.2,.3]);state.last_emitted_xy=(.5,.6)
+ reference={k:np.asarray(v) for k,v in coord[case['start_step']-1]['active_support_reference'].items()};old_normal=copy.deepcopy(first['old_normal_anchor']);old_anchor=copy.deepcopy(first['old_inactive_anchor']);records=[]
+ for entry in case['trace']:
+  saved=entry['event'];c=saved['context'];scene=c['scene'];state.top_mode=state.mode=c['parent_mode'];row=dict(mode=c['parent_mode'],recontacts=counter,contact_load=dict(filtered_vertical_load_n=c['filtered_load_n'],applied_z_bias_m=state.load.bias_m,stored_z_bias_m=state.load.bias_m));before_filtered=state.load.filtered_n
+  branch=dict(np=np,front_recontact_runtime=runtime,waypoint=row,frontal_state=state,reference=reference,frontal_plan=plan,side='right',inactive_side='left',step=c['step'],center_q=np.asarray(c['current']),qs=[np.r_[np.zeros(12),c['previous_q']]],previous=np.r_[np.zeros(12),c['previous_command']],default=np.zeros(23),env=None,target_actor='parcel_box',obstacle_actor='mailer',parcel_xyz=lambda unused,actor:scene['target_xyz'] if actor=='parcel_box' else scene['other_xyz'],target_quat=scene['target_quat'],obstacle_quat=scene['other_quat'],load_n=c['observed_load_n'],center_poses={'right':np.asarray(c['observed_hand_pose']),'left':np.asarray(c['observed_inactive_hand_pose'])},top_contact_normal_anchor=old_normal,inactive_anchor={'left':old_anchor},front_initial_override=None,front_recontact_override=None,clearance_failure=None)
+  exec(capture_code,branch);event=branch['front_recovery_event'];assert branch['clearance_failure'] is None;assert event==saved;assert branch['front_recontact_override']==event;reference=branch['reference'];waypoint=branch['waypoint'];assert state.load._owner is state and state.load.filtered_n==before_filtered and state.load.bias_m==0.;assert state.command is None and state.push_x_anchor is None and state.relative_contact_anchor is None and state.approach_xy_bias==[0.,0.];assert state.cop_slip.local_anchor is None and state.cop_slip.previous_anchor_world is None
+  if event['kind']=='command':assert branch['top_contact_normal_anchor']==old_normal and branch['inactive_anchor']['left']==old_anchor and runtime.center_local is None and state.last_emitted_xy is None
+  else:
+   assert state.top_mode==state.mode=='top_press' and state.mode_step==1;assert state.selected_surface_local_xy==tuple(event['selected_surface_local_xy']);assert state.start==tuple(event['observed_support_xyz']) and state.last_emitted_xy==tuple(event['observed_support_xyz'][:2]);assert branch['top_contact_normal_anchor']==event['captured_normal_local_up'];assert branch['inactive_anchor']['left']==event['captured_inactive_anchor_world'];np.testing.assert_array_equal(runtime.center_local,event['captured_center_local']);np.testing.assert_array_equal(waypoint['control_offset_local'],reference['reference_local'])
+  records.append(dict(step=c['step'],kind=event['kind'],native_capture_consistent=True,**receive_and_guard(event,guard)))
+ assert records[-1]['kind']=='handover';r=dict(start_step=case['start_step'],events=len(records),handover=True,actual_state_class=type(state).__module__+'.'+type(state).__name__,pressure_class=type(state.load).__module__+'.'+type(state.load).__name__,records=records);results.append(r);(D/'NATIVE_CAPTURE_ADMISSION_PROGRESS.json').write_text(json.dumps(dict(completed=len(results),expected=3,rows=results,training_ready=False),indent=2));print(json.dumps({k:v for k,v in r.items() if k!='records'}),flush=True)
+sources={str(p):sha(p) for p in [Path(__file__),source,cli_path,collector,ep/'frontal_bypass.json',ep/'coordination.json',admission_source,S/'COLLECTOR_PREPARATION.json',S/'causal_response_parameters.json',S/'elbow_torso_hulls.json']}
+for mod in list(sys.modules.values()):
+ f=getattr(mod,'__file__',None)
+ if f:
+  p=Path(f).resolve()
+  if p.is_file() and p.suffix=='.py' and p.is_relative_to(ROOT):sources[str(p)]=sha(p)
+with (D/'NATIVE_CAPTURE_ADMISSION_CHECK.json').open('x') as f:json.dump(dict(created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),scope=__doc__,passed=True,streams=3,events=sum(r['events'] for r in results),rows=results,source_sha256=sources,native_class_and_collector_branch=True,native_command_admission_and_final_guard=True,full_parent_prefix_replay=False,physical_started=False,training_ready=False),f,indent=2)
+print('COMPLETE3',flush=True)
