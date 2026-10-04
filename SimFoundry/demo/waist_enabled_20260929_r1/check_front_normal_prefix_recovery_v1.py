@@ -1,0 +1,88 @@
+"""Reconstruct real controller history, then fixed-observation recovery forks.
+Recorded adapter events and pressure observation summaries are replay inputs;
+this does not revalidate their physical measurements or predict new dynamics.
+"""
+from pathlib import Path
+import sys,copy,json,hashlib,datetime,traceback
+import numpy as np
+W=Path(__file__).resolve().parent; ROOT=W.parents[1];S=W/'staged_front_normal_nondegradation_v2';D=W/'front_normal_prefix_recovery_r1';D.mkdir(exist_ok=False)
+sys.path[:0]=[str(S),str(W),str(ROOT)]
+from front_initial_center_cop_route import FrontCopRouteState
+from simfoundry.data.frontal_bypass import FrontalBypassState
+from simfoundry.data.top_contact_load_geometry import loaded_forward_margin
+from simfoundry.data.contact_load_control import hand_target_vertical_load
+from simfoundry.data.tabletop_route_candidates import footprint_radii
+from simfoundry.data.top_contact_bypass import rotation_xyzw,support_mesh
+from simfoundry.data.projected_support_reference import projected_support_reference
+from front_initial_center_adapter import apply as apply_initial
+from front_recontact_center_adapter import apply as apply_recovery
+from peak_load_update_trace import TracedPeakLoadControl
+from margin_confirmed_position_release import ConfirmedPositionRelease
+from clearance_runtime import ClearanceGuard
+from recontact_scene import RecontactScene
+from front_normal_nondegradation_runtime_candidate_v1 import FrontNormalNondegradation,commit_original_recovery
+from front_box_recenter_runtime import FrontRecontactCenterRuntime
+read=lambda p:json.loads(Path(p).read_text());sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ep=W/'front_effective_height_physical_r1/case_840020/layout_840020_push_box_to_bin'
+f=read(ep/'frontal_bypass.json');p=f['plan'];fr={r['step']:r for r in f['rows']};cs={r['step']:r for r in read(ep/'coordination.json')};pr={r['action_step']:r for r in read(ep/'peak_load_updates.json')['rows']};pf={r['step']:r for r in read(ep/'peak_load_updates.json')['final_control_states']}
+ie={r['step']:r for r in read(ep/'front_initial_center.json')['rows']};re={r['step']:r for r in read(ep/'front_recontact_center.json')['rows']};packets={r['after_action_step']:r for r in read(ep/'solved_contact_forces.json')['rows']}
+with np.load(ep/'trace.npz') as z:tr={k:z[k].copy() for k in z.files}
+with np.load(ep/'parcel_orientation.npz') as z:ori={k:z[k].copy() for k in z.files}
+size=tuple(p['top_recontact']['contact_size_xyz']);osize=(.15,.145,.04);core=p['front_cop_slip_following']['edge_speed']['actual_core_size_xyz']
+s=FrontCopRouteState(FrontalBypassState(p,staging_z=.92,press_z=.822,feedback_rear_endpoint=True,follow_target_y=True),'right',size,guarded_descent=True,continuous_drag=True,drag_step_m=.003,alignment_tolerance_m=.01,tilt_recontact_rad=.03,confirm_terminal_release=True,front_inset_fraction=.9,obstacle_size=osize,route_clearance_m=.012,recover_clearance=True,confirm_nominal_clearance=True,recontact_travel_z=.86,recovery_hysteresis_m=.0005,cop_drive_step_m=.002,cop_slip_enabled=True,reset_cop_on_route_change=True,route_axis_only=True,edge_speed_enabled=True,edge_core_size=core,recontact_on_route_change=True,diagonal_entry=True,retain_micro_repair_contact=True,corridor_midpoint_replan=True,corridor_lateral_replan=True)
+s.position_release_monitor=ConfirmedPositionRelease(p['initial_target_xyz'][1],p['direction']);s.load=TracedPeakLoadControl(5.,min_bias_m=-.006);s.load.bind_owner(s)
+report=dict(scope=__doc__,created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),baseline_frames=0,max_waypoint_error_m=0.,recovery_forks=[],passed=False,training_ready=False,physics_started=False)
+def inputs(t):
+ r=fr[t];load=hand_target_vertical_load(packets[t-1],'right','parcel_box');contact=loaded_forward_margin(packets[t-1],'right','parcel_box',tr['box'][t],ori['box'][t],size,-1)
+ args=(tr['palm_right'][t],tr['box'][t],tr['mailer'][t],footprint_radii(size,ori['box'][t])[0],footprint_radii(osize,ori['mailer'][t])[0])
+ kw=dict(tip=r['observed_support_xyz'],quat=ori['box'][t],obstacle_quat=ori['mailer'][t],control_offset_local=r['control_offset_local'],load_n=load,hand_obstacle_gap_m=r['hand_obstacle_gap_m'],slip_contact=contact)
+ return args,kw
+def observe(state,t):
+ state.load._observation=copy.deepcopy(pr[t]['preceding_observation']);state.load._last_action_step=t
+snapshots={}
+try:
+ for t in range(1,684):
+  a,kw=inputs(t)
+  # At a measured handover the saved row is post-adapter. Reconstruct the
+  # incoming support reference using the actual pose and prior captured center.
+  for events in [ie,re]:
+   if events[t]['kind']=='handover':
+    pose=np.asarray(events[t]['context']['observed_hand_pose']);center=re[t-1]['center_local_after'] if t>1 else None
+    if center is None:center=ie[t-1]['center_local_after'] if t>1 else None
+    ref=projected_support_reference(support_mesh()['right'],pose[:3,:3],np.asarray(rotation_xyzw(ori['box'][t]))[:,2],center_local=center)
+    kw['tip']=(pose[:3,3]+pose[:3,:3]@ref['reference_local']).tolist();kw['control_offset_local']=ref['reference_local']
+  observe(s,t);r=s.update(*a,**kw)
+  assert s.load.updates[-1]==pr[t],(t,'pressure mutation mismatch')
+  ref={k:np.array(v) for k,v in fr[t]['projected_support_reference'].items()}
+  for events,adapter in [(ie,apply_initial),(re,apply_recovery)]:
+   r,ref=adapter(r,s,ref,events[t],object_xyz=tr['box'][t],object_rotation=np.asarray(rotation_xyzw(ori['box'][t])))
+  err=float(np.max(abs(np.asarray(r['target_xyz'])-np.asarray(fr[t]['target_xyz']))));report['max_waypoint_error_m']=max(err,report['max_waypoint_error_m'])
+  assert err<2e-7,(t,'waypoint mismatch',err)
+  for key in ['mode','route_stage','recontacts','route_stop_reason','last_recontact_reason']:assert r.get(key)==fr[t].get(key),(t,key,r.get(key),fr[t].get(key))
+  assert s.load.bias_m==pf[t]['bias_m'] and s.load.filtered_n==pf[t]['filtered_n'],(t,'final pressure state')
+  report['baseline_frames']+=1
+  if t in (682,683):snapshots[t]=copy.deepcopy(s)
+ report['baseline_reconstructed']=True
+ guard=ClearanceGuard(ROOT,S);controller=FrontNormalNondegradation(guard,ROOT,S,enabled=True)
+ for t,state in snapshots.items():
+  c=cs[t];tc=c['joint_transport_clearance']['collector_context'];v=tc['scene'];scene=RecontactScene(guard,v['side'],v['target_xyz'],v['target_quat'],v['core_size'],v['other_xyz'],v['other_quat'],v['other_size'])
+  u,record=controller.refine(step=t,selected=True,side='right',row=fr[t],coordinate=c,scene=scene,current=tc['current'],previous_q=tc['previous_q'],previous_command=tc['previous_command'],parent_command=c['joint_transport_clearance']['output_command'],decay=tc['decay'])
+  assert record['requires_recovery'] and not record['requires_stop'];old_filter=state.load.filtered_n;old_count=state.recontacts
+  event=commit_original_recovery(record,state,guard.command(u,tc['current'],tc['previous_command']))
+  assert state.load.filtered_n==old_filter and state.load.bias_m==0.
+  rows=[]
+  for nt in range(t+1,t+7):
+   a,kw=inputs(nt);observe(state,nt);r=state.update(*a,**kw)
+   assert r['mode']=='top_lift' and state.recontacts==old_count+1,(nt,'unexpected recovery phase')
+   assert not r['cop_slip_following']['override'] and state.cop_slip.local_anchor is None
+   assert state.load.bias_m==0. and r['contact_load']['applied_z_bias_m']==0.
+   assert np.max(abs(np.array(r['target_xyz'][:2])-np.array(fr[t]['observed_support_xyz'][:2])))<2e-7
+   rows.append(dict(step=nt,mode=r['mode'],recontacts=state.recontacts,target_xyz=r['target_xyz'],load=r['contact_load'],cop=r['cop_slip_following']))
+  report['recovery_forks'].append(dict(step=t,commit=event,retained_filter_n=old_filter,rows=rows))
+ report['passed']=True
+except Exception as exc:
+ report['error']=dict(type=type(exc).__name__,message=str(exc),traceback=traceback.format_exc());traceback.print_exc()
+finally:
+ report['source_sha256']={str(q):sha(q) for q in [Path(__file__),S/'front_initial_center_cop_route.py',S/'front_initial_center_route.py',S/'front_initial_center_top_contact.py',S/'front_normal_nondegradation_runtime_candidate_v1.py',*[ep/n for n in ['frontal_bypass.json','coordination.json','peak_load_updates.json','front_initial_center.json','front_recontact_center.json','trace.npz','parcel_orientation.npz','solved_contact_forces.json']]]}
+ (D/'RESULT.json').write_text(json.dumps(report,indent=2,allow_nan=False));print(json.dumps({k:report[k] for k in ['passed','baseline_frames','max_waypoint_error_m']},indent=2),flush=True)
+if not report['passed']:sys.exit(1)

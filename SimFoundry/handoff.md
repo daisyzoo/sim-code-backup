@@ -6,6 +6,112 @@
 
 ---
 
+## 2026-10-04T22:17:50.493035+00:00 旧early黑袋数值失败定位到655：原命令逐值复现；相同约束的父命令初值探针过门，仍未改专家/物理
+
+上一目标轮progress，本轮progress。rear_early_bag_stationarity_r1独立绑定实际q/previous、归档URDF/hand vertices、原force/COP与交点记录，逐帧查67个成功边缘override：仅655失败，原stationarity=3.1916309808462814e−6>1e−6；有限差分步长1e−6/5e−7/1e−7/5e−8均约3.19163e−6，不支持差分噪声解释。该原命令方向/界内可行，后续intersection/frontZ/transport均未改变，确实等于raw实际命令。左手任务没有启用只对右盒的early20分支，不能把这次left失败归因early20策略。
+
+**好/坏分开：**该原轨迹自身quality.passed=True，袋目标进展337.412640mm、非目标盒全过程maxXY=0，但完整数学审核失败，所以仍training_ready=False/不能入库，不能以任务分数覆盖审核失败。此次不是仅凭残差认定碰撞。
+
+rear_early_bag_stationarity_probe_r1使用从quat独立重建的R，虽FK/约束一致到数值精度却没有逐值复现（命令差0.00017494rad）；r2改用实际记录R后完整原命令和74迭代逐值复现，复现同一残差，确认原solver成功不保证原最优性门，而非本次审计选错目标。原完整9D目标/关节与slew/边缘方向/原ftol1e−11/maxiter300未改。仅加解析Jac从原LP初值仍status0但残差2.561995e−6失败。解析Jac+限位内原parent初值status0、22迭代，独立残差9.3231498e−9，原finalguard通过；原输出初值虽然独立证书过却status8，**拒绝采用**，不借证书绕过solver-success。
+
+check_rear_early_bag_retry_selection_v1离线以原证书判定，仅替换655/67，66原命令保持；新解相对原最大变动0.033752084rad，原数学目标略降，不能称物理运动不变。**这是未安装探针/原history下的选择检查，不是新示范，也没有恢复原失败的审核结论。** 后续若采用，应明确默认关、原证书失败才从bounded parent重试，solver-success+独立原证书+所有最终几何联合门，不回退未验证命令；须完整多条件验证。不要默默把该rear求解器变更塞进front_normal_v3正在准备的物理对照。
+
+源证据/重现/状态见rear_early_bag_retry_selection_r1/READINESS_PROGRESS_V1和LATEST。两后台原审核仍核实际PID及子进程，可用26.27GiB，原>30GiB物理门保留。无新物理/准入/转换/训练，完整共享RGB指令、多样类别位置解耦、首零双臂腰、非目标15mm、无助推h10、完整组与独立多seed模型实图目标仍未完成；前袋持续接触以及front_normal_v3完整source/command/phase审核仍待推进。
+
+## 2026-10-04T22:05:13.850095+00:00 新恢复压力全流审核与来源绑定：原9740帧/9439更新一致、两693帧诊断分支与32篡改拒绝；物理仍未启动
+
+**本轮新增坏结果：**rear_early_edge原后台第3失败出现在840020黑袋的v3 self-clearance审核，沿joint_edge_clearance→box_inward→原left refinement最优性检查，stationarity=3.1916309808462814e−6>原1e−6。失败原log/raw/source hash已保存于front_normal_pressure_fork_audit_r1/NEW_REAR_AUDIT_FAILURE_V1；继续拒绝入库，不改阈值。尚需定位精确frame并独立核对该审核分支的目标/约束与实际controller，不能仅凭数值失败认定碰撞。
+
+上一目标轮progress，本轮progress。audit_front_normal_pressure_stream_v1保留原pressure math、区域旧返回/外部归零/计数/顺序要求，只增加明确经audit_front_normal_pressure_finalization_v1验证的最终恢复边界：对恢复前decision_final和提交后final分开审核，下一帧pressure phase必须top_lift（或原route guard先行且不更新压力），filter保留且bias0，完整normal记录绑定q/实际命令及final_guard previous历史，拒绝未提交/孤立恢复。默认关原10条件9740帧、9439pressure更新结果逐字段等于原审核；载荷从原24子步force scalar独立重提取，见front_normal_pressure_parent_stream_r1。
+
+check_front_normal_prefix_recovery_v4在原v3真实状态重建基础保存2个693帧压力测试流，到692首次重规划。**它们是明确标记的固定原观测/后续原动作history诊断夹具，不是新采集数据**；包含新恢复保持及692未执行规划命令，用于检测consumer。front_normal_pressure_fork_audit_r1两正例过，32反例全部拒绝：缺失/重复/乱序normal、未commit、孤立final、陈旧top_push、wrong hold、下一帧previous错位、下一帧仍push/恢复计数错/filter清零、子步峰值篡改、NaN、缺finalguard/拒绝guard、enabled假。保持全条数据原门，无新准入。
+
+front_normal_stage_source_binding_v2继承原effective来源验证与设置链，绑定v3源快照并显式区分transport parent与最终normal动作；新的collect metadata、全frame日志和coordination关联也实现，但**完整observation binding尚未端到端测试**。实际唯一active源101（原97+新增5中audit_unloaded_wrist_prior_live重合1），关闭新策略时保留该原共享helper。front_normal_source_binding_checks_r4：原6命令默认关/开12次parser与归档来源检查过，7来源/设置篡改拒绝。V1错误断言102失败保留；source harness r2缺OMNI环境触发导入退出，r3把pre-launch namespace拿去验证resolved设置失败，均保留；r4先证真实parent/new parser仅flag不同，再用原同命令启动后provenance，仅新增flag，未放宽原参数合同。
+
+audit_front_normal_stage_contract_v1、audit_front_normal_contacts_v1只改到新来源绑定和输出名字。接触verify_arrays AST逐字等于原算法，原10条件全部9740帧实际24tick覆盖/末tick力与pose核验通过，见front_normal_contact_consumer_r1；**新文件包装入口仍是待整体接线，不以原输入检查称新候选安全。** 原动作/阶段/self-clearance审核仍需识别新最终动作并保持前级证书。
+
+好：审核链可以识别恢复后的真实压力状态，原力记录再次独立全量核验。坏：原物理仍5/8推、2等待、0合格完整组，前袋持续接触未解决；新物理/准入/转换/训练均0。后台两个原审核实际PID/子进程仍核活，计数见LATEST与front_normal_pressure_fork_audit_r1/READINESS_PROGRESS_V1；可用26.27GiB，原>30GiB启动门不降。下一步完整source observation与最终动作/原阶段审核接线、v3全部10条件native复核，再筹备同条件物理和前袋改进；共享图像指令、多样物体位置解耦、首零双臂腰、非目标15mm、无助推h10、独立布局多seed实图目标未完成。
+
+## 2026-10-04T21:47:43.217880+00:00 前盒恢复真实历史重建与日志修复：683帧一致、两分支到692重新规划；仍无新物理成功
+
+本轮progress，Git私有代码备份侧任务已完成。check_front_normal_prefix_recovery_v1/v2/v3由实际front_initial_center_cop_route类及原配置从第1帧重建，不再只用人为top_push夹具。683帧阶段/路线/恢复计数、每次压力更新事件与最终bias/filter匹配，目标点最大误差1.4720397623e−8m。手动应用归档的真实初次/恢复落点事件；交接帧用实际手位姿与前捕获中心重建入参参考；压力使用归档preceding_observation摘要，未重提取24子步。
+
+真实682/683状态分别发起经原最终门的测量q保持及原_start_recontact；后续固定原观测下进入top_lift、只抬手不继续XY推行、COP清空、压力bias归零而filter保留。两分支在692均进入真实front_box_recenter_runtime的新counter5生命周期并生成原最终门可接受的重新落点命令，未执行。此前counter4生命周期已完成状态根据实际handover记录恢复；抬手帧无消费pose，规划帧使用归档实际pose。**这是固定观测/原后续history的状态机反事实，不是新物理轨迹、不能证明保持q后真实位姿或恢复成功。**
+
+**发现并修复的问题：**stage v2的新恢复commit在原peak_load_frame_log写入之后，导致所谓final_control_states仍保存旧top_push/bias。新独立copy2 staged_front_normal_nondegradation_v3在提交前核验当前压力日志与实际state，提交后记录top_lift/0bias/保留filter，同时保存before_final_recovery和明确transition；原waypoint的mode仍保留作决策时点记录。关闭新增分支的AST仍精确等于原parent。用真实重建state执行实际collector AST恢复block，2正例及每例6种陈旧/错误/最终门拒绝/重复提交共12反例通过；失败不变更状态/记录。
+
+audit_front_normal_pressure_finalization_v1独立（不导入控制器）验证保持动作、恢复计数+1、来源support、前后压力与finite字段；2正例+16篡改拒绝。测试是已存原生final与先前runtime record合成的诊断输入，**尚未接入完整原压力审核，更不是采集数据。** 完整source/stream/动作及next-phase消费者仍待接线，旧v2结果不能直接给v3物理授权。
+
+好：真实历史恢复可到重新规划，且提前发现审计日志时序缺陷。坏：原完整实际仍5/8推、两等待过、0合格配对组；前袋边缘失载未解决。新准入/转换/训练均0。两个原审核PID与当前子进程已核活，最新计数/哈希见front_normal_prefix_recovery_r3/READINESS_PROGRESS_V1与LATEST。可用26.38GiB，原>30GiB启动门不降。下一步完整压力/动作/source审核接线，完整原10条件再核，并继续前袋接触；共享图像指令/类别位置解耦/双臂腰首零/非目标15mm/无助推h10/独立布局多seed模型实图目标未完成。
+
+## 2026-10-04T21:24:12.898597+00:00 独立法向候选与恢复接线：9740帧开关/原生全流过，32纠偏+2保持后原恢复；quarter父224审核关闭仍6/8拒绝
+
+上一目标轮progress，本轮progress。front_normal_nondegradation_solver_candidate_v1从诊断截获闭包中提取独立求解器，显式normal_nondegradation默认关委托原函数；开启仅原lateral/top_push/quarter/.0015reserve上下文，绑定实际parent/scene/history及有限load。原完整32有载候选输出逐float32与上轮完全相同、原独立证书复核过；682/683低载请求恢复，未把无解当合法推行。两真实上下文defaultoff命令及整record与原函数相同。
+
+front_normal_nondegradation_runtime_candidate_v1默认关恒等，保留原path/terminal/guard优先级，只处理原最终X反向。32有载用新solver+独立证书+原连续路径+最终门；2失载用一帧测量q命令，经原当前/预测路径与最终门后请求原_start_recontact。**保持q不保证真实静止**，仍需新物理接触验证。commit_original_recovery必须在collector finalguard后、previous/actionstep前执行；真实原恢复方法在2准备状态夹具中进入top_lift、计数+1、压力bias与接触暂态归零，重复提交/最终拒绝均不改状态。6类solver/cert/path/parentguard/finalguard/holdpath注入均None+stop，不静默回用原反向动作。
+
+完整原10条件9740帧runtime开关19480调用，32纠偏+2保持，其余9706不变，输入coord不变。新独立copy2隔离stage为staged_front_normal_nondegradation_v2（102原文件+5helper），--front-normal-nondegradation默认关；移除新增If/CLI后AST精确等于原parent。6原命令开关/5缺前置拒绝及实际metadata/archive验证过。**实际collector新增block→finalguard→恢复commit→previous语句全9740开关19480次过**，腰记录/腿/历史逐值核验，2恢复提交与2非法输出停在history之前。这里只每帧保持原actual history、重建准备状态，不能叫连续恢复/新物理轨迹验证。
+
+准备V1因全局替换把independent asset helper名字改错而中止，V2独立新目录修复；native V1夹具误以为后绕记录必有recontacts，V2仅无恢复场景夹具缺省0，实际恢复仍用原记录计数，控制候选未改。两失败保留。最新front_normal_native_stream_r2/READINESS_PROGRESS_V1，**仍不准物理启动**：尚需完整saved source/stream/原审核消费者识别最终纠偏/保持动作与恢复元数据，并验证真实下一帧恢复规划，不只有reset方法夹具。
+
+**原实验关闭：**front_loaded_z_quarter_physical_r2全部224审核自然完成0失败，逐原report/raw/auditor hash及10实际视觉绑定核验；仍6/8推、2/2wait、两个完整组拒绝，CLOSED_ORIGINAL_AUDITS_AND_TASK_DECISION_V1已记录，不准训练。新effective实际仍5/8、0合格组，两个原失败保留；remaining审核实际进程见LATEST/LIVE_OBSERVATION，不重启。
+
+新候选改善的是前盒命令一致性，未解决前袋边缘失载；预测仍可能向外，不能把32静态通过称真实分拣提升。无新物理/准入/转换/训练，可用26.39GiB，原>30GiB启动门不降。下一步补完整审核消费者与连续恢复，再准备原全部条件物理；共享RGB指令、多样类别位置解耦、首零11D后双臂腰、非目标全过程15mm、无助推/h10、完整配对组及独立多seed模型实图目标仍未完成。
+
+## 2026-10-04T21:09:09.551157+00:00 支持点精确法向规划：32有载帧方向/预测不退化/独立KKT与连续静态路径过；2失载帧及前袋问题仍未解决
+
+上一目标轮progress，本轮progress。front_exact_normal_band_probe_r1将线性Z区间改为实际支持点沿当前物体法向的[parent内压,0]区间，并试预测绝不外移。原34反向上下文28初筛通过，761/1141/1145/1147未求得合格解，682/683真实载荷0明确不适用。原681虽世界线性Z微正，实际沿倾斜表面法向parent为内压、载荷0.337N，因此可按明确新语义处理，并非撤销原失败。不能用世界Z微升直接推断相对表面脱离。
+
+四失败帧另作12次初值/允许原任务请求下压范围对照，仅761的扩大范围两初值成功；其余3没有解决，不能称全局不可行，也不能把更多压力当通解。绝对预测不外移是本轮诊断要求，并非用户原物理质量门；原预测有真实误差，不把该近似当动力学真值。
+
+新front_normal_nondegradation_probe_r1保持精确法向区间、名义及预测XY不反向、原姿态/全部几何/关节/slew与full9目标，预测法向上界改为同帧**原最终命令**的预测值，明确是相对不退化，不是假称绝不脱离。34上下文中32有载帧solver/原primal/采样路径通过，2失载仍拒绝。audit_front_exact_normal_planning_v1不导入候选optimizer，独立从原实际context构造约束，以HandModel重建支持点；原1e−6最优性和2e−7舍入阈值不变，32/32审核过，最大残差1.07567446e-08。两个原真实反向动作拒绝。另补32组名义+预测原连续静态路径全过、FD前后支持顶点唯一稳定全部过；没有宣称全身动态碰撞或真实接触力证明。
+
+**好结果：**32新命令名义/预测XY方向无反转，预测法向相对原命令无新增外移。**坏结果/限制：**仍有11帧预测向外；平均主方向名义4.815→5.232mm，但预测1.894→1.815mm略降，绝不是实际分拣成功。528/1141名义X几乎0，仍可能纠偏不足。新策略只是探针，仍用截获原优化闭包，未提取生产solver、未接默认关runtime/全流/原生history与拒绝生命周期，不得直接开物理。旧X-only stage仍明确拒绝。
+
+LOW_LOAD_TRANSITION_CENSUS_V1覆盖原8推（等待没有该推控制流），困难前袋31低载帧分24段，仅6段随后实际转失载恢复；前盒33低载帧26段，仅5段直接转失载恢复。last_recontact_reason会沿用，统计只认实际mode退出，不能把所有低载都叫失载。682/683是0载仍top_push，684才top_lift；新候选需明确恢复/停止接线，不能静默回用已知反向parent，也不要不加区分把所有单帧低载改成抬手。前袋边缘失载与后段姿态仍须单独改善。
+
+本轮未发物理命令、未改冻结stage；原完整实际5/8、两个组拒绝/0新增准入转换训练不变。三个原审核仍按实际PID检查；effective计数81长期不动时其子761176确为R运行、累计35分钟CPU，非仅凭状态文件推断在跑。最新计数/身份见LATEST及本目录LIVE_OBSERVATION。可用26.45GiB，原物理启动>30GiB门不降。下一步提取明确默认关solver/runtime并补失载处理、实际全流/native和source审核，同时继续前袋接触；完整共享RGB指令/类别位置解耦/首零11D后双臂腰/非目标15mm/无助推/h10/独立多seed实图目标未完成。
+
+## 2026-10-04T20:55:37.953406+00:00 前盒XY约束冲突定位：固定下压等式是关键规划限制；五帧高度单项对照可行，34帧新区间策略仍仅离线
+
+本轮progress。front_xy_local_feasibility_r2对5问题帧各parent/原final/X候选/失败XY共20处线性化、200个LP，1008/1009全部参考点的原完整局部LP不可行；单去下压等式、法向保持或肘间距组可恢复局部可行，单去非工作手高度/包裹间距不能。主要肘部问题在主动右肘与躯干；这些只说明局部耦合，不能证明全局不可达或直接归因另一包裹挡手。部分1141–1143局部LP可行但精确非线性检查不满足，不能据LP发命令。V1读取不存在command字段失败，V2改读真实output_command，旧失败保留；normal行是误差乘1000的无量纲缩放，并非毫米。
+
+front_xy_nonlinear_conflict_r1保持原完整约束，用X候选初值5次及可行LP初值3次，8次仍无合格解。**好线索：只在离线去掉精确parent Z等式，其余原full9目标、法向不退化、关节/slew、名义与预测间距/桌面/肘及名义XY方向均保留，五帧都solver成功且舍入后primal通过。** 规划高度相对parent上调0.265273–0.305910mm。独立HandModel重算实际支持点：五个命令仍向下1.168–1.483mm，名义和原因果预测XY均同指令；不是停止下压。1009最小高度变动诊断solver status8保留，不能称严格最小。
+
+**限制/坏结果：**预测1141/1143仍上抬0.287/0.055mm，接触可能丢失；名义下压不是接触力证明，也不等于下一真实手位移。此前X-only拒绝不撤销。新的front_xy_height_band_probe_r2从原parent初值覆盖全部34反向帧，把精确Z等式明确改为[原下压量,0]区间，同时增加名义和预测XY不反向，其他原约束/目标/240迭代/ftol保持；初步solver+primal+17点路径31/34，失败步[681, 682, 683]，预测上抬18/34。其中原parent并非下压的步明确拒绝选用，不强行改成下压；V1在第6个上下文因该检查中止，V2保存拒绝并完成全筛，前5求解哈希复用。这是一项新的专家规划策略探针，**不是通过旧高度等式审核，更不是新物理成功。** 独立全34支持FK核对31有解的名义/预测XY均相符，但只有30个名义实际支持点向下，1个线性Z区间内仍因非线性产生上抬，见INDEPENDENT_MOTION_AND_PREDICTION_ERROR_V1。预测上抬新18、原10，原真实下一帧上抬16；原预测Z平均绝对误差0.121mm、最大0.451mm，不能直接把预测上抬当真实失载。平均新预测Z较原上移0.089mm，接触风险需要独立解决，不能仅因31个静态初步过就上线。新策略未安装、无独立KKT/连续路径/source/native审核，不能开物理。方向为零也可能纠偏不足。FINDINGS_V1、INDEPENDENT_MOTION_V1和各RESULT保存具体证据。
+
+下一步独立重建新区间策略的接触/方向约束并查预测上抬、持续接触与实际推进，再决定上游恢复姿态或统一优化方案；前袋的边缘失载仍需单独解决，不把前盒结论套到袋。原完整实际5/8、两组均拒绝不变，3后台审核已核活并更新计数见LATEST/LIVE_OBSERVATION。可用26.48GiB，原物理启动>30GiB门不降。未发新物理命令、新准入/转换/训练0，首零11D后双臂腰、非目标全过程15mm、无助推/h10与完整类别位置交换、独立多seed模型实图目标不变且未完成。
+
+## 2026-10-04T20:35:49.054576+00:00 X候选9740全帧/原生19480对照过，但主Y反向5/34，明确拒绝物理；XY同时约束5问题帧均未求得合格解
+
+上一目标轮progress，本轮progress。不要沿用上轮两上下文可行结论去开物理：**X单项候选已因损害主任务而拒绝。** full_stream/CENSUS筛原8推2wait共9740帧，34个最终X反向全在前盒840020；前袋lateral39帧没有X反向，另查front_x310帧主要X方向同样0反向（Y辅助纠偏4），该候选不解决袋持续失载。34个X约束解原静态约束/KKT/名义+预测连续静态路径全部过，FD支持顶点分支均唯一稳定，最大原1e−6残差6.861240e−7；这些只证静态条件，不是分拣改善。
+
+独立post-transport运行环节front_cross_track_runtime_candidate_v2完整9740帧关闭/开启19480调用，只替换34，其他9706不变，实际旧history保持固定不是递归闭环。严格元数据V3拒绝8种篡改（包括V2旧报告NaN可绕过比较的真实复现），六类solver/cert/measured geometry/path/parent/final guard注入都返回None+requires_stop，不退回反向parent。有限值修复不改物理或质量阈值，旧版本保留。
+
+staged_front_cross_track_v1已独立copy2原102文件并归档6helper，显式--front-cross-track-nonreversal默认关，移除新If/CLI后的AST精确等于原采集器。6原命令开关解析、5缺前置拒绝、metadata/archive通过。可移植独立audit assets从guard绑定的URDF/vertices路径+hash取得，不再依赖脚本目录层级（runtimeV3/certV4/base constraintsV2）。实际采集器新block→finalguard→previous完整9740帧双态19480次验证通过，仅34替换，waist记录和腿不变，None和非法最终命令两原生反例都在history前拦下。尚无source/stream全部审核消费者接线或物理启动。
+
+**更重要的坏结果：** MAIN_PROGRESS_AND_PREDICTION_V1另核34个候选，主Y名义反向5帧（1008/1009/1141/1142/1143），原因果预测X反向28、Y反向7。1009原名义右推3.008mm变成反向10.936mm；全34平均名义右推4.772→2.868mm、预测1.903→0.870mm。不能拿X修正+审核通过当任务改善。DO_NOT_LAUNCH_TASK_DIRECTION_REGRESSION_V1已明确隔离stage不准进物理，最新readiness为front_cross_track_full_stream_probe_r1/READINESS_REVIEW_V2_REJECTED，优先于此前readiness。
+
+新增未安装front_xy_nonreversal_solver_candidate_v1只在原优化上再约束主Y不反向，五个上述问题真实上下文保持原下压等式、完整目标、姿态、关节/间距/桌面，五条均未返回合格proposal（status4一次、8四次），见front_xy_nonreversal_probe_r1/RESULT。不能据SLSQP失败证明全局不可行；即使双方向都为零也不能称任务前进。没有为了过门放宽任何原要求。
+
+下一步要定位下压目标、姿态保持和非工作臂/躯干间距之间的具体冲突，优先检查更早接触/恢复姿态与非工作臂准备，避免进入后段受限状态；不要继续仅给末端加约束而牺牲另一任务方向。如果调整专家高度优先级，必须明确新规划策略并重审其命令含义，不等同放宽原任务/物理质量门。原完整物理5/8、两组拒绝/0新数据准入不变，原224审核继续、225原失败保留；最新真实PID/计数见LATEST与LIVE_OBSERVATION_V2，可用约26.49GiB，原>30GiB物理启动门不变。
+
+完整共享RGB+指令目标仍未完成：多样前后/斜向/左右交换类别位置解耦，首11D零后双臂/腰yaw，非目标全过程15mm/空桌稳定、无助推/h10；只有完整合格配对训练/验证组才能转换训练，最后仍需未调参布局、多seed实际模型闭环和画面。新增准入/转换/训练仍0。
+
+## 2026-10-04T20:05:28.734073+00:00 effective高度完整5/8退化、10条实图完成；定位前盒后处理反向X，新未安装候选两上下文可行
+
+本轮progress。front_effective_height_physical_r1原8推2wait全部完成，10条原独立数值/姿态及实际8RGB/4外视（wait无外视）复核已完成并逐hash绑定，NUMERIC_VISUAL_SUMMARY、RESPONSE_COMPARISON_10_V1、COMPLETE_COLLECTION_FINDINGS_V1为完整证据。**坏结果：父6/8→新5/8；斜向组3/4、反斜向交换组2/4，两个等待过、0合格组。** 不能扩采/训练。新前盒103.952→88.875mm失败；前袋38.500→72.428mm虽改善仍失败；交换后盒316.773→258.594mm退化且height分支0应用，不直接归因该修复。原控制审核仍跑，最新计数和真实进程见LATEST/LIVE_OBSERVATION_V1；原225失败及衍生失败不清除。
+
+新增原因证据：FRONT_BOX_ROUTE_REGRESSION_V1独立由实际位置和旋转包围盒重建两版2398帧间距/状态转移全部相符。新后期1010/1080/1148三次重接触占147非推帧。1010目标X漂移+1.344mm、旋转补回0.078mm，实际间距10.332mm跌破原11.5mm恢复门，安全切换有真实依据，不能删门。
+
+**关键命令链定位：**FRONT_BOX_CROSS_TRACK_CHAIN_V2全部推帧重建原目标→原关节解→下压→运输→最终raw，发出动作与运输输出一致。1009原规划/任务希望X负向，原解名义支持dx−2.151mm，下压后+0.998mm、运输后+4.363mm，下一实际同参考手+2.175mm、盒+1.344mm。1147同类，原−2.178→下压−1.687→运输+0.445mm。优化后处理存在横向反向命令；这比泛称接触不好更具体，但记录相关性不是候选闭环因果证明。V1全部计算后NumPyint64序列化失败，V2仅显式bool计数/编码成功后写盘，原失败保留。
+
+front_cross_track_nonreversal_solver_candidate_v1默认关委托原函数，显式lateral_y/top_push开启时只给原运输优化新增实际支持点X不反向约束；原下压等式、完整9维目标、姿态/间距/关节/桌面与数值阈值不变。两个真实问题帧1009/1147均solver0，原反向名义X被约束到约1–3nm（原2e−7舍入容差内）；不能称实际运动修好。旧证书不含新约束，stationarity失败保留；新增独立HandModel重建该约束、原FD/目标/NNLS阈值，完整约束最优性分别4.553388e−7/4.850385e−8<原1e−6，其余原检查过。两上下文默认关command+完整record与原精确相同；两原真实反向命令、方向篡改、非bool/非lateral输入均拒绝。新证书与候选未安装，仍需完整默认关/方向选择、支持面分支正规性、path、原生/source/stream/拒绝生命周期；名义不反向不保证真实动力学，不能直接开物理。readiness见front_cross_track_nonreversal_probe_r1/READINESS_REVIEW_V1。
+
+另：staged_rear_inward_analytic_v1独立102文件副本和默认关CLI/parser/metadata/archive检查完成；后盒解析候选原生edge→intersection→priority→transport→finalguard→history两完整1199步开关对照共4796次通过，开启共124次修正经原独立审核，两个非法最终命令在history前拦截。V1测试误把float32数组四元数当原生tolist输入，219默认关不一致；V2改为原生Python list后全2398默认关逐raw/record精确一致，开启按原独立证书核验而非假定与SciPy离线求解bit同。V1失败不覆盖；native_r2/RESULT为最新，仍缺front/wait全流/source与新拒绝分支原审核消费者，不代表已可开物理。
+
+原目标不变：共享RGB+指令、多样摆放类别位置解耦及完整交换组；首11D零后双臂/腰yaw、非目标全过程15mm、空桌稳定、无助推/h10。新增准入/转换/训练仍0；独立未调参布局、多seed和模型实际画面目标未完成。当前可用约26.54GiB，原物理启动>30GiB门不降；审核继续，候选保持离线，下一步补完整约束接线与路径验证后再选择新版本。
+
 ## 2026-10-04T19:26:45.983646+00:00 225原失败排除差分步长解释；未安装解析首轮+发出前KKT门覆盖2398上下文/124修正
 
 上一目标轮progress，本轮progress。REAR_BOX_225_ANALYTIC_FIRST_PROBE_V1精确复现原225命令/defaultoff整record；独立FD1e−6/2e−7/5e−8与解析梯度均残差1.1241697e−6>原1e−6，不能称审核差分误差。原solver仅status8才解析重试；225status成功但没达到独立门。首轮直接解析约束后同原ftol1e−11/maxiter300/目标/边界/0.5mm要求，原独立残差3.699445e−9，最大命令变化1.567602e−5rad；未发物理。
