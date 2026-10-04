@@ -1,0 +1,13 @@
+"""Independently verify first headroom physical bag recovery and subsequent stop.
+Full source-bound native stream verification; no task admission or relaxed gate.
+"""
+from pathlib import Path
+import collections,datetime,hashlib,json,sys
+W=Path(__file__).resolve().parent;ROOT=W.parents[1];sys.path[:0]=[str(W),str(ROOT)]
+from audit_front_recontact_headroom_stream import audit
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();r=W/'front_recontact_headroom_physical_r1';ep=r/'case_840023/layout_840023_nudge_mailer_to_bin';proof=audit(ep);assert proof['passed'];events=json.loads((ep/'front_recontact_center.json').read_text())['rows'];fr=json.loads((ep/'frontal_bypass.json').read_text());guard=next(x for x in fr['rows'] if x.get('route_stop_reason'));quality=json.loads((ep/'quality.json').read_text());assert quality['frames']==1200 and not quality['passed'];rows=[]
+for counter in sorted({x['real_recontact_index'] for x in events}):
+ es=[x for x in events if x['real_recontact_index']==counter];rows.append(dict(counter=counter,first_step=es[0]['step'],last_step=es[-1]['step'],kinds=dict(collections.Counter(x['kind'] for x in es)),unchanged_reasons=dict(collections.Counter(x['reason'] for x in es if x['kind']=='unchanged')),planned_steps=[x['step'] for x in es if x.get('planning') is not None],handovers=[x['step'] for x in es if x['kind']=='handover']))
+files=[Path(__file__),ep/'front_recontact_center.json',ep/'frontal_bypass.json',ep/'quality.json',ep/'ACTUAL_REVIEW_BINDING.json',ep/'raw.npz'];out=dict(created_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),scope=__doc__,independent_native_stream=proof,counter_records=rows,first_guard=guard,frames=1200,quality_passed=False,target_progress_mm=quality['metrics']['target_final_progress_m']*1000,non_target_max_xy_mm=quality['metrics']['box_max_xy_m']*1000,findings=['Measured entry waits then first recovery actually hands over; original254-frame safety stop avoided.','Only one actual recovery handover is recorded; later recovery windows wait or follow original parent controls.','Original front_corridor_no_table_margin stops transport; full episode remains failed and whole exchange group cannot enter training.'],source_sha256={str(p):sha(p) for p in files},training_ready=False)
+with (r/'FIRST_BAG_RECOVERY_DIAGNOSIS.json').open('x') as f:json.dump(out,f,indent=2)
+print(json.dumps(dict(passed_stream=True,commands=proof['verified_commands'],handovers=proof['handovers'],guard_step=guard['step'],guard_reason=guard['route_stop_reason'],progress_mm=out['target_progress_mm'],counters=rows),indent=2))
