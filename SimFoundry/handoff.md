@@ -6,6 +6,30 @@
 
 ---
 
+## 2026-10-04T23:19:03.582011+00:00 连续历史审核完成、前盒完整父数学过；七份已核验上传副本回收48.72GiB，空间门已恢复
+
+上一目标轮progress，本轮progress。front_normal_command_stream_r1完成20开关分支：默认关9740全帧；开启其余9条件完整，840020前盒在首次修正528通过后，529使用旧previous被准确拒绝，共9069已审核帧及5类历史/顺序反例拒绝。**这是固定原观测的9完整不变条件+1改变前缀，不能称新策略全轨迹过。** 原进程834290已终态退出。
+
+新增front_normal_parent_coordinate_v1按normal→transport逆覆盖顺序只恢复明确记录的中间腰角，不改q/previous实际动作/其他任务字段。全9740上下文、9592coord、34normal/1015transport覆盖与8篡改拒绝；只读视图未改输入。front_normal_loaded_episode_inputs_v1、audit_front_normal_z_execution_v1、audit_front_normal_execution_v1及recovery wrapper使用新source/ledger/父坐标；front_normal_parent_math_files_r1困难前盒默认关完整1200帧/265下压及开启wait70实际文件入口通过，source fixtures明确False质量/非物理。新增initial/pose/stage_context/self_clearance消费者保留原数学和实际raw，只显式接运输中间输出到最终normal输出；front_normal_parent_math_preservation_r1核11核心函数AST保留。开启wait70全身真实runtime几何过，篡改post身体间距被原重算拒绝，物理入口拒绝fixture。**困难前盒完整pose+body新文件检查状态：{"status": "running", "pid": 852086, "tool_session_id": 47225, "log": "/tmp/front_normal_geometry_files_r2.log", "expected_report": "/home/user/Documents/zoo/sim/SimFoundry/demo/waist_enabled_20260929_r1/front_normal_geometry_files_r2/RESULT.json"}；尚未有该结果不能称完整几何接线已验证。** 当前固定记录中intersection与transport/normal覆盖无重叠；不把该范围检查外推所有未来状态。
+
+**空间实清理：**11保留model未发现互相重复；W&B staging七份临时文件分别与保留模型各7473096344B全文件逐字节和SHA256完全一致，无打开句柄，删除前复核inode/mtime/size/nlink，保留文件stats逐项未变，只移除tmp63zmgmg5/tmpcpggrm0g/tmpx6b_8z6t/tmp7a_v18a8/tmpirh68m01/tmpssg4x3_j/tmpsglsu4fc。证据storage_duplicate_staging_20261005_r1/VERIFIED、CLEANUP、DELETE_JOURNAL；回收48.7191GiB，当前71.93GiB，原>30GiB门已满足。模型/checkpoint/训练和物理数据均未删，没有处理其余未知cache。
+
+**坏结果保持：**旧early224项/4失败已关闭、5/8push/2wait/0组；effective仍5/8push/0组，原审核真实进程和99/224、2失败见LATEST。前袋本版7接触段有6次lost_contact、相对袋滑到core边缘，现有牵引报告显示另一物体接触力为0，不能仅归因盒遮挡，也不能凭低载荷就宣称加压有效。未新采集/准入/转换/训练。
+
+下一步完成同一push geometry句柄、压力原生文件wrapper及剩余原phase/control调度→冻结完整新producer/auditor/原8推2wait物理计划→真正新闭环和实际画面。空间已恢复，不再沿用磁盘阻塞说法。前袋须单独持续接触对照，完整类别交换组/共享RGB+指令、首零后双臂腰、非目标全过程15mm、等待稳、无助推/h10与未调参布局多seed实际模型目标不变。详细证据front_normal_parent_pipeline_progress_r1/READINESS_PROGRESS_V1。
+
+## 2026-10-04T22:53:26.813866+00:00 新最终动作历史审核接线与v3原生19480次验证；旧early正式关闭224项仍4失败/0合格组
+
+本轮progress。front_normal_stage_source_binding_v3补上coordination缺失/重复漏洞（旧r1两漏检失败保留）；observation r2共10条件×开关20正例与9篡改拒绝，四个真实文件source/contact wrapper分支通过，均诊断quality=False。front_normal_command_records_r1独立核全部9740固定原上下文：32纠偏+2保持后原恢复，12篡改拒绝；不能把固定原历史逐帧通过当成新闭环轨迹。
+
+新增audit_front_normal_command_stream_v1把已验证的运输中间命令与最终normal命令分开：父证书消费明确记录的未执行腰角，所有证书/路径/最终门都基于同一个实际前动作；只有全部通过才更新history。audit_front_normal_native_stream_v1及front_normal_command_ledger_v1保留raw最终动作，只向父数学审核提供已验证中间命令。front_normal_native_files_r1默认关后盒1200帧/开启wait70帧文件入口和只读ledger过；诊断标记不能走物理入口。候选新命令拼接旧轨迹，在529帧被源绑定previous_command拒绝；STALE_HISTORY_REJECTION_PROOF_V1独立核实确实是该断言，不是无关失败。完整stream当前状态：{"status": "running", "pid": 834290, "tool_session_id": 3566, "completed_branches": 10, "log": "/tmp/front_normal_command_stream_r1.log", "result": "/home/user/Documents/zoo/sim/SimFoundry/demo/waist_enabled_20260929_r1/front_normal_command_stream_r1/RESULT.json"}。若仍运行，继续同一session/PID，不因长计算无新输出重启。
+
+v3采集器真实AST纠偏→finalguard→pressure recovery commit→history，全10条件9740×开关19480次通过，34应用/2恢复，两个异常分支在历史更新前停。native_r3测试夹具误用无updates的旧ContactLoadControl而失败，原失败保留；native_r4采用生产TracedPeakLoadControl通过。这是固定原观测/预备状态的原生接线检查；真实状态重建仍以prefix_r3/r4为证，不称新物理成功。
+
+**坏结果正式关闭：**rear_early原224/224审计完成、4失败，watcher533900自然退出并核/proc；新增第4失败是840020黑袋self-clearance未生成报告造成pose审核FileNotFoundError。两根因仍为840023盒step902早期分支reason不符和840020袋step655原stationarity超1e−6。原实际5/8push、2/2wait、10实图，配对组2/4与3/4，0合格组；CLOSED_ORIGINAL_AUDITS_AND_TASK_DECISION_V1保留日志/raw哈希，不绕过失败。
+
+当前free=24.75GiB，原>30GiB物理门不降；effective旧审核真实watcher/子进程仍核活，详见front_normal_integration_progress_r1/READINESS_PROGRESS_V1与LATEST。本轮新物理/准入/转换/训练均0。下一步完成联合stream、原self-clearance/phase消费者接线及空间准备，再同条件物理+实际画面；前袋持续接触尚未解决。共享RGB+指令、多样类别位置解耦/完整交换组，首零后双臂腰、非目标全过程15mm、空桌稳、无助推/h10及独立布局多seed目标保持，未完成。
+
 ## 2026-10-04T22:17:50.493035+00:00 旧early黑袋数值失败定位到655：原命令逐值复现；相同约束的父命令初值探针过门，仍未改专家/物理
 
 上一目标轮progress，本轮progress。rear_early_bag_stationarity_r1独立绑定实际q/previous、归档URDF/hand vertices、原force/COP与交点记录，逐帧查67个成功边缘override：仅655失败，原stationarity=3.1916309808462814e−6>1e−6；有限差分步长1e−6/5e−7/1e−7/5e−8均约3.19163e−6，不支持差分噪声解释。该原命令方向/界内可行，后续intersection/frontZ/transport均未改变，确实等于raw实际命令。左手任务没有启用只对右盒的early20分支，不能把这次left失败归因early20策略。
