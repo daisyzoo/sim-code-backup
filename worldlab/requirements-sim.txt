@@ -1,0 +1,5 @@
+--extra-index-url https://pypi.nvidia.com
+isaacsim[all,extscache]==6.1.0.0
+pillow
+imageio
+imageio-ffmpeg

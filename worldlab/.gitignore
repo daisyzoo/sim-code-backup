@@ -1,0 +1,9 @@
+.venv*/
+.wheelhouse/
+__pycache__/
+.pytest_cache/
+generated/
+outputs/
+*.egg-info/
+
+.tools/

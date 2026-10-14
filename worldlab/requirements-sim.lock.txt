@@ -1,0 +1,177 @@
+absl-py==2.4.0
+aioboto3==15.5.0
+aiobotocore==2.25.1
+aiodns==3.1.1
+aiofiles==23.2.1
+aiohappyeyeballs==2.6.1
+aiohttp==3.14.1
+aioitertools==0.11.0
+aiosignal==1.4.0
+annotated-doc==0.0.5
+annotated-types==0.8.0
+anyio==4.14.2
+asteval==1.0.6
+async-timeout==5.0.1
+attrs==25.1.0
+awscrt==0.23.8
+azure-core==1.38.0
+azure-identity==1.13.0
+azure-storage-blob==12.17.0
+boto3==1.40.61
+botocore==1.40.61
+cbor2==5.9.0
+certifi==2026.7.22
+cffi==2.1.1
+charset-normalizer==3.3.2
+click==8.1.7
+cloudpickle==3.1.2
+coacd==1.0.7
+contourpy==1.3.3
+coverage==7.16.2
+cryptography==50.0.1
+cuda-bindings==13.4.3
+cuda-pathfinder==1.8.3
+cuda-toolkit @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/cuda_toolkit-13.0.2-py2.py3-none-any.whl#sha256=b198824cf2f54003f50d64ada3a0f184b42ca0846c1c94192fa269ecd97a66eb
+cycler==0.12.1
+etils==1.13.0
+fastapi==0.139.2
+filelock==3.25.2
+flatbuffers==25.12.19
+fonttools==4.61.1
+frozenlist==1.5.0
+fsspec==2026.2.0
+glfw==2.10.0
+h11==0.16.0
+httptools==0.6.1
+idna==3.10
+idna-ssl==1.1.0
+ImageIO==2.37.2
+imageio-ffmpeg==0.6.0
+imgui-bundle==1.92.601
+importlib_resources==7.1.0
+iniconfig==2.3.1
+isaacsim @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=55fb65052c0fe025f7165f10e71b4e693e26b6fc2f8c7cc08875ac41b00e695d
+isaacsim-app @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_app-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=aa3cd2ae94489d6818186afd722a31e4fc82018ff3e8a4d07199a93d500a84e2
+isaacsim-asset @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_asset-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=cf1338595aa99fc4d4aafb0d091883864332003f602f89a8e15d1e424ebdd97a
+isaacsim-benchmark @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_benchmark-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=c5090850b594ddd7b422f2b7c9da14cd6a61e3ab0943bf5bbc3d6f1eacff9dfb
+isaacsim-code-editor @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_code_editor-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=145f281814263424ff14ebe47f834bba62700a409489369a1b4e58caa5c5c47e
+isaacsim-core @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_core-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=2dbde879bc55c1e30a4579539eef250c27fd3e3bc17dc909ef90b16b0aedb8ad
+isaacsim-cortex @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_cortex-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=df0f3133aa9aa2e43188942a7e3b5d62af73c5aeeb6c9c59cf1bbd10ad63db6a
+isaacsim-example @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_example-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=0d7364274750bace6f04d0529f5828b98ecd8c489bcd198f63b9b517e85e4909
+isaacsim-extscache-kit @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_extscache_kit-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=3e2e96b0badc486000e3cbee3ccabc1f7eb9b1191c7334a25a39b689ca535e09
+isaacsim-extscache-kit-sdk @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_extscache_kit_sdk-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=dd587ecb5066427a47063ee117a716e33498bf5e0eee1f8f4f77d502333fadd8
+isaacsim-extscache-physics @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_extscache_physics-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=94ab00d5e878148bf92335e068c38e7ba995fc083607781dc788ccf0df14be23
+isaacsim-gui @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_gui-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=9a911be5d95d9451b5403a6d3040767fcd95e1309b51a10a0457daafb7e021af
+isaacsim-kernel @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_kernel-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=fe795f2d965e8fb82befa71071a13687aba519d61f980820117b02261ae3cec7
+isaacsim-replicator @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_replicator-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=6c69c090e42100a49c333bf46a6e94632bc121100a4c701f97852fdf00cb0d3f
+isaacsim-rl @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_rl-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=441d1a0af29643c4058ee666368ea7a4e0d72874623a1ff081af8c7151cc53d6
+isaacsim-robot @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_robot-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=e5f28c9901343ee09edac33170f03506875f71dd675c1565deeb1e9f41a7ae0c
+isaacsim-robot-motion @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_robot_motion-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=e807b6879b6fb680f8348edfd3507da4f5971b3b8d1dc39142b6eaabae3b9856
+isaacsim-robot-setup @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_robot_setup-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=c20c36e8db72166ef0d2089a13ce5476658ff1f89589db531fb2bc1092e47f44
+isaacsim-ros1 @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_ros1-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=87537710b5560762fa0a468f3feb4f410f917ff64e739d267dea3615ea51d0a5
+isaacsim-ros2 @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_ros2-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=f8455420dfabbcecd8150c1df5d7d1eac691938e311ed634bdcca43b9a793ae9
+isaacsim-sensor @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_sensor-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=eaa4d80b1fb2933835c580eba6c2b7139cddf427d320dd275b0ed0b3f4ba7acf
+isaacsim-storage @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_storage-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=2f7fd9325300c4baa528c26f4df6b37ae3f0093db7e30c6b8831e6b33a5cb37b
+isaacsim-template @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_template-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=bf5660b1f6aecfce33f81aa5bcedc752d66a7f85e467f98833519cabe1e3ec7c
+isaacsim-test @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_test-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=1c037cdf2623ade77cfae8c350ec9a903b2e7ebae0a25efabb9e2ba362d73111
+isaacsim-utils @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/isaacsim_utils-6.1.0.0-cp312-none-manylinux_2_35_x86_64.whl#sha256=5582f31bc825bdc92623ea6c667c69777cab57d096782d5801af586e14e81d59
+isodate==0.6.1
+Jinja2==3.1.6
+jmespath==1.0.1
+joblib==1.6.0
+kiwisolver==1.4.9
+llvmlite==0.46.0
+MarkupSafe==3.0.4
+matplotlib==3.10.8
+mpmath==1.3.0
+msal==1.38.0
+msal-extensions==1.3.1
+mujoco==3.11.0
+mujoco-usd-converter==0.5.0
+mujoco-warp==3.11.0
+multidict==6.1.0
+nest-asyncio==1.6.0
+networkx==3.6.1
+newton==1.5.0
+newton-usd-schemas==0.4.1
+numpy==2.3.1
+numpy-stl==4.0.1
+nvidia-cublas==13.1.0.3
+nvidia-cuda-cupti==13.0.85
+nvidia-cuda-nvrtc==13.0.88
+nvidia-cuda-runtime==13.0.96
+nvidia-cudnn-cu13==9.19.0.56
+nvidia-cufft==12.0.0.61
+nvidia-cufile==1.15.1.6
+nvidia-curand==10.4.0.35
+nvidia-cusolver==12.0.4.66
+nvidia-cusparse==12.6.3.3
+nvidia-cusparselt-cu13==0.8.0
+nvidia-nccl-cu13==2.28.9
+nvidia-nvjitlink==13.0.88
+nvidia-nvshmem-cu13==3.4.5
+nvidia-nvtx==13.0.85
+oauthlib==3.2.2
+onnxruntime-gpu==1.26.0
+opencv-python-headless-noffmpeg @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/opencv_python_headless_noffmpeg-4.14.0.94rc1-cp312-cp312-manylinux_2_35_x86_64.whl#sha256=758e5c9fbee25005c9d3fc163d9c66443af7a1776789a75683a630d1ed974393
+osqp==1.0.5
+packaging==26.0
+pillow==12.3.0
+pluggy==1.6.0
+portalocker==2.7.0
+propcache==0.2.1
+protobuf==7.36.2
+psutil==5.9.8
+py_trees==2.4.0
+pycares==5.0.1
+pycollada==0.9.3
+pycparser==3.11
+pydantic==2.14.1
+pydantic_core==2.50.1
+pydot==4.0.1
+Pygments==2.21.0
+PyJWT==2.15.1
+PyOpenGL==3.1.10
+PyOpenGL-accelerate==3.1.10
+pyparsing==3.3.2
+pyperclip==1.11.0
+pypng==0.20220715.0
+pytest==9.1.1
+python-dateutil==2.9.0.post0
+python-multipart==0.0.32
+python-utils==4.1.2
+pytz==2024.1
+PyYAML==6.0.3
+qdldl==0.1.7.post5
+qrcode==7.4.2
+requests==2.32.3
+requests-oauthlib==1.3.1
+rtree==1.4.1
+s3transfer==0.14.0
+scipy==1.17.0
+sentry-sdk==2.42.1
+setuptools==81.0.0
+six==1.17.0
+starlette==1.8.0
+sympy==1.14.0
+tinyobjloader==2.0.0rc13
+toml==0.10.2
+torch==2.11.0
+torchaudio==2.11.0
+torchvision==0.26.0
+transitions==0.9.3
+trimesh==4.11.1
+triton==3.6.0
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+urdf-usd-converter==0.3.2
+urllib3==2.7.0
+usd-convert-gsplat @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/usd_convert_gsplat-0.1.15-py3-none-any.whl#sha256=f73980b97df63a97e347c79399d1f336b1096ded14095508ab00e85da0ff9406
+usd-exchange @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/usd_exchange-3.0.1-cp312-cp312-manylinux_2_34_x86_64.whl#sha256=67bdb602ddf86a38eb7d340cef62d2a891c84733c45f1f770d4db48961545c68
+uvicorn==0.29.0
+warp-lang @ file:///home/user/Documents/zoo/sim/worldlab/.wheelhouse/warp_lang-1.18.0-py3-none-manylinux_2_28_x86_64.whl#sha256=090962bfae7dd22ade0d8e0258f41635e0e58980f15bcc9e7a7d312819dfe440
+watchdog==4.0.0
+websockets==14.2
+wrapt==1.16.0
+yarl==1.18.3
+zipp==4.1.1

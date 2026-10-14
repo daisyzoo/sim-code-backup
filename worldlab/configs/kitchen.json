@@ -1,0 +1,80 @@
+{
+  "name": "Kitchen",
+  "splat": "World/Environment/Kitchen/GaussianSplats/rustic_kitchen_with_natural_light_2m.ply",
+  "collider": "World/Environment/Kitchen/CollisionMesh/rustic_kitchen_with_natural_light_collider.glb",
+  "output": "generated/Kitchen",
+  "source_to_world": {
+    "rotate_xyz_deg": [
+      -90,
+      0,
+      0
+    ],
+    "translate": [
+      0,
+      0,
+      1.1
+    ],
+    "scale": 1.0
+  },
+  "scale_status": "estimated; no measured real-world reference supplied",
+  "cameras": {
+    "kitchen": {
+      "eye": [
+        0,
+        0.2,
+        1.4
+      ],
+      "target": [
+        0,
+        2.8,
+        1.15
+      ]
+    },
+    "wide": {
+      "eye": [
+        0,
+        -1.2,
+        1.45
+      ],
+      "target": [
+        0,
+        2.2,
+        1.2
+      ]
+    },
+    "counter": {
+      "eye": [
+        0,
+        1.2,
+        1.4
+      ],
+      "target": [
+        -1.2,
+        2.6,
+        1.1
+      ]
+    }
+  },
+  "render": {
+    "width": 1280,
+    "height": 720,
+    "warmup_frames": 200
+  },
+  "physics": {
+    "dt": 0.016666666666666666,
+    "test_xy": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        -0.7,
+        1
+      ]
+    ]
+  }
+}

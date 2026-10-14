@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "id": "hallway1_modern",
+  "representation": "gaussian_static",
+  "sources": {
+    "visual": "World/Environment/hallway1/Modern Hallway with Staircase.spz",
+    "collision": "World/Environment/hallway1/Modern Hallway with Staircase_collider.glb"
+  },
+  "source_to_world": {
+    "rotate_xyz_deg": [
+      90,
+      0,
+      0
+    ],
+    "translate": [
+      0,
+      0,
+      1.83
+    ],
+    "scale": 1
+  },
+  "scale_status": "estimated; no real-world measurements",
+  "lighting": {
+    "dome": 300,
+    "spheres": []
+  },
+  "render": {
+    "width": 1280,
+    "height": 720,
+    "warmup_frames": 200,
+    "film_iso": 100,
+    "tonemap_op": 6
+  },
+  "cameras": {
+    "entry": {
+      "eye": [
+        0,
+        -0.5,
+        1.55
+      ],
+      "target": [
+        0,
+        2,
+        0.9
+      ]
+    },
+    "reverse": {
+      "eye": [
+        0,
+        0,
+        1.55
+      ],
+      "target": [
+        -0.3,
+        -4,
+        1.2
+      ]
+    },
+    "stairs": {
+      "eye": [
+        0,
+        0.9,
+        1.55
+      ],
+      "target": [
+        0,
+        2.8,
+        -0.3
+      ]
+    }
+  },
+  "physics": {
+    "dt": 0.016666666666666666,
+    "probes": [
+      {
+        "name": "landing",
+        "origin": [
+          0,
+          0,
+          1.5
+        ],
+        "expected_z": 0,
+        "tolerance": 0.08
+      },
+      {
+        "name": "corridor",
+        "origin": [
+          -0.5,
+          -2,
+          1.5
+        ],
+        "expected_z": 0,
+        "tolerance": 0.15
+      },
+      {
+        "name": "stairs",
+        "origin": [
+          0,
+          2,
+          0.8
+        ],
+        "expected_z": -0.557,
+        "tolerance": 0.1
+      }
+    ]
+  },
+  "tour": [
+    {
+      "eye": [
+        -0.2,
+        -0.5,
+        1.55
+      ],
+      "yaw": 180,
+      "pitch": -5
+    },
+    {
+      "eye": [
+        -0.3,
+        -2,
+        1.55
+      ],
+      "yaw": 180,
+      "pitch": -5
+    },
+    {
+      "eye": [
+        -0.3,
+        -2,
+        1.55
+      ],
+      "yaw": 270,
+      "pitch": -8
+    },
+    {
+      "eye": [
+        -0.2,
+        -0.5,
+        1.55
+      ],
+      "yaw": 360,
+      "pitch": -10
+    },
+    {
+      "eye": [
+        0,
+        0.7,
+        1.55
+      ],
+      "yaw": 360,
+      "pitch": -38
+    },
+    {
+      "eye": [
+        -0.2,
+        -0.5,
+        1.55
+      ],
+      "yaw": 450,
+      "pitch": -8
+    },
+    {
+      "eye": [
+        -0.2,
+        -0.5,
+        1.55
+      ],
+      "yaw": 540,
+      "pitch": -5
+    }
+  ],
+  "alignment_note": "SPZ/GLB identity alignment verified by sampled nearest surfaces; +90 X maps Y-up to Z-up; main landing at origin anchors height"
+}

@@ -6,6 +6,54 @@
 
 ---
 
+## 2026-10-05T00:46:06.475325+00:00 用户要求全部停下：目标已暂停，所有项目计算进程已退出
+
+用户明确“任务先全部停下”。goal已置paused；采集、producer、queue、normal/numeric watcher、旧effective审核及审核子进程共7个已停止，/proc复核无残留项目Python任务。GPU仅见ToDesk远程桌面进程；未结束IDE或系统服务。停止证据`demo/waist_enabled_20260929_r1/USER_PAUSE_20261005.json`；两run新增USER_PAUSED标记，不伪造原审核完成。已有文件保留，未完成episode不可入库。等待用户明确恢复，不自动启动。
+
+停止时进度：{"front_normal_physical_r1": {"status": "paused_by_user", "collection_status_at_stop": "collecting", "completed_conditions": 2, "audits_completed": 52, "audits_failed": 0, "resumption_requires_explicit_user_request": true, "training_ready": false}, "front_effective_height_physical_r1": {"status": "paused_by_user", "collection_status_at_stop": "collection_complete_audits_visual_pending", "completed_conditions": 10, "audits_completed": 116, "audits_failed": 2, "resumption_requires_explicit_user_request": true, "training_ready": false}}。最后采集日志：PROGRESS {"layout_id": 840023, "task": "nudge_mailer_to_bin", "step": 690, "expert_mode": "top_push", "pose": {"box": [0.5258128046989441, 0.11145196110010147, 0.7724759578704834], "mailer": [0.388507217168808, -0.055624958127737045, 0.7699681520462036], "palm_left": [0.31685346364974976, -0.00020740926265716553, 0.8404339551925659], "palm_right": [-0.052357159554958344, -0.3358347415924072, 0.8917762041091919]}}。
+
+本轮停止前变更：新增独立`staged_front_bag_preload_hold_v1`默认关闭接线，移除新开关分支后AST与父effective相同；未改正在运行的normal。`front_bag_preload_stage_native_r2/RESULT.json`通过6真实命令/8缺失前提拒绝、8706未改动原帧含等待与首改变前缀、7独立入口、合成3保持后放行/24保持后超时保存。R1测试落盘step与运行waypoint混用失败保留。
+
+**未解决且禁止启动新候选：**真实前袋重建探针r1遗留import失败、r2木盒尺寸夹具错误、r3负例拷贝模块失败均保留；r4重建1199原帧后，真实状态提交被`Competing parent waypoint mutation`拒绝。尚未判断是重建浮点差还是实际状态不一致；不得放宽阈值或绕过拒绝宣称通过。新preload物理未启动，新准入/转换/训练0。完整多样摆放共享RGB+指令策略与原质量门目标保持未完成。
+
+## 2026-10-05T00:23:59.935747+00:00 新normal对照交换后盒1200帧仍失败，新增分支0应用
+
+已保存EARLY_REAR_BOX_FAILURE_V1：840023后盒推进234.661765mm，父258.593895mm，均原门失败；非目标袋XY0。全部1200条normal output逐值等于其parent、应用0，不能直接归因新修正。初始q/action与父相同，但首次state/action逐值差出现在1/2；不据此认定浮点或任何单一根因。当前仅保存quality事实，须完整case READY后独立数值、实际看图与原全审计。该case的前袋正在实际采集，未重试/覆盖失败，整组不准入；新首两条通过不能盖过这条失败。
+
+## 2026-10-05T00:21:46.609781+00:00 困难前盒完整几何通过，新normal八推两等待实际启动；首两条原门/实图通过；前袋加载保持完成未安装候选与七入口命令探针
+
+上一轮progress，本轮progress。原geometry PID852086已自然完成：1200默认关困难前盒native/pose/body全部通过，未重启/跳过。队列869664执行原configuration/preflight后启动producer879210，new front_normal_physical_r1保留原6命令/8推2wait/224审计和所有门。本次6307冻结来源全hash复核。实际采集PID/status/最后日志见front_normal_launch_preload_progress_r1/READINESS_PROGRESS_V1；当前已完成2条件，最新日志={"layout_id": 840023, "task": "nudge_mailer_to_bin", "step": 150, "expert_mode": "top_cross", "pose": {"box": [0.5258128046989441, 0.11145196110010147, 0.7724759578704834], "mailer": [0.4259673058986664, -0.09182187169790268, 0.7699759006500244], "palm_left": [0.39496147632598877, -0.07983636111021042, 0.8584234714508057], "palm_right": [0.22399219870567322, -0.32780152559280396, 0.8918567895889282]}}。审核watcher879478与numeric watcher879479核实际存活，不能以尚无首READY状态文件误判数字复核停止。
+
+**好结果但不外推：**840022两条均完整1200，木盒159.983791mm、黑袋159.367613mm，原任务/姿态独立复算过、非目标全过程XY0、首11D零位/assist0；各8RGB+4外视已实际显示查看并保存ACTUAL_REVIEW_BINDING。两条normal实际应用均0，不归因新修正。**视觉限制：**木盒342/513采样贴下缘、685后采样画外；黑袋171贴左缘、342后采样画外。相机随腰转动风险保持，抽帧不证明连续可见/无碰撞。完整交换组、后续困难条件与224审核尚未完成，不能入库。
+
+**前袋新候选（未安装）：**front_bag_preload_waypoint_candidate_v1默认关；仅前侧左手黑袋新接触、原有效内部COP上下文，显式固定首次实测XY锚并按原3mm waypoint slew接近；保留原Z、5N/−6mm压力、全部phase/倾斜/避障/terminal优先；最多24保持帧、原desired的0.8即4N连续3观测则最后一帧保持后重置COP再放行。无合格接触/内部余量/超预算则明确要求停止，不无限等待、不回用未验证动作。自有状态和parent command/last_emitted仅在最终joint guard接受且记录/phase/压力状态一致后提交，压力不改。9592默认关原帧、8393开启非选择帧恒等，7真实原入口提案；六篡改/错误guard拒绝及重复提交拒绝，制造状态下3帧放行或24帧超时检查过，明确非物理证明。
+
+probe_front_bag_preload_command_chain_v2在七原入口先逐值复现旧最终动作，再用完整原9D任务、精确IK/原独立几何KKT、quarterZ、effective transport和最终guard计算新动作。全部7命令检查通过，XY名义变化显著缩小，但348名义世界Z向上0.2634mm；法向/预测方向详见PRELOAD_COMMAND_DIRECTION_REVIEW_V1，**不能声称固定目标就真的停手或建立压力**。R1仅打印flush参数错误，失败原文件保留，R2只修日志。原history快照不是新递归轨迹；下一步独立stage整合新目标/状态/停机记录和消费者，真实有限预算加载实验评估，不新造力成功硬门，不夹入当前normal运行。
+
+父effective审核116/224仍2失败；其5/8推与0合格组坏结果未被新首两条覆盖。新准入/转换/训练0，完整共享RGB指令、多样类别位置解耦、非目标15mm、首零后双臂腰、无助推/h10及独立多seed真实模型目标仍未完成。
+
+## 2026-10-05T00:02:53.474891+00:00 八推负载进入普查与边缘零增量反事实完成：不能全局提高进入阈值，也不能把零推进增量叫手停住
+
+本轮progress，原几何PID852086及排队PID869664实际状态见front_bag_preload_findings_r1/FINDINGS_AND_NEXT_EXPERIMENT_V1；queue=waiting_for_exact_geometry_process，新物理PROTOCOL存在=False。原effective审计113/224、2失败，未重启。没有新入库/转换/训练。
+
+**新增证据改变下一步选择：**front_press_entry_census_r1逐实际force packet独立复算全部8推top_press/top_push负载；63次进入push的filtered load均<3N，其中36次属于5条任务门通过的轨迹。因此不支持把3N简单作为全局进入阈值；原history也不能证明提高阈值后一定卡死或一定改善。失败前袋349pushframes/median末tick1.77393N/总72.4278mm，成功后袋340pushframes/median4.67868N/总337.2985mm，两者均6次lost_contact；另两袋成功median3.51429/4.36798N。失载次数和初次负载低都不能独立解释成败，持续实际牵引与每段推进效率更关键。前袋top_cross711帧，恢复成本保留。
+
+front_edge_zero_increment_probe_r1逐值复现原318袋+321盒COP反馈命令；对原边缘<10mm上下文，仅去掉新增drive、保留真实历史/前馈/横向修正。前袋44/44仍有沿推进方向的waypoint前导1.98033–7.83828mm（中位5.91084）；前盒136帧中102仍正前导。**这是原状态下代数反事实，不是新物理；当前helper不允许零drive，本轮没有改bounds。** 因此下一项候选明确为有限时长的前袋加载保持，使用实测XY锚处理累计前导，同时保持原5N/−6mm压力域、峰值/倾斜/避障/失载/terminal保护；不能仅取消增量。该候选目前只有明确规格，尚未实现/安装或证明可达，必须核真实最终关节命令与history，再完整8推2wait验证；不夹入已排队front-normal版本。
+
+本轮实际重新查看旧前袋8RGB+4外视复核图（默认view_image沙箱故障，读取原JPEG并真实显示）：起始黑袋在图像右、木盒在左；腰运动改变视角，后段多帧袋子下缘裁切，外视太远不能替代接触力核验。原ACTUAL_REVIEW_BINDING未改，视野风险保持，不宣称完整可见。
+
+完整目标仍为多样类别位置解耦共享RGB+指令策略、首零11之后双臂腰、非目标全过程15mm、无助推/h10；合格整组→共享训练→独立布局多seed真实模型画面均未完成。当前父5/8、0合格组的坏结果保留，后台检查/队列继续。
+
+## 2026-10-04T23:49:07.962546+00:00 新压力文件审核通过、完整224审计调度与8推2等待计划已准备；真实后台排队等待困难前盒全身检查
+
+本目标轮progress：front_normal_pressure_files_r1原1200帧/1199压力更新通过，三类错误（fixture冒充物理、filtered压力篡改、陈旧phase raw哈希）被拒绝；这是默认关闭前盒原轨迹夹具，**不是新恢复的物理证明**。原front_normal_pressure_stream的独立数学、原24子步提取和阶段依赖保留。完整front_normal_audit_dispatch_r1保持原10条件224项及顺序；新dispatch imports核25模块语法、20个可安全导入模块实际加载成功，5个顶层CLI保留待真实episode调用，不能称224已实际运行。
+
+front_normal_physical_preparation_r3严格匹配直接父effective的全部6命令/8推2等待，仅输出路径和--front-normal-nondegradation改变，101采集source、1200/70、全部原门。计划v1/v2因错误假设push_assist参数/赋值失败的原文件保留；v3依据原metadata assist_frames=0/push_assist=False与defaultoff AST来源核验。新producer、两watcher、完整/短episode reviewer和close_front_normal_trial1_physical_v1均已准备，收尾仍要求原224项、完整类别交换组、10实际看图和父审核关闭。
+
+**真实后台**：queue PID869664存活，状态waiting_for_exact_geometry_process；它只等待原geometry PID852086同一启动身份结束且RESULT通过，之后执行原producer完整preflight。当前geometry result存在=False，新物理PROTOCOL存在=False；不得把排队叫采集成功。首次真实configuration-only正确在缺geometry RESULT处拒绝，未生成CONFIGURATION_CHECK，也未降门。队列无重试；失败写PHYSICAL_QUEUE_STATUS与log，后续据证定位。几何原进程仍在完整body数学，不因输出安静重启。
+
+原effective审核106/224、2失败，实际watcher及子进程见front_normal_launch_queue_progress_r1/READINESS_PROGRESS_V1。**坏结果不变：**父5/8推、2/2wait、0合格组；前袋持续内部接触未解决。新准入/转换/训练0，未把rear数值重试夹入本front-normal对照。当前空间71.18GiB，原>30GiB门保持。后续实际对照/全审核/实际画面→单独前袋持续接触→完整组准入/共享训练/独立未调参布局多seed h10真实模型验证；首零11、双臂腰、非目标全过程15mm、无助推均不变。
+
 ## 2026-10-04T23:19:03.582011+00:00 连续历史审核完成、前盒完整父数学过；七份已核验上传副本回收48.72GiB，空间门已恢复
 
 上一目标轮progress，本轮progress。front_normal_command_stream_r1完成20开关分支：默认关9740全帧；开启其余9条件完整，840020前盒在首次修正528通过后，529使用旧previous被准确拒绝，共9069已审核帧及5类历史/顺序反例拒绝。**这是固定原观测的9完整不变条件+1改变前缀，不能称新策略全轨迹过。** 原进程834290已终态退出。

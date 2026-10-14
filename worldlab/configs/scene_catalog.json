@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "purpose": "source catalog; executable scene configurations live in configs/scenes",
+  "scenes": [
+    {
+      "id": "kitchen",
+      "representation": "gaussian_static",
+      "sources": {
+        "visual": "World/Environment/Kitchen/GaussianSplats/rustic_kitchen_with_natural_light_2m.ply",
+        "collision": "World/Environment/Kitchen/CollisionMesh/rustic_kitchen_with_natural_light_collider.glb"
+      },
+      "legacy_config": "configs/kitchen.json",
+      "route": "ply_to_usd_plus_static_glb",
+      "status": "legacy_runtime_accepted"
+    },
+    {
+      "id": "hallway1_elegant",
+      "representation": "gaussian_static",
+      "sources": {
+        "visual": "World/Environment/hallway1/Elegant Hallway with Staircase.spz",
+        "collision": "World/Environment/hallway1/Elegant Hallway with Staircase_collider.glb"
+      },
+      "route": "spz_to_usd_plus_static_glb",
+      "status": "render_and_static_physics_accepted",
+      "source_to_world": {
+        "rotate_xyz_deg": [
+          90,
+          0,
+          0
+        ],
+        "translate": [
+          0,
+          0,
+          0.004
+        ],
+        "scale": 1
+      },
+      "alignment_status": "verified_by_geometry_and_rtx_views",
+      "interaction_status": "not_configured",
+      "config": "configs/scenes/hallway1_elegant.json",
+      "acceptance_report": "outputs/hallway1_elegant/acceptance_final_20261014/report.json"
+    },
+    {
+      "id": "hallway1_modern",
+      "representation": "gaussian_static",
+      "sources": {
+        "visual": "World/Environment/hallway1/Modern Hallway with Staircase.spz",
+        "collision": "World/Environment/hallway1/Modern Hallway with Staircase_collider.glb"
+      },
+      "route": "spz_to_usd_plus_static_glb",
+      "status": "render_and_static_physics_accepted",
+      "source_to_world": {
+        "rotate_xyz_deg": [
+          90,
+          0,
+          0
+        ],
+        "translate": [
+          0,
+          0,
+          1.83
+        ],
+        "scale": 1
+      },
+      "alignment_status": "verified_by_geometry_and_rtx_views",
+      "interaction_status": "not_configured",
+      "config": "configs/scenes/hallway1_modern.json",
+      "acceptance_report": "outputs/hallway1_modern/acceptance_final_20261014/report.json"
+    },
+    {
+      "id": "hallway2",
+      "representation": "structured_mesh",
+      "sources": {
+        "visual": "World/Environment/hallway2/hallway.glb",
+        "authoring": "World/Environment/hallway2/hallway.blend",
+        "texture": "World/Environment/hallway2/oak_grain.png"
+      },
+      "route": "gltf_material_preserving_to_usd",
+      "status": "render_and_static_physics_accepted",
+      "source_to_world": {
+        "rotate_xyz_deg": [
+          90,
+          0,
+          0
+        ],
+        "translate": [
+          0,
+          0,
+          0
+        ],
+        "scale": 1
+      },
+      "alignment_status": "verified_by_geometry_and_rtx_views",
+      "interaction_status": "not_configured",
+      "config": "configs/scenes/hallway2.json",
+      "acceptance_report": "outputs/hallway2/acceptance_final_20261014/report.json"
+    },
+    {
+      "id": "hallway2_blend",
+      "representation": "structured_mesh",
+      "sources": {
+        "visual": "World/Environment/hallway2/hallway.blend"
+      },
+      "route": "blend_to_usdc_via_blender",
+      "status": "render_and_static_physics_accepted",
+      "source_to_world": {
+        "rotate_xyz_deg": [
+          0,
+          0,
+          0
+        ],
+        "translate": [
+          0,
+          0,
+          0
+        ],
+        "scale": 1
+      },
+      "alignment_status": "verified_by_geometry_and_rtx_views",
+      "interaction_status": "not_configured",
+      "config": "configs/scenes/hallway2_blend.json",
+      "acceptance_report": "outputs/hallway2_blend/acceptance_20261014/report.json"
+    }
+  ]
+}

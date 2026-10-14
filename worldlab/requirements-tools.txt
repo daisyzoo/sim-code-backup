@@ -1,0 +1,6 @@
+usd-convert-gsplat[usd]==0.1.15
+usd-core==26.8
+numpy==2.3.1
+trimesh==5.1.1
+pillow==12.3.0
+pytest==9.1.1

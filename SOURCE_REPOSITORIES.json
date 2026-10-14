@@ -1,5 +1,11 @@
 [
   {
+    "path": ".",
+    "origin": "",
+    "commit": "",
+    "branch": ""
+  },
+  {
     "path": "IsaacLab",
     "origin": "https://github.com/isaac-sim/IsaacLab.git",
     "commit": "a384e2f55c5847ca9c0eeeef0c91d0e258bc864e",
